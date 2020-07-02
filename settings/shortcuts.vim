@@ -16,4 +16,4 @@ tnoremap <Esc> <C-\><C-n>
 
 " 水平或垂直打开终端
 noremap <Leader>t :split term://zsh<CR><Insert>
-noremap <Leader>T :vsplit term://zsh<CR>
+noremap <Leader>T :vsplit term://zsh<CR><Insert>

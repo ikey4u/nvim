@@ -40,7 +40,20 @@ call plug#begin(g:home . '/plugged')
     Plug 'mattn/emmet-vim', { 'commit': 'dcf8f6efd8323f11e93aa1fb1349c8a1dcaa1e15' }
     Plug 'marijnh/tern_for_vim'
     Plug 'majutsushi/tagbar'
+
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    " tab 触发 coc 补全
+    inoremap <silent><expr> <Tab> coc#refresh()
+    " <C-j> 向下移动补全选择条, <C-k> 向上移动补全选择条
+    inoremap <silent><expr> <C-j>
+          \ pumvisible() ? "\<C-n>" :
+          \ <SID>check_back_space() ? "\<TAB>" :
+          \ coc#refresh()
+    inoremap <expr><C-k> pumvisible() ? "\<C-p>" : "\<C-h>"
+    function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
 " }
 
 " 开屏美化 {
