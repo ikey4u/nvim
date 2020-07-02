@@ -1,3 +1,53 @@
-nvim 安装
+---
+Title: neovim
+Date: 2020-07-02
+Author: bugnofree
+---
 
-    curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+安装 neovim (略), 然后安装 neovim 的 python 支持.
+
+    pip3 install neovim
+
+- 安装插件管理器
+
+        curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+- 安装 neovim-remote
+
+    项目地址: https://github.com/mhinz/neovim-remote
+
+        pip3 install neovim-remote
+
+        在 zshrc 中配置
+
+            # neovim {
+                export PATH="$HOME/.usr/nvim/bin":$PATH
+                # open with servername (neovim-remote)
+                alias nvim="NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
+                # split open
+                alias nvims="nvr -o "
+                # vertical split open
+                alias nvimvs="nvr -O "
+                # tab open
+                alias nvimt="nvr --remote-tab "
+            # }
+
+- 安装自动补全
+
+    安装 nodejs, 建议采用 n 工具进行安装.
+
+        export N_PREFIX="$HOME/.usr/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin" 
+        curl -L https://git.io/n-install | bash
+
+    重新打开 nvim 安装插件
+
+        # snippets 补全
+        :CocInstall coc-snippets
+
+        # python 补全
+        pip3 install jedi
+        :CocInstall coc-python
+
+        # coc-json 
+
+    安装 ripgrep

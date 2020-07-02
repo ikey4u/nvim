@@ -80,36 +80,12 @@ set smartcase                                         "如果搜索模式包含�
 set noincsearch                                       "在输入要搜索的文字时,取消实时匹配
 
 " 水平垂直线显示
-if has("gui_running")
-    set cursorline                                        "突出显示当前行
-    set cursorcolumn                                      "突出显示当前列
-endif
-
+set cursorline
+set cursorcolumn
 
 "文本格式化 命令为"gq"
 set textwidth=80            " textwidth,设置文本行宽度
 set formatoptions+=mM       "formatoptions,设置自动换行的条件, m 表示允许对 multi_byte 字符换行
-
-" 启动窗口大小设置 {
-    " 设置lines或者columns会导致控制台中的vim使用异常
-    " 因此这里使用if语句判断, 如果是gvim则启用.
-
-    " 设置 vim 启动后的窗口大小, 有如下几个命令
-
-    " - 设置行数 set lines=50
-    " - 设置列数 set columns=141
-    " - 设置窗口位置 winpos 244 93
-
-        " 第一个参数表示距离屏幕左侧的距离, 第二个参数表示距离屏幕上侧的距离
-    if has("gui_running")
-        " windows 下默认启用最大窗口, linux 和 mac 平台也计划启用最大窗口,
-        " 但是还未测试
-        if g:os == "win"
-            au GUIEnter * simalt ~x
-        endif
-    endif
-" }
-
 
 " 文件备份设置
 set nowritebackup                                     "编辑时不需要备份文件
@@ -146,12 +122,11 @@ set autochdir
 set ssop-=options
 set ssop-=folds
 
-if has("gui_running")
-    " 超过 90 个字符时设置高亮
+" 超过 90 个字符时设置高亮 {
     " guibg 设置为全值, 比如要写为 #FFFFFF 而不要写为简写形式 #FFF
     highlight OverLength ctermbg=red ctermfg=white guibg=#6666FF
     match OverLength /\%91v.\+/
-endif
+" }
 
 " 根据文件类型自动设置缩进宽度
 augroup cusindent
@@ -165,23 +140,5 @@ augroup cusindent
     autocmd FileType vue syntax sync fromstart
 augroup END
 
-" 复制粘贴 {
-    " normal, select 模式下用 alt + c 复制, alt + p 粘贴
-    noremap <m-c> "+y
-    noremap <m-p> "+p
-
-    " Insert 和命令行模式下 alt + p 粘贴, 映射为内置的粘贴快捷键 CTRL-R +
-    noremap! <m-p> <C-R>+
-" }
-
-" shebang 设定 {
-    function! CinOptions()
-        " sh 类型的文件启用 shebang 缩进, 其他文件则取消
-        if &filetype == "sh"
-            set cinoptions=#1
-        else
-            set cinoptions=#0
-        endif
-    endfunction
-    autocmd WinEnter * :call CinOptions()
-" }
+" nvim yank 时复制到系统剪贴板中
+set clipboard+=unnamedplus
