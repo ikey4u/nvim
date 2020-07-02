@@ -43,7 +43,7 @@ call plug#begin(g:home . '/plugged')
 
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " tab 触发 coc 补全
-    inoremap <silent><expr> <Tab> coc#refresh()
+    inoremap <silent><expr> <C-z> coc#refresh()
     " <C-j> 向下移动补全选择条, <C-k> 向上移动补全选择条
     inoremap <silent><expr> <C-j>
           \ pumvisible() ? "\<C-n>" :
