@@ -63,22 +63,31 @@ call plug#begin(g:home . '/plugged')
 " }
 
 " 括号匹配管理器 {
-    Plug 'tpope/vim-surround' 
+    Plug 'tpope/vim-surround'
 
     " # 修改和删除
     " cs(change surround), ds(delete surround).
     " cs 和 ds 接受两个字符, 第一个为源字符, 第二个为目标字符.
-    
+
     " # 添加
     " ys(you surround): 第一个参数是一个 vim motion 或者文本对象,
     " 第二个参数是一要 wrap 的字符. 比如 ysw' 表示 表示将当前光标所在的单词用单
     " 引号包含起来, 对于空格, 举个例子, ysw) 不会添加空格, 而 ysw( 会添加空格.
-    " 特别的 yss 是一个特殊的命令, 用来处理当前行. 
-    
+    " 特别的 yss 是一个特殊的命令, 用来处理当前行.
+
     " # 特殊字符
     " 有一些特殊字符, 比如 b, B, r, a 分别可以表示 ), }, ] 和  >
     " 比如 yswb 表示将当前单词用 () 括起来.
 
+" }
+
+" 多余的空格高亮 {
+    Plug 'ntpeters/vim-better-whitespace'
+
+    " 高亮显示多余的空格
+    let g:better_whitespace_enabled=1
+    " 保存时自动删除多余的空格
+    let g:strip_whitespace_on_save=1
 " }
 
 call plug#end()
