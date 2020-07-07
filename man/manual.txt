@@ -36,7 +36,7 @@ Author: bugnofree
 
     安装 nodejs, 建议采用 n 工具进行安装.
 
-        export N_PREFIX="$HOME/.usr/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin" 
+        export N_PREFIX="$HOME/.usr/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
         curl -L https://git.io/n-install | bash
 
     重新打开 nvim 安装插件
@@ -48,6 +48,4 @@ Author: bugnofree
         pip3 install jedi
         :CocInstall coc-python
 
-        # coc-json 
-
-    安装 ripgrep
+        # coc-json

@@ -24,3 +24,4 @@ let settings = ['basic.vim', 'functions.vim', 'shortcuts.vim', 'plugins.vim']
 for setting in settings
     exec printf('source %s/settings/%s', g:home, setting)
 endfor
+exec printf('source %s/%s', g:home, 'options.vim')
