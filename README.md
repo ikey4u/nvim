@@ -1,5 +1,7 @@
 # Quick Installation
 
+Install pyenv, please see https://github.com/pyenv/pyenv.
+
 - Ubuntu
 
     Installation
@@ -22,6 +24,8 @@
         export N_PREFIX=$HOME/.usr/n
         curl -L https://git.io/n-install | bash
         source ~/.zshrc
+
+        sudo apt install ripgrep
 
 For more details, see man/manual.txt.
 

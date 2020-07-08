@@ -138,6 +138,8 @@ augroup cusindent
     " vim 异步高亮, 在多语言文件比如 vue 中, 会导致语言高亮失效
     " 在 vue 中我们禁用这个特性
     autocmd FileType vue syntax sync fromstart
+    " 设置 vue 文件类型为 html, 这样能够良好的自动缩进
+    autocmd BufNewFile,BufRead *.vue set filetype=html
 augroup END
 
 " nvim yank 时复制到系统剪贴板中
