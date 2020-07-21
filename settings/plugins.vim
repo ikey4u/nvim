@@ -89,4 +89,17 @@ call plug#begin(g:home . '/plugged')
     let g:strip_whitespace_on_save=1
 " }
 
+" Markdown {
+    function! BuildComposer(info)
+      if a:info.status != 'unchanged' || a:info.force
+        if has('nvim')
+          !cargo build --release --locked
+        else
+          !cargo build --release --locked --no-default-features --features json-rpc
+        endif
+      endif
+    endfunction
+    Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
+" }
+
 call plug#end()
