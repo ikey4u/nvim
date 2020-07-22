@@ -32,6 +32,21 @@ Author: bugnofree
                 alias nvimt="nvr --remote-tab "
             # }
 
+        目前 NVIM_LISTEN_ADDRESS 的做法已经不再推荐使用,
+        建议试用 nvim 的 --listen 选项, 如下所示
+
+            # neovim {
+                export PATH="$HOME/.usr/nvim/bin":$PATH
+                # open with servername (neovim-remote)
+                alias nvim="nvim --listen 127.0.0.1:9999 "
+                # split open
+                alias nvims="nvr --servername 127.0.0.1:9999 -o "
+                # vertical split open
+                alias nvimvs="nvr --servername 127.0.0.1:9999 -O "
+                # tab open
+                alias nvimt="nvr --servername 127.0.0.1:9999 --remote-tab "
+            # }
+
 - 安装自动补全
 
     安装 nodejs, 建议采用 n 工具进行安装.
