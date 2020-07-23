@@ -144,3 +144,7 @@ augroup END
 
 " nvim yank 时复制到系统剪贴板中
 set clipboard+=unnamedplus
+
+" 自动加载修改后的文件
+set autoread
+au CursorHold * checktime

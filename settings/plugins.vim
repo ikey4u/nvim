@@ -102,4 +102,8 @@ call plug#begin(g:home . '/plugged')
     Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
 " }
 
+for plug in ['plugins.leaderf.vim', 'plugins.fzf.vim']
+    exec printf('source %s/settings/%s', g:home, plug)
+endfor
+
 call plug#end()
