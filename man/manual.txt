@@ -6,55 +6,48 @@ Author: bugnofree
 
 # 基础配置
 
-安装 neovim (略), 然后安装 neovim 的 python 支持.
+- python 支持
 
-    pip3 install neovim
+    安装 neovim (略), 然后安装 neovim 的 python 支持.
+
+        pip3 install neovim
 
 - 安装插件管理器
+
+    推荐使用 plug.vim, 安装方法如下
 
         curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 - 安装 neovim-remote
 
-    项目地址: https://github.com/mhinz/neovim-remote
+    项目地址: https://github.com/mhinz/neovim-remote, 安装方法如下
 
         pip3 install neovim-remote
 
-        在 zshrc 中配置
+    在 zshrc 中配置如下
 
-            # neovim {
-                export PATH="$HOME/.usr/nvim/bin":$PATH
-                # open with servername (neovim-remote)
-                alias nvim="NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim"
-                # split open
-                alias nvims="nvr -o "
-                # vertical split open
-                alias nvimvs="nvr -O "
-                # tab open
-                alias nvimt="nvr --remote-tab "
-            # }
+        # neovim {
+            export PATH="$HOME/.usr/nvim/bin":$PATH
+            # open with servername (neovim-remote)
+            alias nvim="nvim --listen 127.0.0.1:9999 "
+            # split open
+            alias nvims="nvr --servername 127.0.0.1:9999 -o "
+            # vertical split open
+            alias nvimvs="nvr --servername 127.0.0.1:9999 -O "
+            # tab open
+            alias nvimt="nvr --servername 127.0.0.1:9999 --remote-tab "
+        # }
 
-        目前 NVIM_LISTEN_ADDRESS 的做法已经不再推荐使用,
-        建议试用 nvim 的 --listen 选项, 如下所示
-
-            # neovim {
-                export PATH="$HOME/.usr/nvim/bin":$PATH
-                # open with servername (neovim-remote)
-                alias nvim="nvim --listen 127.0.0.1:9999 "
-                # split open
-                alias nvims="nvr --servername 127.0.0.1:9999 -o "
-                # vertical split open
-                alias nvimvs="nvr --servername 127.0.0.1:9999 -O "
-                # tab open
-                alias nvimt="nvr --servername 127.0.0.1:9999 --remote-tab "
-            # }
-
-- 安装自动补全
+- 自动补全/coc
 
     安装 nodejs, 建议采用 n 工具进行安装.
 
         export N_PREFIX="$HOME/.usr/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
         curl -L https://git.io/n-install | bash
+
+    安装完成之后在 plug 中添加插件如下并安装.
+
+        Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
     重新打开 nvim 安装插件
 
@@ -64,6 +57,9 @@ Author: bugnofree
         # python 补全
         pip3 install jedi
         :CocInstall coc-python
+
+        # C++环境插件, 需要手动下载 clangd 并加入到环境变量中: https://github.com/clangd/coc-clangd
+        :CocInstall coc-clangd
 
 # 插件配置/plugin
 
@@ -109,31 +105,39 @@ Author: bugnofree
         有一些特殊字符, 比如 b, B, r, a 分别可以表示 ), }, ] 和  >
         比如 yswb 表示将当前单词用 () 括起来.
 
+- ctags
+
+    安装编译依赖
+
+        brew install cmake automake pkg-config docutils jansson libyaml
+
+    下载源码编译
+
+        git clone https://github.com/universal-ctags/ctags.git
+        cd ctags/
+        ./autogen.sh
+        ./configure --prefix=$HOME/.usr/ --program-prefix=ex
+        make && make install
+
+    编译会生成 exctags, exreadtags 并安装到 $HOME/.usr/bin 目录下面.
+
+- nerd-fonts
+
+    安装 nerd-fonts
+
+        git clone https://github.com/ryanoasis/nerd-fonts.git
+        cd nerd-fonts
+        ./install.sh
+
 - leaderf
 
-    配置 ctags 程序
+    配置 ctags 程序, 安装方法见本手册的 ctags 节.
 
         let g:Lf_Ctags = "exctags"
 
     用法
 
         :Leaderf <subcommand>
-
-    subcommand 有如下几个
-
-    - file                search files
-    - tag                 navigate tags using the tags file
-    - rg                  grep using rg
-    - function            navigate functions or methods in the buffer
-    - mru                 search most recently used files
-    - searchHistory       execute the search command in the history
-    - cmdHistory          execute the command in the history
-    - help                navigate the help tags
-    - line                search a line in the buffer
-    - colorscheme         switch between colorschemes
-    - self                execute the commands of itself
-    - bufTag              navigate tags in the buffer
-    - buffer              search buffers
 
     leaderf 的主要作用还是用来查找文件, 所以我们需要告诉 LeaderF 从哪里开始查找,
     定义如下变量(元素可以自己随便定义)
@@ -151,30 +155,42 @@ Author: bugnofree
         - A [  当前文件  ] 的最近的包含了 RootMarkers 的祖先目录
         - f 当前文件的目录
 
-    我们可以设置 mode 为 'Ac'.
+    本配置中设置 mode 为 'Ac'.
 
         let g:Lf_WorkingDirectoryMode = 'Ac'
 
-    其常用的快捷键为
+    本配置的 Leaderf 快捷键为
 
-    - <leader>F 搜索 leaderf 的工作目录中的文件, 这里我用 F 表示文件
-    - <leader>Fb 搜索 buffer 中的文件
-    - <leader>fc 搜索光标下面的文本
-    - <leader>fe 搜索正则表达式文本
-    - <leader>ff 搜索文本, f 表示 find 文本
+    - <leader>w 搜索光标下的文本
+    - :Lf 搜索文件, 不好使的时候使用 fzf 的 <leader>F
+    - :Lreg 搜索正则表达式文本
+    - :Lword 搜索文本, f 表示 find 文本
+    - :Lcs 用于查看不同颜色主题, 按 <C-p> 预览
+    - :Lfn 函数
+    - :Lmru 最近使用的文件
+
+    在搜索结果窗口中的移动快捷键如下
+
     - <C-j> <C-k> 在搜索结果中向下向上移动
     - <ESC> 或者 <C-C> 退出 LeaderF
     - <C-R> 在 fuzzy 搜索和 regex 搜索模式间切换
-    - <Tab> 切换为 vim 的 normal 模式, 可以在结果中移动, 然后回车即可选择文件
+    - <Tab>
+
+        切换为 vim 的 normal 模式, 可以在结果中移动, 然后回车即可选择文件,
+        注意 tab 切换成 vim normal 模式时, 当你切换到其他工作窗口时,
+        工作路径不会自动切换为被编辑文件所在路径, 需要恢复到 Leaderf
+        原来的模式才会自动切换工作路径.
+
     - <C-V> 从剪贴板粘贴
     - <C-X> 水平窗口打开
     - <C-]> 垂直窗口打开
     - <C-T> tab 中打开
     - <C-P> 预览结果
 
-    其他命令
-
-    - LeaderfColorschme: 用于查看不同颜色主题, 按 <C-p> 预览
+    Leaderf 在显示窗口中的字体如果无法正常显示, 则需要安装 nerd-fonts,
+    安装方法见本手册的 nerd-fonts 一节, 安装完 nerd-fonts 需要将终端字体或者含有
+    nvim 的 GUI 字体设置为含有 nerd 的字体, 注意 source code pro 的 nerd-fonts
+    字体名称为 SauceCodePro.
 
 - fzf
 
@@ -194,35 +210,17 @@ Author: bugnofree
 
     - 用法
 
-        - <leader>F 搜索工作空间中的文件
-        - :Rg 使用 Rg 搜索, 这个建议使用 LeaderF 中配置的.
+        - 文件搜索 <leader>F
 
-        在搜索结果中, 可以使用 ctrl-j, ctrl-k 上下移动光标,
-        使用 ctrl-t, ctrl-x, ctrl-v 分别在 tab, 水平, 垂直划分打开.
+            配置快捷键 <leader>F 在工作目录搜索, 为此写了一个 FindWorkingDir 函数,
 
-    - 配置
+            配置 fzf 搜索文件的快捷为 <leader>F
 
-        配置 fzf 在 vim 中的背景色, 使用下面这个就行
+                noremap <leader>F :call FindWorkingDir()<CR> :<C-U><C-R>=printf("Files %s", eval('g:VimRoot'))<CR><CR>
 
-            let g:fzf_colors =
-            \ { 'fg':      ['fg', 'Normal'],
-              \ 'bg':      ['bg', 'Normal'],
-              \ 'hl':      ['fg', 'Comment'],
-              \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-              \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-              \ 'hl+':     ['fg', 'Statement'],
-              \ 'info':    ['fg', 'PreProc'],
-              \ 'border':  ['fg', 'Ignore'],
-              \ 'prompt':  ['fg', 'Conditional'],
-              \ 'pointer': ['fg', 'Exception'],
-              \ 'marker':  ['fg', 'Keyword'],
-              \ 'spinner': ['fg', 'Label'],
-              \ 'header':  ['fg', 'Comment']
-            \}
+            这里先调用 FindWorkingDir 设置工作目录, 然后将命令打印到命令行上在执行.
 
-        配置快捷键 <leader>F 在工作目录搜索, 为此写了一个 FindWorkingDir 函数,
-        配置 fzf 搜索文件的快捷为 <leader>F
+        - 搜索结果中移动
 
-            noremap <leader>F :call FindWorkingDir()<CR> :<C-U><C-R>=printf("Files %s", eval('g:VimRoot'))<CR><CR>
-
-        这里先调用 FindWorkingDir 设置工作目录, 然后将命令打印到命令行上在执行.
+            在搜索结果中, 可以使用 ctrl-j, ctrl-k 上下移动光标,
+            使用 ctrl-t, ctrl-x, ctrl-v 分别在 tab, 水平, 垂直划分打开.
