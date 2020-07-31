@@ -1,109 +1,101 @@
 call plug#begin(g:home . '/plugged')
 
-" 注释插件 {
-    Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
+let g:NERDSpaceDelims=1
 
-    " \cm: /**/ 方式注释行,或者将选中的行紧凑的包起来:comment minimal line
-    " \c<space> :切换行的状态(注释->非注释,非注释->注释)
-    " \cs:良好格式的块注释 /**/:comment sexy line
-    " \cu:取消注释:comment undo
-    " \ca:切换可选的注释方式, 如 C/C++ 的块注释和行注释
-    " 注释后面自动加空格
-    let g:NERDSpaceDelims=1
-" }
+Plug 'scrooloose/nerdtree'
+" <leader>r 自动刷新 nerdtree 目录到当前工作目录
+noremap <leader>r :NERDTreeFind<cr>
+" 忽略的文件列表
+let NERDTreeIgnore = ['\.pyc$', '__pycache__', '\.db$']
 
-" 文件浏览器 {
-    Plug 'scrooloose/nerdtree'
+" 大文件
+Plug 'vim-scripts/LargeFile'
+let g:LargeFile=10
 
-    " <leader>r 自动刷新 nerdtree 目录到当前工作目录
-    noremap <leader>r :NERDTreeFind<cr>
-    " 忽略的文件列表
-    let NERDTreeIgnore = ['\.pyc$', '__pycache__', '\.db$']
-" }
+" 自动补全系列
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsExpandTrigger="<leader>i"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsEditSplit="horizontal"
+let g:UltiSnipsSnippetDirectories=[expand(g:home).'/UltiSnips']
+Plug 'honza/vim-snippets'
+Plug 'jiangmiao/auto-pairs'
+Plug 'mattn/emmet-vim', { 'commit': 'dcf8f6efd8323f11e93aa1fb1349c8a1dcaa1e15' }
+Plug 'majutsushi/tagbar'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" <C-z> 触发 coc 补全
+inoremap <silent><expr> <C-z> coc#refresh()
 
-" 大文件 {
-    Plug 'vim-scripts/LargeFile'
+" 开屏美化
+Plug 'mhinz/vim-startify'
 
-    let g:LargeFile=10
-" }
+" 快速光标移动
+Plug 'easymotion/vim-easymotion'
 
-" 自动补全系列 {
-    Plug 'SirVer/ultisnips'
-    let g:UltiSnipsExpandTrigger="<leader>i"
-    let g:UltiSnipsJumpForwardTrigger="<c-j>"
-    let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-    let g:UltiSnipsEditSplit="horizontal"
-    let g:UltiSnipsSnippetDirectories=[expand(g:home).'/UltiSnips']
+" 括号匹配管理器
+Plug 'tpope/vim-surround'
 
-    Plug 'honza/vim-snippets'
-    Plug 'jiangmiao/auto-pairs'
-    Plug 'mattn/emmet-vim', { 'commit': 'dcf8f6efd8323f11e93aa1fb1349c8a1dcaa1e15' }
-    Plug 'majutsushi/tagbar'
+" 多余的空格高亮
+Plug 'ntpeters/vim-better-whitespace'
+" 高亮显示多余的空格
+let g:better_whitespace_enabled=1
+" 保存时自动删除多余的空格
+let g:strip_whitespace_on_save=1
 
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    " <C-z> 触发 coc 补全
-    inoremap <silent><expr> <C-z> coc#refresh()
-" }
+" Markdown
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release --locked
+    else
+      !cargo build --release --locked --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
 
-" 开屏美化 {
-    Plug 'mhinz/vim-startify'
-" }
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+" 不再使用 leaderf 的文件搜索功能了, 挺鸡肋的, 有时候会出现文件搜索不到的情况,
+" 而且很莫名其妙找不到原因, 这里禁用 leaderf 默认的 <leader>f 快捷键.
+" 搜索文件
+let g:Lf_ShortcutF = ""
+" 搜索 buffer 中的文件
+noremap <leader>Fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+" 禁止使用缓存(不要使用缓存, 否则新加入的文件搜索不到)
+let g:Lf_UseCache = 0
+let g:Lf_Ctags = "exctags"
+let g:Lf_RootMarkers = ['.vimroot']
+let g:Lf_WorkingDirectoryMode = 'Ac'
+" 搜索正则文本
+" 限制结果行的最大长度为 1000, 然而由于 leaderf 自定义的 rg 命令并非直接的
+" rg, 而是一个 wrapper, 这个 wrapper 只提供了过滤最大长度, 没有提供显示过滤的行的一部分,
+" rg 本身提供了 --max-columns-preview 这个选项, 先将就这用吧
+noremap <leader>fe :<C-U><C-R>=printf("Leaderf rg -M 1000 -e ")<CR>
+" 搜索文本
+noremap <leader>ff :<C-U><C-R>=printf("Leaderf rg -M 1000 ")<CR>
+" 搜索光标下的文本
+noremap <leader>fc :<C-U><C-R>=printf("Leaderf rg -M 1000 -e %s ", expand("<cword>"))<CR><CR>
 
-" 快速光标移动 {
-    " 正常情况下使用 w 是向前移动一个单词, 如果单词比较靠后,
-    " 那么我们需要按多次 w, 使用该插件可以快速移动.
-    "
-    " 快速按下 <leader><leader>w 就可以在当前行执行搜索,
-    " 每一个单词首字母被高亮, 按下高亮字符即可调整.
-    "
-    " 类似的 <leader><leader>j 是用于向行下跳转,
-    " 配合 k 可以向上跳转, 配合 s 可以在当前行搜索字符.
-    Plug 'easymotion/vim-easymotion'
-" }
-
-" 括号匹配管理器 {
-    Plug 'tpope/vim-surround'
-
-    " # 修改和删除
-    " cs(change surround), ds(delete surround).
-    " cs 和 ds 接受两个字符, 第一个为源字符, 第二个为目标字符.
-
-    " # 添加
-    " ys(you surround): 第一个参数是一个 vim motion 或者文本对象,
-    " 第二个参数是一要 wrap 的字符. 比如 ysw' 表示 表示将当前光标所在的单词用单
-    " 引号包含起来, 对于空格, 举个例子, ysw) 不会添加空格, 而 ysw( 会添加空格.
-    " 特别的 yss 是一个特殊的命令, 用来处理当前行.
-
-    " # 特殊字符
-    " 有一些特殊字符, 比如 b, B, r, a 分别可以表示 ), }, ] 和  >
-    " 比如 yswb 表示将当前单词用 () 括起来.
-
-" }
-
-" 多余的空格高亮 {
-    Plug 'ntpeters/vim-better-whitespace'
-
-    " 高亮显示多余的空格
-    let g:better_whitespace_enabled=1
-    " 保存时自动删除多余的空格
-    let g:strip_whitespace_on_save=1
-" }
-
-" Markdown {
-    function! BuildComposer(info)
-      if a:info.status != 'unchanged' || a:info.force
-        if has('nvim')
-          !cargo build --release --locked
-        else
-          !cargo build --release --locked --no-default-features --features json-rpc
-        endif
-      endif
-    endfunction
-    Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
-" }
-
-for plug in ['plugins.leaderf.vim', 'plugins.fzf.vim']
-    exec printf('source %s/settings/%s', g:home, plug)
-endfor
+Plug '~/.fzf'
+Plug 'junegunn/fzf.vim'
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment']
+\}
+" 好吧, vim 用着很舒服, 但是 vimscript 真他妈的操蛋, 真他妈的操蛋!
+noremap <leader>F :call FindWorkingDir()<CR> :<C-U><C-R>=printf("Files %s", eval('g:VimRoot'))<CR><CR>
 
 call plug#end()

@@ -4,6 +4,8 @@ Date: 2020-07-02
 Author: bugnofree
 ---
 
+# 基础配置
+
 安装 neovim (略), 然后安装 neovim 的 python 支持.
 
     pip3 install neovim
@@ -63,4 +65,164 @@ Author: bugnofree
         pip3 install jedi
         :CocInstall coc-python
 
-        # coc-json
+# 插件配置/plugin
+
+- nerdcommenter
+
+    常用快捷键
+
+        \cm: /**/ 方式注释行,或者将选中的行紧凑的包起来:comment minimal line
+        \c<space> :切换行的状态(注释->非注释,非注释->注释)
+        \cs:良好格式的块注释 /**/:comment sexy line
+        \cu:取消注释:comment undo
+        \ca:切换可选的注释方式, 如 C/C++ 的块注释和行注释
+
+    注释后面自动加空格
+
+- vim-easymotion
+
+    正常情况下使用 w 是向前移动一个单词, 如果单词比较靠后,
+    那么我们需要按多次 w, 使用该插件可以快速移动.
+
+    快速按下 <leader><leader>w 就可以在当前行执行搜索,
+    每一个单词首字母被高亮, 按下高亮字符即可调整.
+
+    类似的 <leader><leader>j 是用于向行下跳转,
+    配合 k 可以向上跳转, 配合 s 可以在当前行搜索字符.
+
+- vim-surround
+
+    - 修改和删除
+
+        cs(change surround), ds(delete surround).
+        cs 和 ds 接受两个字符, 第一个为源字符, 第二个为目标字符.
+
+    - 添加
+
+        ys(you surround): 第一个参数是一个 vim motion 或者文本对象,
+        第二个参数是要 wrap 的字符. 比如 ysw' 表示 表示将当前光标所在的单词用单
+        引号包含起来, 对于空格, 举个例子, ysw) 不会添加空格, 而 ysw( 会添加空格.
+        特别的 yss 是一个特殊的命令, 用来处理当前行.
+
+    - 特殊字符
+
+        有一些特殊字符, 比如 b, B, r, a 分别可以表示 ), }, ] 和  >
+        比如 yswb 表示将当前单词用 () 括起来.
+
+- leaderf
+
+    配置 ctags 程序
+
+        let g:Lf_Ctags = "exctags"
+
+    用法
+
+        :Leaderf <subcommand>
+
+    subcommand 有如下几个
+
+    - file                search files
+    - tag                 navigate tags using the tags file
+    - rg                  grep using rg
+    - function            navigate functions or methods in the buffer
+    - mru                 search most recently used files
+    - searchHistory       execute the search command in the history
+    - cmdHistory          execute the command in the history
+    - help                navigate the help tags
+    - line                search a line in the buffer
+    - colorscheme         switch between colorschemes
+    - self                execute the commands of itself
+    - bufTag              navigate tags in the buffer
+    - buffer              search buffers
+
+    leaderf 的主要作用还是用来查找文件, 所以我们需要告诉 LeaderF 从哪里开始查找,
+    定义如下变量(元素可以自己随便定义)
+
+        let g:Lf_RootMarkers = ['.git', '.svn', '.vimroot']
+
+    只定义这个是不行的, 还需定义工作目录模式
+
+        let g:Lf_WorkingDirectoryMode = '<mode>'
+
+    <mode> 有如下几种
+
+        - c 设置工作目录为当前工作目录(默认)
+        - a [当前工作目录] 的最近的包含了 RootMarkers 的祖先目录
+        - A [  当前文件  ] 的最近的包含了 RootMarkers 的祖先目录
+        - f 当前文件的目录
+
+    我们可以设置 mode 为 'Ac'.
+
+        let g:Lf_WorkingDirectoryMode = 'Ac'
+
+    其常用的快捷键为
+
+    - <leader>F 搜索 leaderf 的工作目录中的文件, 这里我用 F 表示文件
+    - <leader>Fb 搜索 buffer 中的文件
+    - <leader>fc 搜索光标下面的文本
+    - <leader>fe 搜索正则表达式文本
+    - <leader>ff 搜索文本, f 表示 find 文本
+    - <C-j> <C-k> 在搜索结果中向下向上移动
+    - <ESC> 或者 <C-C> 退出 LeaderF
+    - <C-R> 在 fuzzy 搜索和 regex 搜索模式间切换
+    - <Tab> 切换为 vim 的 normal 模式, 可以在结果中移动, 然后回车即可选择文件
+    - <C-V> 从剪贴板粘贴
+    - <C-X> 水平窗口打开
+    - <C-]> 垂直窗口打开
+    - <C-T> tab 中打开
+    - <C-P> 预览结果
+
+    其他命令
+
+    - LeaderfColorschme: 用于查看不同颜色主题, 按 <C-p> 预览
+
+- fzf
+
+    - 安装
+
+        在系统上安装 fzf
+
+            git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+            ~/.fzf/install
+
+        安装完成后在 Plug 里面配置如下即可
+
+            Plug '~/.fzf'
+            Plug 'junegunn/fzf.vim'
+
+        然后执行 :PlugInstall 即可.
+
+    - 用法
+
+        - <leader>F 搜索工作空间中的文件
+        - :Rg 使用 Rg 搜索, 这个建议使用 LeaderF 中配置的.
+
+        在搜索结果中, 可以使用 ctrl-j, ctrl-k 上下移动光标,
+        使用 ctrl-t, ctrl-x, ctrl-v 分别在 tab, 水平, 垂直划分打开.
+
+    - 配置
+
+        配置 fzf 在 vim 中的背景色, 使用下面这个就行
+
+            let g:fzf_colors =
+            \ { 'fg':      ['fg', 'Normal'],
+              \ 'bg':      ['bg', 'Normal'],
+              \ 'hl':      ['fg', 'Comment'],
+              \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+              \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+              \ 'hl+':     ['fg', 'Statement'],
+              \ 'info':    ['fg', 'PreProc'],
+              \ 'border':  ['fg', 'Ignore'],
+              \ 'prompt':  ['fg', 'Conditional'],
+              \ 'pointer': ['fg', 'Exception'],
+              \ 'marker':  ['fg', 'Keyword'],
+              \ 'spinner': ['fg', 'Label'],
+              \ 'header':  ['fg', 'Comment']
+            \}
+
+        配置快捷键 <leader>F 在工作目录搜索, 为此写了一个 FindWorkingDir 函数,
+        配置 fzf 搜索文件的快捷为 <leader>F
+
+            noremap <leader>F :call FindWorkingDir()<CR> :<C-U><C-R>=printf("Files %s", eval('g:VimRoot'))<CR><CR>
+
+        这里先调用 FindWorkingDir 设置工作目录, 然后将命令打印到命令行上在执行.
