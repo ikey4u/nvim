@@ -129,6 +129,17 @@ Author: bugnofree
         cd nerd-fonts
         ./install.sh
 
+    查看安装的字体
+
+        fc-list | rg 'Nerd Font'
+
+    其中 Source Code Pro 字体的名称为 Sauce Code Pro
+
+
+- vim-devicons
+
+    各种图标显示, 依赖于字体 nerd-fonts
+
 - leaderf
 
     配置 ctags 程序, 安装方法见本手册的 ctags 节.
