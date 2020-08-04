@@ -30,6 +30,7 @@ inoremap <silent><expr> <C-z> coc#refresh()
 
 " 开屏美化
 Plug 'mhinz/vim-startify'
+let g:startify_files_number = 100
 
 " 快速光标移动
 Plug 'easymotion/vim-easymotion'
@@ -41,8 +42,7 @@ Plug 'tpope/vim-surround'
 Plug 'ntpeters/vim-better-whitespace'
 " 高亮显示多余的空格
 let g:better_whitespace_enabled=1
-" 保存时自动删除多余的空格
-let g:strip_whitespace_on_save=1
+nnoremap Cs :StripWhitespace<CR>
 
 " Markdown
 function! BuildComposer(info)
@@ -105,4 +105,8 @@ let g:fzf_colors =
 " 好吧, vim 用着很舒服, 但是 vimscript 真他妈的操蛋, 真他妈的操蛋!
 noremap <leader>F :call FindWorkingDir()<CR> :<C-U><C-R>=printf("Files %s", eval('g:VimRoot'))<CR><CR>
 
+" 各种图标显示
+Plug 'ryanoasis/vim-devicons'
+
 call plug#end()
+
