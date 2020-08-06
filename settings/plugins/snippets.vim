@@ -1,4 +1,7 @@
 " ultisnips
+" <c-d> => 触发 ultisnips 的自动补全
+" <c-j> => 下一个 ultisnips 占位符
+" <c-k> => 上一个 ultisnips 占位符
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger="<c-d>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"

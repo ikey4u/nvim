@@ -1,4 +1,4 @@
- " [中文标点替换为英文标点]
+" :call CNmark2ENmark => 中文标点替换为英文标点
 function! CNmark2ENmark()
         exe "try | %s/：/:/g | catch | endtry"
         exe "try | %s/。/./g | catch | endtry"
@@ -23,7 +23,7 @@ function! CNmark2ENmark()
         exe "try | %s/　/ /g | catch | endtry"
 endfunction
 
-" [英文标点替换为中文标点]
+" :call ENmark2CNmark => 英文标点替换为中文标点
 function! ENmark2CNmark()
         exe "try | %s/:/：/g | catch | endtry"
         exe "try | %s/,/，/g  | catch | endtry"
@@ -60,6 +60,7 @@ function! Tabmsg(cmd)
     silent put=message
   endif
 endfunction
+" :Tabmsg <cmd> => 捕获 ex 命令 <cmd> 的输出
 command! -nargs=+ -complete=command Tabmsg call Tabmsg(<q-args>)
 
 " [最近文件列表]
@@ -73,6 +74,7 @@ function! Recent()
     setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
     silent put=recent
 endfunction
+" :Recent => 显示最近文件列表
 command! Recent call Recent()
 
 " [将文件编码转换为 unix.utf-8]
@@ -96,6 +98,7 @@ with open(fpath, "r+", encoding = "utf-8") as _:
     json.dump(lines, _, ensure_ascii = False, indent = 4)
 EOF
 endfunction
+" :FmtJSON => 格式化 JSON
 command! FmtJSON call FormatJSON()
 
 " 年记录
@@ -121,6 +124,23 @@ function! Idea()
     exec 'vsplit ' . expand(g:myidea)
 endfunction
 command! Idea call Idea()
+
+function! Help()
+    " 将所有 .vim 文件中符合以下格式的文档提取出来, 作为帮助文档
+    "
+    "   " <command> => <explain>
+    "
+    " 格式为: 双引号开始, 接着是命令, 然后是箭头, 箭头后面是解释.
+    "
+    " 实际上就是执行下面的命令
+    "
+    "   rg -I -N --glob "*.vim" '"\s* (.+) => (\w+)' -r '- $1: $2' > $HOME/.config/nvim/.tmp
+    "
+    silent exec printf("!rg -I -N --glob \"*.vim\" '\"\\s* (.+) => (\\w+)' -r '- $1 ⇒ $2' %s > %s", g:home, g:tmpbuf)
+    exec printf('vnew %s', g:tmpbuf)
+endfunction
+" <leader>man => 显示本帮助文档
+nnoremap <silent> <leader>man :call Help() <cr> | redraw!
 
 function! SetColor(color)
     let colors = split(a:color, '\.')
@@ -158,6 +178,7 @@ function! SetColor(color)
         silent put=message
     endif
 endfunction
+" :SetColor => 设置颜色主题
 command! -nargs=? -complete=command SetColor call SetColor(<q-args>)
 
 " shebang 设定

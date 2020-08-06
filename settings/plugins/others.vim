@@ -17,7 +17,7 @@ Plug 'majutsushi/tagbar'
 
 " 开屏美化
 Plug 'mhinz/vim-startify'
-let g:startify_files_number = 100
+let g:startify_files_number = 20
 
 " 快速光标移动
 Plug 'easymotion/vim-easymotion'
@@ -29,6 +29,7 @@ Plug 'tpope/vim-surround'
 Plug 'ntpeters/vim-better-whitespace'
 
 " 高亮显示多余的空格
+" Cs => 正常模式下, 清除尾部多余空格
 let g:better_whitespace_enabled=1
 nnoremap Cs :StripWhitespace<CR>
 

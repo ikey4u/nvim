@@ -13,3 +13,4 @@ build
 plugged
 user.vim
 *.netrwhist
+.tmp

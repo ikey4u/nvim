@@ -20,6 +20,9 @@ if !exists('g:home')
     finish
 endif
 
+" 缓存文件默认路径
+let g:tmpbuf = g:home . '/.tmp'
+
 let settings = ['basic', 'functions', 'shortcuts']
 for setting in settings
     exec printf('source %s/settings/%s.vim', g:home, setting)

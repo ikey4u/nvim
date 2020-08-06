@@ -16,5 +16,5 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment']
 \}
-" 好吧, vim 用着很舒服, 但是 vimscript 真他妈的操蛋, 真他妈的操蛋!
+" <leader>F => 搜索工作空间下的文件
 noremap <leader>F :call FindWorkingDir()<CR> :<C-U><C-R>=printf("Files %s", eval('g:VimRoot'))<CR><CR>
