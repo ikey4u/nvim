@@ -32,13 +32,5 @@ Plug 'ntpeters/vim-better-whitespace'
 let g:better_whitespace_enabled=1
 nnoremap Cs :StripWhitespace<CR>
 
-" markdown
-" 开启调试日志的方法
-" let $NVIM_MKDP_LOG_FILE = expand('~/mkdp-log.log')
-" let $NVIM_MKDP_LOG_LEVEL = 'debug'
-" 当前问题: https://github.com/iamcco/markdown-preview.nvim/issues/219
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install'  }
-let g:mkdp_echo_preview_url = 1
-
 " 各种图标显示
 Plug 'ryanoasis/vim-devicons'

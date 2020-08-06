@@ -29,13 +29,13 @@ Author: bugnofree
         # neovim {
             export PATH="$HOME/.usr/nvim/bin":$PATH
             # open with servername (neovim-remote)
-            alias nvim="nvim --listen 127.0.0.1:9999 "
+            alias xvim="nvim --listen /tmp/nvim "
             # split open
-            alias nvims="nvr --servername 127.0.0.1:9999 -o "
+            alias xvims="nvr --servername /tmp/nvim -o "
             # vertical split open
-            alias nvimvs="nvr --servername 127.0.0.1:9999 -O "
+            alias xvimvs="nvr --servername /tmp/nvim -O "
             # tab open
-            alias nvimt="nvr --servername 127.0.0.1:9999 --remote-tab "
+            alias xvimt="nvr --servername /tmp/nvim --remote-tab "
         # }
 
 - 自动补全/coc
