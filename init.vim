@@ -20,8 +20,16 @@ if !exists('g:home')
     finish
 endif
 
-let settings = ['basic.vim', 'functions.vim', 'shortcuts.vim', 'plugins.vim']
+let settings = ['basic', 'functions', 'shortcuts']
 for setting in settings
-    exec printf('source %s/settings/%s', g:home, setting)
+    exec printf('source %s/settings/%s.vim', g:home, setting)
 endfor
+
+let plugins = ['coc', 'fzf', 'leaderf', 'nerdtree', 'snippets', 'others']
+call plug#begin(g:home . '/plugged')
+for plugin in plugins
+    exec printf('source %s/settings/plugins/%s.vim', g:home, plugin)
+endfor
+call plug#end()
+
 exec printf('source %s/%s', g:home, 'options.vim')
