@@ -19,9 +19,6 @@ Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify'
 let g:startify_files_number = 20
 
-" 快速光标移动
-Plug 'easymotion/vim-easymotion'
-
 " 括号匹配管理器
 Plug 'tpope/vim-surround'
 

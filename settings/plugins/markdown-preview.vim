@@ -21,5 +21,6 @@
 "   nvim --listen http://127.0.0.1:6666
 "
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install'  }
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 0
 let g:mkdp_echo_preview_url = 1

@@ -7,7 +7,7 @@ noremap <leader>Fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
 " 禁止使用缓存(不要使用缓存, 否则新加入的文件搜索不到)
 let g:Lf_UseCache = 0
 let g:Lf_Ctags = "exctags"
-let g:Lf_RootMarkers = ['.vimroot']
+let g:Lf_RootMarkers = ['.vimroot', '.git']
 let g:Lf_WorkingDirectoryMode = 'Ac'
 " :Lf => 搜索文件
 command! Lf :LeaderfFile

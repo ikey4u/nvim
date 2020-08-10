@@ -1,4 +1,3 @@
-" 快速编辑和重载配置文件
 " <leader>ev => 打开配置 neovim 文件
 " <leader>sv => 刷新 neovim 文件
 nnoremap <leader>ev :split $MYVIMRC<cr>
@@ -6,6 +5,10 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " <space>p => 快速打开插件目录
 nnoremap <space>p :exec "vsplit " . expand(g:home) . "/settings/plugins/"<cr>
+" <space>M => 快速打开手册
+nnoremap <space>M :exec "vsplit " . expand(g:home) . "/man/manual.txt"<cr>
+" <leader>man => 显示本帮助文档
+nnoremap <silent> <leader>man :call Help() <cr> | redraw!
 
 " jk => 插入模式中按下 jk 进入 normal 模式
 inoremap jk <esc>

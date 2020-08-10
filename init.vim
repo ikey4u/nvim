@@ -28,7 +28,12 @@ for setting in settings
     exec printf('source %s/settings/%s.vim', g:home, setting)
 endfor
 
-let plugins = ['coc', 'fzf', 'leaderf', 'nerdtree', 'snippets', 'markdown-preview', 'others']
+let plugins = [
+\ 'coc', 'fzf', 'leaderf',
+\ 'nerdtree', 'snippets', 'markdown-preview',
+\ 'easymotion', 'others',
+\ ]
+
 call plug#begin(g:home . '/plugged')
 for plugin in plugins
     exec printf('source %s/settings/plugins/%s.vim', g:home, plugin)
