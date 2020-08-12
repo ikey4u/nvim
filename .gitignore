@@ -14,4 +14,4 @@ plugged
 user.vim
 *.netrwhist
 .tmp
-self
+SelfSnips
