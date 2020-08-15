@@ -1,8 +1,13 @@
-snippet vimsec
-" ==================== $1 ====================
-endsnippet
+snippet vimdoc "documentation in vim" b
+function! Doc$1()
+python3 << EOF
+DOCS = '''
+# $1 文档
 
-snippet hasplug
-if isdirectory(expand(g:home) . "/plugged/$1")
-endif
+$2
+
+'''
+print(DOCS)
+EOF
+endfunction
 endsnippet
