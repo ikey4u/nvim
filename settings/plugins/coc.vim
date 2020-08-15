@@ -1,3 +1,15 @@
+function! DocCoc()
+python3 << EOF
+DOCS = '''
+# Coc 文档
+
+TODO
+
+'''
+print(DOCS)
+EOF
+endfunction
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " <C-z> 触发 coc 补全
 " inoremap <silent><expr> <C-z> coc#refresh()

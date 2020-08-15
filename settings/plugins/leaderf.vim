@@ -1,3 +1,14 @@
+function! DocLeaderf()
+python3 << EOF
+DOCS = '''
+# Leaderf 文档
+
+TODO
+
+'''
+print(DOCS)
+EOF
+endfunction
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 " 不再使用 leaderf 的文件搜索功能了, 挺鸡肋的, 有时候会出现文件搜索不到的情况,
 " 而且很莫名其妙找不到原因, 这里禁用 leaderf 默认的 <leader>f 搜索文件快捷键.

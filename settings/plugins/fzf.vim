@@ -1,3 +1,16 @@
+function! DocFzf()
+python3 << EOF
+DOCS = '''
+# Fzf 文档
+
+TODO
+
+'''
+print(DOCS)
+EOF
+endfunction
+
+
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 " 配置 fzf 在 vim 中的背景色, 使用下面这个就行
