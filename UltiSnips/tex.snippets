@@ -61,7 +61,6 @@ $3
 \end{minipage}
 endsnippet
 
-
 snippet bib
 \begin{thebibliography}{9}
 \bibitem{${1:onecite}}
@@ -154,10 +153,6 @@ snippet alg
 \end{algorithm}
 endsnippet
 
-snippet i
-\i$0
-endsnippet
-
 snippet wrapfig
 \begin{wrapfigure}{l}{0.25\textwidth}
 \includegraphics[width=0.9\linewidth]{./Figures/$0}
@@ -174,6 +169,7 @@ snippet ref
 \end{itemize}\normalsize
 endsnippet
 snippet mat
+
 \left[
 	\begin{matrix}
 	$0
@@ -262,3 +258,35 @@ snippet twofig
 \end{figure}
 endsnippet
 
+# 需要在 latex 文档中定义如下命令
+# \newcommand{\COMMENT}[1]{}
+snippet cmt "latex 文档块注释"
+\COMMENT{
+$1
+}
+endsnippet
+
+snippet mindmap "MinMap" b
+\begin{subgroup}
+   数模混合计算机 \\[1em]
+   模拟计算机\\[1em]
+   数字计算机
+   \begin{subgroup}
+	   专用计算机 \\
+	   通用计算机
+	   \begin{subgroup}
+		   巨型机\\
+		   大型机\\
+		   小型机\\
+		   微型机\\
+		   工作站\\
+		   服务器
+	   \end{subgroup}
+   \end{subgroup} \\[5em]
+   未来计算机
+   \begin{subgroup}
+	   量子计算机 \\
+	   生物计算机
+   \end{subgroup}
+\end{subgroup}
+endsnippet

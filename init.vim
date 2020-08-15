@@ -29,9 +29,9 @@ for setting in settings
 endfor
 
 let plugins = [
-\ 'coc', 'fzf', 'leaderf',
-\ 'nerdtree', 'snippets', 'markdown-preview',
-\ 'easymotion', 'others',
+\ 'coc', 'fzf', 'leaderf', 'nerdtree',
+\ 'snippets', 'markdown-preview', 'easymotion',
+\ 'vimtex', 'others',
 \ ]
 
 call plug#begin(g:home . '/plugged')
