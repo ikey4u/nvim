@@ -23,3 +23,14 @@ int main(int argc, char *argv[]) {
 }
 endsnippet
 
+snippet externc "Extern C" b
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+$0
+
+#ifdef __cplusplus
+}
+#endif
+endsnippet

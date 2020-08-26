@@ -32,3 +32,6 @@ nnoremap Cs :StripWhitespace<CR>
 
 " 各种图标显示
 Plug 'ryanoasis/vim-devicons'
+
+" Git 插件
+Plug 'tpope/vim-fugitive'
