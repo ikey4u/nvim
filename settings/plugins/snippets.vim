@@ -87,6 +87,23 @@ DOCS = '''
 
     表示扩展来自类型文件类型为 c 的 snippets, 也就是扩展自 c.snippets.
 
+- snippet 搜索目录
+
+    在 UltiSnips 中可以使用 g:UltiSnipsSnippetDirectories 来设置 snippet 的搜索目录,
+    该变量的值可以是一个路径字符串, 或者一个数组.
+
+    当为一个相对路径字符串时, 默认去 $HOME/.vim 下搜索, 如果为一个绝对路径字符串,
+    则按照该路径去搜索.
+
+    当为一个数组时, 如果第一个元素是绝对路径, 那么后面的元素将被忽略,
+    所以配置数组时应该将元素设置为相对路径字符串, 这个时候可以配合 g:UltiSnipsSnippetsDir 设置搜索根目录,
+    然后在该根目录下放置多个 snippet 文件夹, 比如
+
+        let g:UltiSnipsSnippetsDir = expand(g:home)
+        let g:UltiSnipsSnippetDirectories=['UltiSnips', 'SelfSnips']
+
+    除此之外, ultisnips 不支持二级子目录, 比如 expand(g:home).'/UltiSnips/ext'.
+
 '''
 print(DOCS)
 EOF
@@ -100,8 +117,9 @@ let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " 编辑 UltiSnips 的时候水平打开编辑窗口
 let g:UltiSnipsEditSplit="horizontal"
-" ultisnips 不支持相对于配置根目录的二级目录, 比如 expand(g:home).'/UltiSnips/ext'
-let g:UltiSnipsSnippetDirectories=[expand(g:home).'/UltiSnips', expand(g:home).'/SelfSnips']
+" 设置 ultisnips 搜索目录
+let g:UltiSnipsSnippetsDir = expand(g:home)
+let g:UltiSnipsSnippetDirectories=['UltiSnips', 'SelfSnips']
 
 " snipmate (依赖于 vim-addon-mw-utils 和 tlib_vim)
 Plug 'MarcWeber/vim-addon-mw-utils'
