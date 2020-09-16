@@ -3,8 +3,47 @@ python3 << EOF
 DOCS = '''
 # Coc 文档
 
-TODO
+安装 nodejs, 建议采用 n 工具进行安装.
 
+    export N_PREFIX="$HOME/.usr/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+    curl -L https://git.io/n-install | bash
+
+安装完成之后在 plug 中添加插件如下并安装.
+
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+重新打开 nvim 安装插件
+
+- snippets 补全
+
+        :CocInstall coc-snippets
+
+- python 补全
+
+    命令行安装
+
+        pip3 install jedi
+
+    neovim 安装
+
+        :CocInstall coc-python
+
+    然后 :CocConfig 打开 coc 的配置文件, 在里面写入默认 python 路径
+
+        {
+            "python.pythonPath": "~/.pyenv/shims/python"
+        }
+
+    如果不配置, 可以在 neovim 中打开 python 文件后, 执行如下命令选择 python 解释器
+
+        :CocCommand python.setInterpreter
+
+- C 家族补全
+
+     需要手动下载 clangd 并加入到环境变量中 (https://github.com/clangd/coc-clangd),
+     然后在 neovim 中执行
+
+        :CocInstall coc-clangd
 '''
 print(DOCS)
 EOF

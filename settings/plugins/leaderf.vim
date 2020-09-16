@@ -3,7 +3,66 @@ python3 << EOF
 DOCS = '''
 # Leaderf 文档
 
-TODO
+配置 ctags 程序, 安装方法见本手册的 ctags 节.
+
+    let g:Lf_Ctags = "exctags"
+
+用法
+
+    :Leaderf <subcommand>
+
+leaderf 的主要作用还是用来查找文件, 所以我们需要告诉 LeaderF 从哪里开始查找,
+定义如下变量(元素可以自己随便定义)
+
+    let g:Lf_RootMarkers = ['.git', '.svn', '.vimroot']
+
+只定义这个是不行的, 还需定义工作目录模式
+
+    let g:Lf_WorkingDirectoryMode = '<mode>'
+
+<mode> 有如下几种
+
+    - c 设置工作目录为当前工作目录(默认)
+    - a [当前工作目录] 的最近的包含了 RootMarkers 的祖先目录
+    - A [  当前文件  ] 的最近的包含了 RootMarkers 的祖先目录
+    - f 当前文件的目录
+
+本配置中设置 mode 为 'Ac'.
+
+    let g:Lf_WorkingDirectoryMode = 'Ac'
+
+本配置的 Leaderf 快捷键为
+
+- <leader>w 搜索光标下的文本
+- :Lf 搜索文件, 不好使的时候使用 fzf 的 <leader>F
+- :Lreg 搜索正则表达式文本
+- :Lword 搜索文本, f 表示 find 文本
+- :Lcs 用于查看不同颜色主题, 按 <C-p> 预览
+- :Lfn 函数
+- :Lmru 最近使用的文件
+
+在搜索结果窗口中的移动快捷键如下
+
+- <C-j> <C-k> 在搜索结果中向下向上移动
+- <ESC> 或者 <C-C> 退出 LeaderF
+- <C-R> 在 fuzzy 搜索和 regex 搜索模式间切换
+- <Tab>
+
+    切换为 vim 的 normal 模式, 可以在结果中移动, 然后回车即可选择文件,
+    注意 tab 切换成 vim normal 模式时, 当你切换到其他工作窗口时,
+    工作路径不会自动切换为被编辑文件所在路径, 需要恢复到 Leaderf
+    原来的模式才会自动切换工作路径.
+
+- <C-V> 从剪贴板粘贴
+- <C-X> 水平窗口打开
+- <C-]> 垂直窗口打开
+- <C-T> tab 中打开
+- <C-P> 预览结果
+
+Leaderf 在显示窗口中的字体如果无法正常显示, 则需要安装 nerd-fonts,
+安装方法见本手册的 nerd-fonts 一节, 安装完 nerd-fonts 需要将终端字体或者含有
+nvim 的 GUI 字体设置为含有 nerd 的字体, 注意 source code pro 的 nerd-fonts
+字体名称为 SauceCodePro.
 
 '''
 print(DOCS)
