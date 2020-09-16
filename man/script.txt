@@ -110,7 +110,7 @@ Author: bugnofree
 
     - 逻辑运算
 
-            bool||bool bool&&bool !bool
+            bool||bool,  bool && bool, !bool
 
     - 算术运算
 

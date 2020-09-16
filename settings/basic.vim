@@ -123,6 +123,9 @@ augroup cusindent
     autocmd FileType vue syntax sync fromstart
     " 设置 vue 文件类型为 html, 这样能够良好的自动缩进
     autocmd BufNewFile,BufRead *.vue set filetype=html
+    " 设置 c++ 和 c 的 switch case 缩进
+    " 参考自: https://stackoverflow.com/questions/3444696/how-to-disable-vims-indentation-of-switch-case
+    autocmd FileType cpp,c set cinoptions=l1
 augroup END
 
 " nvim yank 时复制到系统剪贴板中
