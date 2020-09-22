@@ -38,6 +38,9 @@ Author: bugnofree
             alias xvimt="nvr --servername /tmp/nvim --remote-tab "
         # }
 
+    如果打开 xvim 时使用 :echo v:servername 出现的不是 /tmp/nvim,
+    那么可能时 /tmp/nvim 文件损坏, 删除该文件然后重新打开 xvim 即可.
+
 # 插件配置/plugin
 
 - nerdcommenter
