@@ -114,7 +114,6 @@ Author: bugnofree
     - 按下 u, 然后输入 4 个十六进制字符序列
     - 按下 U, 然后输入 8 个十六进制字符序列
 
-
 - exec vs call
 
     exec 将一个字符串当做命令执行, 而 call 则是调用一个函数.
@@ -128,27 +127,34 @@ Author: bugnofree
         *./\[]&
 
 - 窗口大小调整
+
     以下 res 代表 resize
+
     - :res +10 水平方向增加10行
     - :vertical res +10 垂直方向增加10行
 
 - 强制以root权限保存
+
         :w !sudo tee %
 
-- vim命令行无法显示输入中文
+- vim 命令行无法显示输入中文
 
     打开 ~/.bashrc 或者 ~/.zshrc,在最后加入以下配置:
+
         export LC_ALL=en_US.UTF-8
         export LANG=en_US.UTF-8
+
     更新一下系统对中文的语言支持, 在 Ubuntu 中可以通过 Dash 输入 Language 来打开语言支持界面
 
 - vim 粘贴不全
 
-    在控制台打开后用鼠标右键选择粘贴时开头的几个字符会缺失
-    需要首先进入插入模式,然后鼠标右键粘贴即可解决这个问题
+    在控制台打开后用鼠标右键选择粘贴时开头的几个字符会缺失,
+    需要首先进入插入模式, 然后鼠标右键粘贴即可解决这个问题.
 
 - 一些容易忘记的快捷键
+
     - 窗口间游走
+
             Ctrl + w + h: 向左移动窗口
             Ctrl + w + j: 向下移动窗口
             Ctrl + w + j: 向上移动窗口
@@ -157,14 +163,17 @@ Author: bugnofree
             Ctrl + w + t: 移动到最左上角的窗口
             Ctrl + w + b: 移动到最右下角的窗口
             Ctrl + w + p: 移动到前一个访问的窗口
+
     - 移动窗口
-        vim默认交换当前窗口的
-        与它下一个窗口的位置,如果下方没有窗口,则试着与上一个窗口交换位置.
+
+        vim 默认交换当前窗口的与它下一个窗口的位置, 如果下方没有窗口, 则试着与上一个窗口交换位置.
         亦可在此命令前加上数量,与制定的窗口交换位置.
+
         - Ctrl + w + r: 向右或向下方交换窗口，而Ctrl + w + R则和它方向相反。
         - Ctrl + w + x: 交换同列或同行的窗口的位置.
 
 - vim 内置的 ins-completion 相关补全快捷键
+
     - 整行 <C-X><C-L>
     - 文件名 <C-X><C-F>
     - 当前文件中的关键字 <C-X><C-P>或<C-X><C-N>
@@ -173,11 +182,12 @@ Author: bugnofree
 
 - 系统剪贴板粘贴到 vim 命令行上
 
-     输入冒号(:),定位到命令行,然后 Ctrl + R 然后再按下 +
+     输入冒号(:), 定位到命令行, 然后 Ctrl + R 然后再按下 +
 
 - 插入行号
 
-    将 src=...的形式替换为 srcXX=...
+    将 src=... 的形式替换为 srcXX=...
+
         src00=http\://mirrors.neusoft.edu.cn/android/repository/addon-6.xml
         src01=http\://mirrors.neusoft.edu.cn/android/repository/addon.xml
         src02=http\://mirrors.neusoft.edu.cn/android/repository/extras/intel/addon.xml
@@ -188,57 +198,61 @@ Author: bugnofree
         src07=http\://mirrors.neusoft.edu.cn/android/repository/sys-img/x86/addon-x86.xml
         src08=http\://mirrors.neusoft.edu.cn/android/repository/addons_list-2.xml
         src09=http\://mirrors.neusoft.edu.cn/android/repository/repository-10.xml
-    先 shift+v 行选择模式选中上述所有行,然后执行如下命令:
-        '<,'>s/=/\=printf('%02d=',line('.')-line("'<"))/
-    这个命令的主要限制是,得有一些特定的模式需要被替换.
 
-- 以root权限写入文件
-        :w !sudo tee %
+    先 shift+v 行选择模式选中上述所有行,然后执行如下命令:
+
+        '<,'>s/=/\=printf('%02d=',line('.')-line("'<"))/
+
+    这个命令的主要限制是, 得有一些特定的模式需要被替换.
 
 - 远程打开 vim
 
-    有时候我们已经打开了 vim,然后希望从 shell 的命令行中新打开一个文件,
-    这个新打开的文件我们仍希望处于已有的 vim实例中.
+    有时候我们已经打开了 vim, 然后希望从 shell 的命令行中新打开一个文件,
+    这个新打开的文件我们仍希望处于已有的 vim 实例中.
 
-    怎么做呢? 有以下几种方法,添加到 ~/.bashrc 中即可:
+    - neovim: 使用 neovim-remote 即可.
 
-        vimbin=gvim
-        alias gvimtab="$vimbin --remote-tab"
-        alias gvimcsp="$vimbin --remote +split"
-        alias gvimcvsp="$vimbin --remote +vsplit"
-        gvimsp()
-        {
-            if [[ $# == 1 ]]
-            then
-                filepath=$(realpath $1)
-                $vimbin --remote-send  ":split ${filepath}<CR>"
-            else
-                $vimbin --remote-send  ":split<CR>"
-            fi
-        }
-        gvimvsp()
-        {
-            if [[ $# == 1 ]]
-            then
-                filepath=$(realpath $1)
-                $vimbin --remote-send  ":vsplit ${filepath}<CR>"
-            else
-                $vimbin --remote-send  ":vsplit<CR>"
-            fi
-        }
-        gvims()
-        {
-            if [[ -f $HOME/.session.vim ]]
-            then
-                gvim -S $HOME/.session.vim
-            else
-                gvim
-            fi
-        }
+    - vim
 
-    注意, filepath 不要写成 fpath, 因为 zsh 默认的自动补全里面有一个 fpath 变量.
+        怎么做呢? 将以下命令添加到 ~/.bashrc 中即可:
 
-    mac 下面默认没有 realpath 等工具, 安装 brew install coreutils 即可.
+            vimbin=gvim
+            alias gvimtab="$vimbin --remote-tab"
+            alias gvimcsp="$vimbin --remote +split"
+            alias gvimcvsp="$vimbin --remote +vsplit"
+            gvimsp()
+            {
+                if [[ $# == 1 ]]
+                then
+                    filepath=$(realpath $1)
+                    $vimbin --remote-send  ":split ${filepath}<CR>"
+                else
+                    $vimbin --remote-send  ":split<CR>"
+                fi
+            }
+            gvimvsp()
+            {
+                if [[ $# == 1 ]]
+                then
+                    filepath=$(realpath $1)
+                    $vimbin --remote-send  ":vsplit ${filepath}<CR>"
+                else
+                    $vimbin --remote-send  ":vsplit<CR>"
+                fi
+            }
+            gvims()
+            {
+                if [[ -f $HOME/.session.vim ]]
+                then
+                    gvim -S $HOME/.session.vim
+                else
+                    gvim
+                fi
+            }
+
+        注意, filepath 不要写成 fpath, 因为 zsh 默认的自动补全里面有一个 fpath 变量.
+
+        mac 下面默认没有 realpath 等工具, 安装 brew install coreutils 即可.
 
 - xxd 编辑二进制文件应注意的问题/hex, 16
 
@@ -248,12 +262,12 @@ Author: bugnofree
 
     这样我们看的时候就会发现有许多地方不对. 怎么解决呢?方法有两个:
 
-    - 注释掉set fileencodings设置
-    - 重新开一个 vim 指定 -b 选项(binary):gvim -b xxx
+    - 注释掉 set fileencodings 设置
+    - 重新开一个 vim 指定 -b 选项(binary): gvim -b xxx
 
     这样的话,再使用 %!xxd 来查看即可.
-    通常地我们使用 fileencodings 来让 vim 正确编码,
-    所以后一种是比较好的选择.
+
+    通常地我们使用 fileencodings 来让 vim 正确编码, 所以后一种是比较好的选择.
 
 - vim 命令行执行结果重定向到 vim
 
@@ -272,13 +286,17 @@ Author: bugnofree
     /pattern\c :大小写不敏感
 
 -  美化(格式化) json 文件
+
         :%!python -m json.tool
+
     其中 % 表示应用到整个文件, -m 告诉 python 将某个库作为脚本运行
     但是对于 unicode 字符则会显示 \uxxxx,解决方法为在 ~/.vimrc 中加入如下命令:
+
         command! JsonFormat :execute '%!python -m json.tool'
         \ | :execute '%!python -c "import re,sys;chr=__builtins__.__dict__.get(\"unichr\", chr);sys.stdout.write(re.sub(r\"\\\\u[0-9a-f]{4}\", lambda x: chr(int(\"0x\" + x.group(0)[2:], 16)).encode(\"utf-8\"), sys.stdin.read()))"'
         \ | :set ft=javascript
         \ | :1
+
     然后执行 :JsonFormat 即可.
 
     参考 @[https://qiita.com/tomoemon/items/cc29b414a63e08cd4f89]
@@ -290,7 +308,7 @@ Author: bugnofree
 
 - 关于 vim 中的快捷键自定义 map
 
-    默认的 :map 操作是递归的, 而 :noremap 则是非递归的,什么意思呢?
+    默认的 :map 操作是递归的, 而 :noremap 则是非递归的, 什么意思呢?
     比如
 
         :map j gg
@@ -304,19 +322,24 @@ Author: bugnofree
         {cmd} {attr} {lhs} {rhs}
 
     其中:{cmd} 属于下列命令之一
+
         ':map', ':map!', ':nmap', ':vmap', ':imap', :cmap', ':smap', ':xmap', ':omap', ':lmap'
-    - {attr} 是可选的,属于下列之一或多个
-            <buffer>, <silent>,<expr> <script>, <unique> 和 <special>.
+
+    - {attr} 是可选的, 属于下列之一或多个
+
+            <buffer>, <silent>, <expr>, <script>, <unique> 和 <special>.
+
         <silent> 属性指明执行命令时不在命令行上进行回显
-    - {lhs} 左侧序列值,是你要定义的快捷方式
-    - {rhs} 右侧序列值,是具体执行快捷方式所对应的 vim 命令
+
+    - {lhs} 左侧序列值, 是你要定义的快捷方式
+    - {rhs} 右侧序列值, 是具体执行快捷方式所对应的 vim 命令
 
     当我们做映射的时候, 会用到许多特殊按键, vim 中的特殊按键可以参考 :h key-notation 来查看.
 
     这里列出几种常见的
 
-        Shift: <S-?>,比如 Shift+s : <S-s>
-        Ctrl:  <C-?>,比如 Ctrl+s  : <C-s>
+        Shift: <S-?>, 比如 Shift+s : <S-s>
+        Ctrl:  <C-?>, 比如 Ctrl+s  : <C-s>
         Alt :  <A-?> 或者 <M-?>, 比如 Alt+s  : <A-s>
         F1~F12 : <F1> 到 <F12>
         回车:    <CR> 或者 <Enter> 或者 <Return>
@@ -337,35 +360,44 @@ Author: bugnofree
     在 vim 中不同的映射作用于不同的模式(:help map-overview).
 
 - 字符选取
+
     - 选择一个单引号内的内容,vi',选择一个双引号内的内容,vi"
     - 选择一个圆括号中的内容,vib,选择一个花括号中的内容,viB
     - 如果想包含单引号,双引号等可以将 i 替换为 a.
+
     更多请参考 :h text-objects
 
 - <200b> <200e> Unicode 字符
+
         :%s/<c-v>u200b//g
 
 - 删除模式
-    d/while:模式删除,也就是说从当前位置删除到 while 单词处(不包括 while)
+
+    d/while:模式删除, 也就是说从当前位置删除到 while 单词处(不包括 while)
 
 - evince 无法正确显示所有页面(pdf/evince):
+
         rm -rf $HOME/.local/share/gvfs-metadata/
 
 - 文件格式和编码
+
         set ff=[unix|dos]
         ser fenc=<encoding-names>
+
     - 文件格式 :h ff
     - 文件编码 :h encoding-names
 
-- 在 vim 中打开光标下的文件, 按下 gf 即可
-
 - put 命令
 
-    格式==> :[line]pu[t] [x]
+    格式如下
 
-    在行 line 处放入寄存器 x 中的内容, 一个等号(=),在其后面跟着一个表达式.
-    其中字符竖线(|)和双引号(")需要转义.
+        :[line]pu[t] [x]
+
+    在行 line 处放入寄存器 x 中的内容, 一个等号(=), 在其后面跟着一个表达式,
+    竖线(|)和双引号(")需要转义.
+
     使用 put 生成一个自增序列
+
         :put =range(11,15)
         :0put =range(11,15)
         :123put =range(11,15)
@@ -373,7 +405,9 @@ Author: bugnofree
         " 元素值, v:key 用于获取字典的键
         :put =map(range(1,150), 'printf(''%04d'', v:val)')
         :for i in range(1,10) | put ='192.168.0.'.i | endfor
+
     在 vim8 以上版本:
+
         my_array[0] = 0;
         my_array[0] = 0;
         my_array[0] = 0;
@@ -381,7 +415,9 @@ Author: bugnofree
         my_array[0] = 0;
         my_array[0] = 0;
         my_array[0] = 0;
+
     使用块模式选中数组中的一列 0, 然后按下g <C-a> 即可自增所有数字,如下
+
         my_array[1] = 0;
         my_array[2] = 0;
         my_array[3] = 0;
@@ -391,6 +427,7 @@ Author: bugnofree
         my_array[7] = 0;
 
 - quickfix
+
     - 关闭窗口  :ccl[ose]
     - 打开窗口  :cope[n]
     - 下一个    :cn[ext]
@@ -398,11 +435,15 @@ Author: bugnofree
     - 列出所有  :cl[ist]
 
 - 显示单词个数
+
         %s/pattern//gn
+
     关键为最末的n,只显示匹配数目,不真正的匹配替换.
 
 - bro
+
     :bro {command} 打开一个对话框, 选择文件, command 支持如下命令
+
         |:wall|, |:wq|, |:wqall|, |:x|, |:xall|, |:exit|,
         |:view|, |:sview|, |:r|, |:saveas|, |:sp|, |:mkexrc|,
         |:mkvimrc|, |:mksession|, |:mkview|, |:split|,
