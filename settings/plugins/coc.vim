@@ -44,6 +44,75 @@ DOCS = '''
      然后在 neovim 中执行
 
         :CocInstall coc-clangd
+
+    clangd 由于无法识别当前项目的头文件, 因此需要使用 ccls 来弥补, ccls 的安装和配置如下
+
+    - 下载 LLVM
+
+        下载地址为 https://releases.llvm.org/download.html, 将其解压并存放到 $HOME/.usr/llvm 中.
+
+    - 编译 ccls
+
+        编译并安装
+
+            git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+            cd ccls
+            cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$HOME/.usr/llvm -DCMAKE_INSTALL_PREFIX=$HOME/.usr
+            cmake --build Release --target install
+
+        其中  CMAKE_PREFIX_PATH 指定了 LLVM 的安装地址, CMAKE_INSTALL_PREFIX 指定了安装目录, 将会安装到 $HOME/.usr/bin/ccls 处.
+
+    - 配置 ccls
+
+        在项目根目录新建 .ccls 文件, 并写入如下内容
+
+            clang++
+            %h
+            %cpp -std=c++11
+            %objective-c
+            %objective-cpp
+            -I.
+            -I/PATH/TO/LLVMDIR/lib/clang/10.0.0
+            -I/PATH/TO/LLVMDIR/include/c++/v1
+
+        其中 /PATH/TO/LLVMDIR 需要换成 LLVM 的安装目录
+
+- coc 配置文件
+
+    通过命令 :CocConfig 打开 coc 的全局配置文件, 然后写入如下内容
+
+        {
+            "languageserver": {
+                "ccls": {
+                    "command": "ccls",
+                    "filetypes": [
+                        "c",
+                        "cpp",
+                        "objc",
+                        "objcpp"
+                    ],
+                    "rootPatterns": [
+                        ".ccls-root",
+                        ".git"
+                    ],
+                    "initializationOptions": {
+                        "cache": {
+                            "directory": ".ccls-cache"
+                        },
+                        "client": {
+                            "snippetSupport": true
+                        }
+                    }
+                }
+            },
+            // 启用诊断信息
+            "diagnostic.enable": true,
+            // 禁用 clangd 的诊断信息
+            "clangd.disableDiagnostics": true
+        }
+
+    重新打开 neovim 即可.
+
 '''
 print(DOCS)
 EOF

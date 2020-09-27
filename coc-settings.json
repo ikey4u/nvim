@@ -1,3 +1,30 @@
 {
-    "python.pythonPath": "~/.pyenv/shims/python"
+    "python.pythonPath": "~/.pyenv/shims/python",
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls-root",
+                ".git"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": ".ccls-cache"
+                },
+                "client": {
+                    "snippetSupport": true
+                }
+            }
+        }
+    },
+    // 启用诊断信息
+    "diagnostic.enable": true,
+    // 禁用 clangd 的诊断信息
+    "clangd.disableDiagnostics": true
 }
