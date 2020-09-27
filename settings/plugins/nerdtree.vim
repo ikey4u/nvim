@@ -33,7 +33,7 @@ def get_ignores(pth):
 
     '''
 
-    ignores = ['.pyc$', '__pycache__$', '.db$']
+    ignores = ['.pyc$', '__pycache__$', '.db$', '.xcodeproj']
     if not pth.exists():
         return ignores
 
