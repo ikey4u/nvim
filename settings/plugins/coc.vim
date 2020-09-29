@@ -72,10 +72,23 @@ DOCS = '''
             %objective-c
             %objective-cpp
             -I.
-            -I/PATH/TO/LLVMDIR/lib/clang/10.0.0
-            -I/PATH/TO/LLVMDIR/include/c++/v1
+            ... // [1]
 
-        其中 /PATH/TO/LLVMDIR 需要换成 LLVM 的安装目录
+
+        [1] 处是包含系统头文件, 这个 clang 自己是没带的, 在 mac 下可以通过 gcc 获取输出
+
+            gcc -v -x c++ /dev/null -fsyntax-only
+
+        比如我的输出为如下
+
+            /usr/local/include
+            /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1
+            /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include
+            /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
+            /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
+            /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
+
+        然后在 [1] 处使用 -I 将其包含进去即可.
 
 - coc 配置文件
 
