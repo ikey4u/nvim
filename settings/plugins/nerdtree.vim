@@ -40,6 +40,9 @@ def get_ignores(pth):
     with open(pth, 'r') as _:
         for line in _:
             line = line.strip()
+            # 简化处理 .gitignore 中过于复杂的匹配模式, 比如 test/**/abc 之类的
+            if '/' in line:
+                line = line.split('/')[0]
             if line and (not line.startswith('#')):
                 if line.startswith('*.'):
                     line = line.replace('*', '', 1)
