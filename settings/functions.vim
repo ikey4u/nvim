@@ -101,30 +101,6 @@ endfunction
 " :FmtJSON => 格式化 JSON
 command! FmtJSON call FormatJSON()
 
-" 年记录
-function! Year()
-    exec 'vsplit ' . expand(g:myyear)
-endfunction
-command! Year call Year()
-
-" 计划日程
-function! Plan()
-    exec 'vsplit ' . expand(g:myplan)
-endfunction
-command! Plan call Plan()
-
-" 书籍阅读
-function! Book()
-    exec 'vsplit ' . expand(g:mybook)
-endfunction
-command! Book call Book()
-
-" 创意思维
-function! Idea()
-    exec 'vsplit ' . expand(g:myidea)
-endfunction
-command! Idea call Idea()
-
 function! Help()
     " 将所有 .vim 文件中符合以下格式的文档提取出来, 作为帮助文档
     "
