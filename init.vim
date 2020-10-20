@@ -3,6 +3,9 @@ let g:homes['mac'] = '$HOME/\.config/nvim'
 let g:homes['linux'] = '$HOME/\.config/nvim'
 let g:homes['win'] = '$HOME/AppData/Local/nvim'
 
+" neovim python3 可执行程序路径, 参见: https://neovim.io/doc/user/provider.html
+let g:python3_host_prog = expand('$HOME/.pyenv/shims/python3')
+
 if has('unix')
     let g:home = g:homes['linux']
 endif

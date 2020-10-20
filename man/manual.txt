@@ -23,6 +23,7 @@ Author: bugnofree
     项目地址: https://github.com/mhinz/neovim-remote, 安装方法如下
 
         pip3 install neovim-remote
+        npm install -g neovim
 
     在 zshrc 中配置如下
 
