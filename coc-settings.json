@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "~/.pyenv/shims/python",
+    "python.pythonPath": "~/.pyenv/shims/python3",
     "languageserver": {
         "ccls": {
             "command": "ccls",

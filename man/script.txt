@@ -174,28 +174,6 @@ Author: bugnofree
     expand 功能很强大, 可以使用 `:h expand` 来查看.
 
 - 函数
-    - 获取函数列表
-            :help function-list
-    - expand 函数
-
-        假设当前文件为 ~/notes/python.txt
-
-            :p		expand to full path
-            :h		head (last path component removed)
-            :t		tail (last path component only), 比如 expand("%:t") 得到 python.txt
-            :r		root (one extension removed)
-            :e		extension only
-            let @a=expand("%:p") ==> 寄存器 a 的值为文件的完整路径
-
-        expand 也可以用于展开环境变量, 如 echo expand("$HOME") 将会输出 home 目录.
-
-    - split
-
-        将一个表达式按照指定字符进行分割, 得到一个列表.
-
-            let colors = split(a:color, '\.')
-
-        这里注意点需要进行转义.
 
     - 定义函数,函数格式大致如下
 
@@ -225,6 +203,44 @@ Author: bugnofree
         catch [pattern]
             [command]
         endtry
+
+# API
+
+- 获取函数列表
+
+        :help function-list
+
+- expand 函数
+
+    假设当前文件为 ~/notes/python.txt
+
+        :p		expand to full path
+        :h		head (last path component removed)
+        :t		tail (last path component only), 比如 expand("%:t") 得到 python.txt
+        :r		root (one extension removed)
+        :e		extension only
+        let @a=expand("%:p") ==> 寄存器 a 的值为文件的完整路径
+
+    expand 也可以用于展开环境变量, 如 echo expand("$HOME") 将会输出 home 目录.
+
+- split
+
+    将一个表达式按照指定字符进行分割, 得到一个列表.
+
+        let colors = split(a:color, '\.')
+
+    这里注意点需要进行转义.
+
+- filereadable
+
+    测试一个文件是否存在且可读, 比如
+
+        if filereadable('/path/to/filename')
+            echo "file exist and readable"
+        endif
+
+    文件路径为字符串, 如果字符串包含有 ~ 或者 $HOME 等环境变量, 需要用 expand
+    函数展开后再使用.
 
 # 编程常用
 

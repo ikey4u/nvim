@@ -44,3 +44,9 @@ endfor
 call plug#end()
 
 exec printf('source %s/%s', g:home, 'options.vim')
+
+" Source personal-cutomized configuartions
+let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
+if filereadable(envfile)
+    exec printf('source %s', envfile)
+endif
