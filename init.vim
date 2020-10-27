@@ -54,9 +54,7 @@ for plugin in plugins
 endfor
 call plug#end()
 
-exec printf('source %s/%s', g:home, 'options.vim')
-
-" Source personal-cutomized configuartions
+" 个性化配置
 let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
 if filereadable(envfile)
     exec printf('source %s', envfile)

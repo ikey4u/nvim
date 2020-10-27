@@ -1,32 +1,34 @@
-# Quick Installation
+# Installation Guide
 
-Install pyenv, please see https://github.com/pyenv/pyenv.
+- install dependencies 
 
-- Ubuntu
+    - pyenv: [https://github.com/pyenv/pyenv](https://github.com/pyenv/pyenv)
+    - neovim: [https://github.com/neovim/neovim/releases/](https://github.com/neovim/neovim/releases/)
+    - node: [https://github.com/tj/n](https://github.com/tj/n)
+    - nerfonts
 
-    Installation
+            git clone https://github.com/ryanoasis/nerd-fonts.git
+            cd nerd-fonts
+            ./install.sh
 
-        mkdir -p $HOME/.usr/ && cd $HOME/.usr
+    - ripgrep: [https://github.com/BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep)
+    - fzf: [https://github.com/junegunn/fzf](https://github.com/junegunn/fzf) 
+    - neovim-remote
 
-        curl -LO https://github.com/neovim/neovim/releases/download/v0.4.3/nvim-linux64.tar.gz
-        tar zxvf nvim-linux64.tar.gz  && rm nvim-linux64.tar.gz
-        mv nvim-linux64 nvim
-        echo 'export PATH=$HOME/.usr/nvim/bin:$PATH' >> $HOME/.zshrc
-        exec $SHELL
+            pip3 install neovim-remote
+
+    - neovim js
+
+            npm install -g neovim
+
+- install neovim configuration
 
         mkdir -p $HOME/.config/
         git clone https://github.com/ikey4u/nvim.git $HOME/.config/nvim
 
-    Dependencies
+For more details, explore `man` directory.
 
-        pip3 install neovim
+# Features
 
-        export N_PREFIX=$HOME/.usr/n
-        curl -L https://git.io/n-install | bash
-        source ~/.zshrc
-
-        sudo apt install ripgrep
-
-For more details, see man/manual.txt.
-
-![nvim](./man/nvim.png)
+- Use `<leader>man` (`\man`) to see all pre-defined shortcuts
+- Use `:call Doc<tab>` to see detail about installed plugin, try `:call DocCoc()`
