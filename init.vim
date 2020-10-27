@@ -26,15 +26,26 @@ endif
 " 缓存文件默认路径
 let g:tmpbuf = g:home . '/.tmp'
 
-let settings = ['basic', 'functions', 'shortcuts']
+" 将数组写成多行, 方便注释掉然后排查问题
+let settings = [
+    \ 'basic',
+    \ 'shortcuts',
+    \ 'functions',
+\ ]
 for setting in settings
     exec printf('source %s/settings/%s.vim', g:home, setting)
 endfor
 
 let plugins = [
-\ 'coc', 'fzf', 'leaderf', 'nerdtree',
-\ 'snippets', 'markdown-preview', 'easymotion',
-\ 'vimtex', 'others',
+    \ 'coc',
+    \ 'fzf',
+    \ 'leaderf',
+    \ 'nerdtree',
+    \ 'snippets',
+    \ 'markdown-preview',
+    \ 'easymotion',
+    \ 'vimtex',
+    \ 'others',
 \ ]
 
 call plug#begin(g:home . '/plugged')

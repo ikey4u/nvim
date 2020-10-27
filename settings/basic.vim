@@ -30,7 +30,6 @@ set shortmess=atI                                     "去掉欢迎界面
 set showmatch 										  "显示括号配对
 set cindent 										  "打开C/C++风格自动缩进
 set autoindent 										  "打开普通文件类型的自动缩进.
-set ambiwidth=double                            "防止特殊符号无法正常显示.
 set mouse=a                                     "启用鼠标
 set showcmd                                     "正常模式下状态行显示输入的命令
 syntax on                                       "开启代码着色

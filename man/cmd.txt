@@ -511,3 +511,35 @@ Author: bugnofree
             :call Myfunc("arg1","arg2")
 
     单独一个 :command 将会列出所有用户定义的命令.
+
+- ambiwidth
+
+    最开始使用 vim 时设置的这个选项, 如下所示
+
+        set ambiwidth=double
+
+    最开始的基础配置时从别人的配置文件中拷贝过来的, 也不知道什么含义,
+    最近换做 neovim 后, 用终端打开文件, 滚屏操作时, 原来位置上的字符仍然会保留在屏幕上,
+    使得屏幕看起来乱糟糟的, 之前取网上看了一下, 说是屏幕不能自动 redraw, 手动
+    redraw 可以使用 <c-l> 来完成, 一直就这么将就着用了.
+
+    今天用 nvim -u NORC 发现原有能造成屏幕乱糟糟的文件, 现在没有问题了.
+    于是二分法排查了一下, 发现了问题, 就是上面的 ambiwidth 设置.
+
+    仔细看了一下这个选项, 这个选项只在文件时 UTF-8 时才会起作用,
+    我日常的文件编码基本都是 UTF-8 的, 那它的作用时什么呢?
+
+    我们都知道英文 ASCII 中的字符占一个字节, 而有些和 ASCII 字符含义一致的字符在非英文环境中也是存在的,
+    比如问号(?)这个字符, 它既可以以全角显示, 也可以以半角显示, 因此称这些字符为
+    Ambiguous Characters 是有原因的.
+
+    那么问题就是说, 这些 Ambiguous Characters 在 UTF-8 编码环境中显示成几个标准字符的宽度呢?
+    在 vim 中用户可以通过 ambiwidth 来设定, 这个选项只有两个可选值, 一个时
+    single, 一个时 double, 分别表示一个标准字符宽度, 两个标准字符宽度,
+    vim 默认设置的是 single.
+
+    关于 Ambiguous Characters 的更多介绍可以参见这个链接
+
+        http://www.unicode.org/reports/tr11/tr11-38.html#Ambiguous
+
+    尽管找到了问题所在及其解决方法, 但是究竟为何这个选项会导致原有字符仍保留在屏幕上则仍然是个迷.
