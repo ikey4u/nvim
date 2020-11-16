@@ -20,7 +20,7 @@ set softtabstop=4   "(sts)这个主要是和 tabastop 配合使用,
                     "简单来说, softtabstop 根据自身值与 tabstop 的值进行行为控制,
                     "一般和 tabstop 配置一致即可. 当该值为 0 时, 关闭该功能
 " make 文件的缩进要求必须是 tab 而不是空格
-autocmd FileType make set noexpandtab
+autocmd FileType make setlocal noexpandtab
 let $LANG = 'en'                                      " 设置消息语言(比如弹出框什么的)
 set langmenu=zh_CN.UTF-8                              "设置菜单语言,解决消息乱码问题
 set timeoutlen=1000 ttimeoutlen=0                     "消除 ESC 按键延迟
