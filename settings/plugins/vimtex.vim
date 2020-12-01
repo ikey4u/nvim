@@ -22,13 +22,12 @@ DOCS = '''
 
 - 自动刷新预览 PDF
 
-    在 macos 下需要下载安装 skim 阅读器, 安装完成后打开 skim 阅读器的设置,
-    然后打开 Sync 栏, 在 PDF-TeX Sync support 中的 Preset 里面选择
-    MacVim(我用的是 MacVim).
+    在 macos 下需要下载安装 skim 阅读器, neovim 编辑器安装 nvr.
 
-    skim 设置完毕后, 配置 vimtex 为如下选项
+    之后配置 vimtex 为如下选项
 
         let g:vimtex_view_method = 'skim'
+        let g:vimtex_compiler_progname = 'nvr'
         let g:vimtex_compiler_latexmk = {
               \ 'build_dir': 'out',
               \ 'continuous' : 1,
@@ -115,3 +114,4 @@ autocmd Filetype tex setl updatetime=10
 set conceallevel=2
 let g:tex_conceal='abdmg'
 let g:tex_flavor = 'xelatex'
+let g:vimtex_compiler_progname = 'nvr'
