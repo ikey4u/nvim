@@ -10,7 +10,12 @@ Author: bugnofree
 
     安装 neovim (略), 然后安装 neovim 的 python 支持.
 
-        pip3 install neovim
+        pip3 install neovim pynvim
+
+- coc node
+
+        export N_PREFIX=$HOME/.usr/n
+        curl -L https://git.io/n-install | bash
 
 - 安装插件管理器
 
