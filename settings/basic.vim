@@ -66,9 +66,9 @@ set noincsearch                                       "在输入要搜索的文�
 set cursorline
 set cursorcolumn
 
-"文本格式化 命令为"gq"
-set textwidth=80            " textwidth,设置文本行宽度
-set formatoptions+=mM       "formatoptions,设置自动换行的条件, m 表示允许对 multi_byte 字符换行
+set textwidth=100      " 设置文本行宽度, 使用 gq 格式文本时会用到这个长度
+set formatoptions+=mM  " formatoptions,设置自动换行的条件, m 表示允许对 multi_byte 字符换行
+set colorcolumn=100    " 在宽度边界处显示一条彩色边界线
 
 " 文件备份设置
 set nowritebackup                                     "编辑时不需要备份文件
