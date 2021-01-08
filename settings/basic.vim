@@ -59,7 +59,7 @@ set foldmethod=marker                                 "marker 折叠方式, :hel
 
 " 搜索设置
 set ignorecase                                        "搜索模式里忽略大小写
-set smartcase                                         "如果搜索模式包含大写字符,不使用 'ignorecase' 选项,
+set smartcase                                         "如果搜索模式包含大写字符,不使用 ignorecase 选项,
 set noincsearch                                       "在输入要搜索的文字时,取消实时匹配
 
 " 水平垂直线显示
@@ -69,6 +69,14 @@ set cursorcolumn
 set textwidth=100      " 设置文本行宽度, 使用 gq 格式文本时会用到这个长度
 set formatoptions+=mM  " formatoptions,设置自动换行的条件, m 表示允许对 multi_byte 字符换行
 set colorcolumn=100    " 在宽度边界处显示一条彩色边界线
+augroup extrahighlight
+  " guibg 设置为全值, 比如要写为 #FFFFFF 而不要写为简写形式 #FFF
+  autocmd BufEnter * highlight OverLength ctermbg=red ctermfg=white guibg=#6666FF
+  " 超过指定字符个数时设置高亮, 当有 unicode 字符时, 一个 unicode 字符的长度可能占据一个或者多个单元长度,
+  " 这会导致在含有 unicode 的行上列索引显示不正确, 但是实际上高亮的行宽显示是正确的
+  autocmd BufEnter * match OverLength /\%100v.\+/
+augroup END
+
 
 " 文件备份设置
 set nowritebackup                                     "编辑时不需要备份文件
@@ -79,11 +87,12 @@ set noundofile                                        "不创建撤销文件
 "状态栏的设置
 set ruler                                            "使状态栏显示光标位置
 set laststatus=2                                     "启用状态栏信息
-" highlight StatusLine cterm=bold ctermfg=yellow ctermbg=blue
 set cmdheight=2                                       "设置命令行的高度为2,默认为1
-"%b==>十进制显示光标下的字符,%B十六进制显示光标下的字符
-set statusline=[%n]\ %F%m%r%h\ %=\|\ %l,%c\ %p%%\ \|\ ascii=%b,hex=%B\ \|
+" %b==>十进制显示光标下的字符,%B十六进制显示光标下的字符
+set statusline=[%n]\ %F%m%r%h\ %=\|
 set statusline+=\ %{(&fenc\ ==\ \"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}\ \|
+set statusline+=\ R%05l,C%05c\ %03p%%\ \|
+"highlight StatusLine cterm=bold ctermfg=yellow ctermbg=blue
 
 " 设置代码默认配色方案(终端下不需要配置)
 set background=dark
@@ -104,12 +113,6 @@ set autochdir
 " 不要存储会话的全局和局部变量值以及折叠(因为 Utilsnippet 无法正常恢复这些选项)
 set ssop-=options
 set ssop-=folds
-
-" 超过 90 个字符时设置高亮 {
-    " guibg 设置为全值, 比如要写为 #FFFFFF 而不要写为简写形式 #FFF
-    highlight OverLength ctermbg=red ctermfg=white guibg=#6666FF
-    match OverLength /\%91v.\+/
-" }
 
 " 根据文件类型自动设置缩进宽度
 augroup cusindent
