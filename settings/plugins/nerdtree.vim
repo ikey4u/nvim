@@ -5,8 +5,6 @@ DOCS = '''
 
 - 自动读取工作目录下的 .gitignore 文件并忽略显示
 
-TODO
-
 '''
 print(DOCS)
 EOF
@@ -46,10 +44,16 @@ def get_ignores(pth):
             if line and (not line.startswith('#')):
                 if line.startswith('*.'):
                     line = line.replace('*', '', 1)
-                ignores.append(line + '$')
+
+                if line[0] == '.':
+                    ignores.append(line + '$')
+                else:
+                    # 这里有一点需要注意, 比如你要忽略一个叫做 core 的文件, 可以在 .gitignore 里面写一行,
+                    # 内容为 core, 如果把 core 读取传递给 nerdtree, 那么 nerdtree 会把任何以 core 结尾的文件或者目录忽略掉,
+                    # 所以这里添加上 ^ 符号
+                    ignores.append('^' + line + '$')
 
     return ignores
-
 
 ignores = get_ignores(Path(vim.eval("g:VimRoot"), '.gitignore'))
 vim.command("let g:GitIgnoresRaw = %s" % ignores)
