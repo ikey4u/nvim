@@ -46,6 +46,7 @@ let plugins = [
     \ 'easymotion',
     \ 'vimtex',
     \ 'others',
+    \ 'statusline'
 \ ]
 
 call plug#begin(g:home . '/plugged')

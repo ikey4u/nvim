@@ -84,16 +84,6 @@ set nobackup                                          "设置无备份文件
 set noswapfile                                        "设置无临时文件
 set noundofile                                        "不创建撤销文件
 
-"状态栏的设置
-set ruler                                            "使状态栏显示光标位置
-set laststatus=2                                     "启用状态栏信息
-set cmdheight=2                                       "设置命令行的高度为2,默认为1
-" %b==>十进制显示光标下的字符,%B十六进制显示光标下的字符
-set statusline=[%n]\ %F%m%r%h\ %=\|
-set statusline+=\ %{(&fenc\ ==\ \"\"?&enc:&fenc).(&bomb?\",BOM\":\"\")}\ \|
-set statusline+=\ R%05l,C%05c\ %03p%%\ \|
-"highlight StatusLine cterm=bold ctermfg=yellow ctermbg=blue
-
 " 设置代码默认配色方案(终端下不需要配置)
 set background=dark
 " 使用 :colorscheme <C-d> 可以查看所有可用的主题
