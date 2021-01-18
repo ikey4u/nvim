@@ -48,7 +48,7 @@ set laststatus=2
 " 设置命令行的高度为2, 默认为1
 set cmdheight=2
 " 设置状态栏
-set statusline=(%n)
+set statusline=[%n]
 set statusline+=\ %y
 set statusline+=\ [%{&fileformat},%{&fenc?&enc:&fenc}%{(&bomb?',[BOM]':'')}]
 set statusline+=\ %F
