@@ -29,3 +29,9 @@ noremap <Leader>T :vsplit term://zsh<CR><Insert>
 " g 表示全局, e 表示如果出错则不显示错误信息, 如果文件没有 ^M,
 " 但是按下这个快捷键就会报错, 因此这里使用 e 来屏蔽错误
 nnoremap <silent> Cm :%s/\r$//ge<CR>:set fileformat=unix<CR>
+
+" <C-h>, <C-l>, <C-j>, <C-k> => normal 模式下 resize 窗口
+noremap <silent> <C-h> :vertical resize +3<CR>
+noremap <silent> <C-l> :vertical resize -3<CR>
+noremap <silent> <C-j> :resize +3<CR>
+noremap <silent> <C-k> :resize -3<CR>
