@@ -7,6 +7,10 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <space>p :exec "vsplit " . expand(g:home) . "/settings/plugins/"<cr>
 " <space>M => 快速打开手册
 nnoremap <space>M :exec "vsplit " . expand(g:home) . "/man/manual.txt"<cr>
+" <space>j => 下一个 tab
+nnoremap <space>j :tabnext<cr>
+" <space>k => 上一个 tab
+nnoremap <space>k :tabprevious<cr>
 " <leader>man => 显示本帮助文档
 nnoremap <silent> <leader>man :call Help() <cr> | redraw!
 
