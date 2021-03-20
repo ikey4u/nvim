@@ -121,6 +121,8 @@ let g:UltiSnipsEditSplit="horizontal"
 let g:UltiSnipsSnippetsDir = expand(g:home)
 let g:UltiSnipsSnippetDirectories=['UltiSnips', 'SelfSnips']
 
+let g:snipMate = { 'snippet_version' : 1 }
+
 " snipmate (依赖于 vim-addon-mw-utils 和 tlib_vim)
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
