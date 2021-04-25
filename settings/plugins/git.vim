@@ -60,4 +60,6 @@ EOF
 endfunction
 
 " Git 插件
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
+" Plug 'tveskag/nvim-blame-line'
+Plug  'airblade/vim-gitgutter'
