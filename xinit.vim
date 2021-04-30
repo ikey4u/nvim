@@ -1,3 +1,7 @@
+" 水平垂直线显示
+set cursorline
+set cursorcolumn
+
 " neovim python3 可执行程序路径, 参见: https://neovim.io/doc/user/provider.html
 let g:python3_host_prog = expand('$HOME/.pyenv/shims/python3')
 " 将数组写成多行, 方便注释掉然后排查问题
@@ -11,7 +15,6 @@ endfor
 
 let plugins = [
     \ 'coc',
-    \ 'fzf',
     \ 'leaderf',
     \ 'nerdtree',
     \ 'snippets',
@@ -34,3 +37,4 @@ let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
 if filereadable(envfile)
     exec printf('source %s', envfile)
 endif
+
