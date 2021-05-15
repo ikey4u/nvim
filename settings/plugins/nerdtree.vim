@@ -38,9 +38,15 @@ def get_ignores(pth):
     with open(pth, 'r') as _:
         for line in _:
             line = line.strip()
-            # 简化处理 .gitignore 中过于复杂的匹配模式, 比如 test/**/abc 之类的
+            # 处理 .gitignore 中的路径
             if '/' in line:
-                line = line.split('/')[0]
+                items = line.split('/')
+                if len(items[1]) == 0:
+                    # 单个目录, 比如对于 draft/ 我们将会返回 draft
+                    line = items[0]
+                else:
+                    # 多级目录, 比如对于 src/3rd 我们将返回 3rd
+                    line = items[-1]
             if line and (not line.startswith('#')):
                 if line.startswith('*.'):
                     line = line.replace('*', '', 1)
