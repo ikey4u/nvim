@@ -47,6 +47,8 @@ def get_ignores(pth):
                 else:
                     # 多级目录, 比如对于 src/3rd 我们将返回 3rd
                     line = items[-1]
+            # ~ 会导致 nerdtree NFA could not pop the stack 错误, 此处替换掉
+            line = line.replace('~', '')
             if line and (not line.startswith('#')):
                 if line.startswith('*.'):
                     line = line.replace('*', '', 1)
@@ -58,7 +60,7 @@ def get_ignores(pth):
                     # 内容为 core, 如果把 core 读取传递给 nerdtree, 那么 nerdtree 会把任何以 core 结尾的文件或者目录忽略掉,
                     # 所以这里添加上 ^ 符号
                     ignores.append('^' + line + '$')
-
+    ignores = sorted(list(set(ignores)))
     return ignores
 
 ignores = get_ignores(Path(vim.eval("g:VimRoot"), '.gitignore'))
