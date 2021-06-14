@@ -32,3 +32,6 @@ nnoremap Cs :StripWhitespace<CR>
 
 " 各种图标显示
 Plug 'ryanoasis/vim-devicons'
+
+" Dart 语言
+Plug 'dart-lang/dart-vim-plugin'

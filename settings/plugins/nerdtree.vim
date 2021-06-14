@@ -24,7 +24,7 @@ import os
 from pathlib import Path
 
 def get_ignores(pth):
-    ''' 读取 .gitignore 文件, 返回一个列表
+    ''' 读取项目根目录下的 .vimignore 文件, 返回一个列表
 
     忽略 .gitignore 文件中以 # 号开头的行,
     如果某行以 '*.' 开头, 则将 '*.' 替换为 '.'
@@ -63,7 +63,7 @@ def get_ignores(pth):
     ignores = sorted(list(set(ignores)))
     return ignores
 
-ignores = get_ignores(Path(vim.eval("g:VimRoot"), '.gitignore'))
+ignores = get_ignores(Path(vim.eval("g:VimRoot"), '.vimignore'))
 vim.command("let g:GitIgnoresRaw = %s" % ignores)
 ====EOF
 
