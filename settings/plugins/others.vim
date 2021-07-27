@@ -35,3 +35,6 @@ Plug 'ryanoasis/vim-devicons'
 
 " Dart 语言
 Plug 'dart-lang/dart-vim-plugin'
+
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries'  }
+let g:go_fmt_command = "goimports"
