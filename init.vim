@@ -156,6 +156,18 @@ set clipboard+=unnamedplus
 " 自动加载修改后的文件
 set autoread
 
+" 设置不可见字符显示时的文本
+set listchars=tab:→\ ,nbsp:␣,trail:∙,extends:▶,precedes:◀,eol:¬
+
+" 如果要禁止自动在文件末尾添加换行符, 则可以开启如下这几个选项, 如果文件末尾已经有换行符号,
+" 可以使用 :set noeol 去掉, 在文件末尾添加换行符是默认行为, 参考如下链接
+"
+"    https://stackoverflow.com/questions/729692/why-should-text-files-end-with-a-newline
+"
+set nofixendofline
+set noendofline
+autocmd FileType * set noeol
+
 let xinit=printf('%s/%s', g:home, 'xinit.vim')
 if filereadable(xinit)
     exec printf("source %s", xinit)
