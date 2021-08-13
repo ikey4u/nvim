@@ -4,6 +4,27 @@ Date: 2019-01-15
 Author: bugnofree
 ---
 
+- 搜索模式/search pattern, regex
+
+    当使用正则搜索时, 可以使用 \v 来避免输入反斜线, 这种模式称为 very magic 模式,
+    完整帮助参见 :h /magic, 下面给出几种常见用法
+
+        - /\vc{5}: 匹配 'ccccc'
+        - /\vabc+: 匹配 'abc', 'abccc' 但是不匹配 'ab', 类似的还有 \vabc?
+        - /\v<his>: 匹配整个单词'his', 也就是不能匹配 'this' 或 'history'
+        - /\vmin|max: 匹配 'min' 或 'max'
+        - /\vhand(y|ful): 匹配 'handy' 或 'handful'
+        - s/\v(\d+) (\d+)/\2 \1/: 交换两个以空格间隔的数字
+
+    注意, 如果要在 \v 中匹配空格, 需要使用 \s, 符号 =, &, {, }, (, ) 需要转义.
+
+    除了 \v 还有如下几种
+
+        - \V, 用来匹配特殊字符比如 /V^.*$  精确匹配 ^.*$
+        - \c: 大小写不敏感搜索
+        - \C: 大小写敏感搜索
+        - \%V: 只在 visual 模式下所选区域中进行搜索
+
 - cino 选项
 
     全称是 c indent options, 用于设置 vim 的缩进功能.
@@ -49,7 +70,7 @@ Author: bugnofree
 
     再执行 `:@"` 即可执行.
 
-- vim command line window/cmdline-window
+- vim command line window/cmdline-window, mode
 
     在 ex 模式下我们会执行很多命令, 要查看这些历史命令, 我们可以在 normal 模式下,
     输入 `q:` 然后就进入到了一种 `[Command Line]` 的模式.
