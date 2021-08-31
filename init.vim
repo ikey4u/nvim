@@ -164,9 +164,9 @@ set listchars=tab:→\ ,nbsp:␣,trail:∙,extends:▶,precedes:◀,eol:¬
 "
 "    https://stackoverflow.com/questions/729692/why-should-text-files-end-with-a-newline
 "
-set nofixendofline
-set noendofline
-autocmd FileType * set noeol
+" set nofixendofline
+" set noendofline
+" autocmd FileType * set noeol
 
 let xinit=printf('%s/%s', g:home, 'xinit.vim')
 if filereadable(xinit)
