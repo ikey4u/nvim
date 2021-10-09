@@ -172,3 +172,5 @@ let xinit=printf('%s/%s', g:home, 'xinit.vim')
 if filereadable(xinit)
     exec printf("source %s", xinit)
 endif
+
+lua require('self')

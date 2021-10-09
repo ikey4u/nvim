@@ -23,7 +23,8 @@ let plugins = [
     \ 'vimtex',
     \ 'others',
     \ 'statusline',
-    \ 'clang-format'
+    \ 'clang-format',
+    \ 'imk'
 \ ]
 
 call plug#begin(g:home . '/plugged')
