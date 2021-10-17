@@ -40,3 +40,5 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries'  }
 let g:go_fmt_command = "goimports"
 " disable garbage-like style of gofmt
 let g:go_fmt_autosave = 0
+
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
