@@ -41,4 +41,8 @@ let g:go_fmt_command = "goimports"
 " disable garbage-like style of gofmt
 let g:go_fmt_autosave = 0
 
-Plug 'evanleck/vim-svelte', {'branch': 'main'}
+" treat svelte as vue to make syntax hightlight
+au BufRead,BufNewFile *.svelte set filetype=vue
+
+" Kotlin 插件
+Plug 'udalov/kotlin-vim'

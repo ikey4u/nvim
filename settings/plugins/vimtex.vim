@@ -14,7 +14,7 @@ DOCS = '''
     - PDF 预览: <leader>ll
     - 编译的配置信息: <leader>li
     - 编译的输出信息: <leader>lo
-    - vimtex  的编译日志: <leader>lq
+    - vimtex 的编译日志: <leader>lq
 
 - 自动编译 bibtex 的问题
 
