@@ -21,15 +21,15 @@ DOCS = '''
 
   nvim --listen /tmp/nvim
 
-注意 nvim 不知持类似与下面的监听地址
+注意 nvim 不支持类似于下面的监听地址
 
   nvim --listen http://127.0.0.1:6666
-
 
 '''
 print(DOCS)
 EOF
 endfunction
+
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & npm install'  }
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
