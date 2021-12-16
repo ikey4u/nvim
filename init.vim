@@ -173,4 +173,5 @@ if filereadable(xinit)
     exec printf("source %s", xinit)
 endif
 
-lua require('self')
+" 加载 `lua/index.lua`
+lua require('index')

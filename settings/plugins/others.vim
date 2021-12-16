@@ -46,3 +46,6 @@ au BufRead,BufNewFile *.svelte set filetype=vue
 
 " Kotlin 插件
 Plug 'udalov/kotlin-vim'
+
+" treesitter 插件
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}

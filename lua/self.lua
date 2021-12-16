@@ -1,2 +1,0 @@
--- lua script placeholder
--- print('hello from self.lua')
