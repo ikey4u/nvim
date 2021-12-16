@@ -52,4 +52,4 @@ if fname.suffix == ".imk":
 EOF
 endfunction
 
-command! -complete=command IMK call IndentMarkdownLivePreview()
+command! IMK call IndentMarkdownLivePreview()
