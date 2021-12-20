@@ -40,3 +40,6 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+" 自动导入 go 包
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')

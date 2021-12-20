@@ -1,6 +1,6 @@
 " <leader>ev => 打开配置 neovim 文件
 " <leader>sv => 刷新 neovim 文件
-nnoremap <leader>ev :split $MYVIMRC<cr>
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " <space>p => 快速打开插件目录
