@@ -1,5 +1,6 @@
 {
     "python.pythonPath": "~/.pyenv/shims/python3",
+    "rust-analyzer.server.path": "~/.cargo/bin/rust-analyzer",
     "languageserver": {
         "ccls": {
             "command": "ccls",

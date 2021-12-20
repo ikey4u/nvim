@@ -22,7 +22,18 @@
 coc 的配置文件为 `${HOME}/.config/nvim/coc-settings.json`, 如果有额外的配置, 可以写到该文件中,
 coc 提供 `:CocConfig` 命令可以直接打开该文件.
 
-## C 家族补全配置
+## Rust 补全
+
+安装 rust-analyzer 以及 rust-src
+
+    cargo install --git https://github.com/rust-analyzer/rust-analyzer.git rust-analyzer
+    RUST_DIST_SERVER= rustup component add rust-src
+
+然后配置 coc-settings.json, 加入如下选项
+
+    "rust-analyzer.server.path": "~/.cargo/bin/rust-analyzer",
+
+## C 家族补全
 
  需要手动下载 clangd 并加入到环境变量中 (https://github.com/clangd/coc-clangd),
  然后在 neovim 中执行
