@@ -27,7 +27,7 @@ coc 提供 `:CocConfig` 命令可以直接打开该文件.
 安装 rust-analyzer 以及 rust-src
 
     cargo install --git https://github.com/rust-analyzer/rust-analyzer.git rust-analyzer
-    RUST_DIST_SERVER= rustup component add rust-src
+    RUSTUP_DIST_SERVER= rustup component add rust-src
 
 然后配置 coc-settings.json, 加入如下选项
 
