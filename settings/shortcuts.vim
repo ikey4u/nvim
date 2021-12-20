@@ -6,7 +6,7 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " <space>p => 快速打开插件目录
 nnoremap <space>p :exec "vsplit " . expand(g:home) . "/settings/plugins/"<cr>
 " <space>M => 快速打开手册
-nnoremap <space>M :exec "vsplit " . expand(g:home) . "/man/manual.txt"<cr>
+nnoremap <space>M :exec "vsplit " . expand(g:home) . "/man/README.md"<cr>
 " <space>j => 下一个 tab
 nnoremap <space>j :tabnext<cr>
 " <space>k => 上一个 tab

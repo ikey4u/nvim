@@ -159,6 +159,9 @@ set autoread
 " 设置不可见字符显示时的文本
 set listchars=tab:→\ ,nbsp:␣,trail:∙,extends:▶,precedes:◀,eol:¬
 
+" 将 svelte 视作 vue 插件实现代码高亮
+au BufRead,BufNewFile *.svelte set filetype=vue
+
 " 如果要禁止自动在文件末尾添加换行符, 则可以开启如下这几个选项, 如果文件末尾已经有换行符号,
 " 可以使用 :set noeol 去掉, 在文件末尾添加换行符是默认行为, 参考如下链接
 "

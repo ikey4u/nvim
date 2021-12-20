@@ -27,5 +27,6 @@
     "diagnostic.enable": true,
     // 禁用 clangd 的诊断信息
     "clangd.disableDiagnostics": true,
-    "svelte.enable-ts-plugin": true
+    // 跳转到定义时在垂直分割的窗口中打开
+    "coc.preferences.jumpCommand": "vsplit"
 }

@@ -1,8 +1,12 @@
----
-Title: vim 命令
-Date: 2019-01-15
-Author: bugnofree
----
+# vim 命令
+
+- verbose
+
+    使用 verbose 命令可以查看某个命令是在哪个地方定义的, 比如
+
+        :verbose nmap gd
+
+    这个命令会查看 normal 模式 gd 命令定义的地方.
 
 - 搜索模式/search pattern, regex
 

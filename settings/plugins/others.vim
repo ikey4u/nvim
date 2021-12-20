@@ -10,7 +10,7 @@ Plug 'vim-scripts/LargeFile'
 let g:LargeFile=10
 
 " html 标签补全
-Plug 'mattn/emmet-vim', { 'commit': 'dcf8f6efd8323f11e93aa1fb1349c8a1dcaa1e15' }
+Plug 'mattn/emmet-vim'
 
 " Tagbar
 Plug 'majutsushi/tagbar'
@@ -35,14 +35,6 @@ Plug 'ryanoasis/vim-devicons'
 
 " Dart 语言
 Plug 'dart-lang/dart-vim-plugin'
-
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries'  }
-let g:go_fmt_command = "goimports"
-" disable garbage-like style of gofmt
-let g:go_fmt_autosave = 0
-
-" treat svelte as vue to make syntax hightlight
-au BufRead,BufNewFile *.svelte set filetype=vue
 
 " Kotlin 插件
 Plug 'udalov/kotlin-vim'

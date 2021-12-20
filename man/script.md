@@ -1,8 +1,4 @@
----
-Title: vim 脚本编程
-Date: 2019-01-15
-Author: bugnofree
----
+# vim 脚本编程
 
 # 基本语法
 

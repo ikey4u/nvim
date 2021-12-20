@@ -1,8 +1,4 @@
----
-Title: 常用符号
-Date: 2019-02-26
-Author: bugnofree
----
+#  常用符号
 
 以下符号都可以在插入模式下, 按下 ctrl+k, 然后输入两个字符即可出现 unicode 符号.
 
