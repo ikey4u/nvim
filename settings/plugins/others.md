@@ -64,3 +64,15 @@
 - vim-devicons
 
     各种图标显示, 依赖于字体 nerd-fonts
+
+- vim-oscyank
+
+    当 ssh 登录到远程主机上时, 在远程主机的 vim 中复制文件到本地主机的剪切板中.
+
+    这个插件要求终端支持 OSC52 功能, iterm2 和 alarcritty 都是支持的.
+    如果使用了 tmux, 需要在 ~/.tmux.conf 中加入如下配置
+
+        set -g mouse on
+        set -g set-clipboard on
+
+    这两个命令在 tmux 3.2a 中实测是可用的.

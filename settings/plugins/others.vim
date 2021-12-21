@@ -41,3 +41,10 @@ Plug 'udalov/kotlin-vim'
 
 " treesitter 插件
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" 在远程主机上拷贝到本地剪切板
+Plug 'ojroques/vim-oscyank'
+" vim 中执行 y 操作时, 自动拷贝到本地剪贴板
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+let g:oscyank_max_length = 1000000
+let g:oscyank_silent = v:true
