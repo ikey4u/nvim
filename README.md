@@ -53,3 +53,20 @@ make neovim powerful, you need the followings.
 
         mkdir -p ${HOME}/.config/
         git clone https://github.com/ikey4u/nvim.git $HOME/.config/nvim
+
+# Tmux
+
+If you use tmux, you should add the following config (tested with tmux 3.1c) into your client's
+`~/.tmux.conf` 
+
+    # 256 color
+    set -sa terminal-overrides ',xterm-256color:RGB'
+    set -sg escape-time 10
+    set -g focus-events on
+    # cursor shape
+    set -ga terminal-overrides '*:Ss=\E[%p1%d q:Se=\E[ q'
+
+The `xterm-256color` may be changed to the ouput of command `tset -q` on your device.
+
+Remember to close all tmux sessions (use `tmux kill-server`) after changing `~/.tmux.conf` file to
+make the change work.

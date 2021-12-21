@@ -47,4 +47,7 @@ Plug 'ojroques/vim-oscyank'
 " vim 中执行 y 操作时, 自动拷贝到本地剪贴板
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
 let g:oscyank_max_length = 1000000
+" 将终端视作 tmux, 该选项十分重要, 如果不设置, 在 tmux 中无法正确复制,
+" 如果不用 tmux 设置此选项页也没有副作用, 因此加上该选项
+let g:oscyank_term = 'tmux'
 let g:oscyank_silent = v:true

@@ -22,6 +22,15 @@
 coc 的配置文件为 `${HOME}/.config/nvim/coc-settings.json`, 如果有额外的配置, 可以写到该文件中,
 coc 提供 `:CocConfig` 命令可以直接打开该文件.
 
+## 调试
+
+可以导出如下环境变量
+
+    export NVIM_COC_LOG_LEVEL=debug
+    export NVIM_COC_LOG_FILE=/tmp/coc.log
+
+然后打开 neovim, 复现问题, 然后查看 /tmp/coc.log 文件 (可以使用 `:CocOpenLog` 打开).
+
 ## Rust 补全
 
 安装 rust-analyzer 以及 rust-src
