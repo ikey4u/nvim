@@ -127,7 +127,7 @@ if filereadable(printf("%s/%s/%s", g:home, 'colors', 'diokai.vim'))
 endif
 
 "自动切换目录为当前编辑文件所在目录
-set autochdir
+autocmd FileType * set autochdir
 
 " 不要存储会话的全局和局部变量值以及折叠(因为 Utilsnippet 无法正常恢复这些选项)
 set ssop-=options
