@@ -51,3 +51,7 @@ let g:oscyank_max_length = 1000000
 " 如果不用 tmux 设置此选项页也没有副作用, 因此加上该选项
 let g:oscyank_term = 'tmux'
 let g:oscyank_silent = v:true
+
+" <C-w>m 切换当前窗口最大化或恢复原来布局
+Plug 'dhruvasagar/vim-zoom'
+
