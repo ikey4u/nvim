@@ -176,5 +176,11 @@ if filereadable(xinit)
     exec printf("source %s", xinit)
 endif
 
+" 临时文件
+function! OpenNote()
+    exec "sp ~/.vimnotes.txt"
+endfunction
+command! Note :call OpenNote()
+
 " 加载 `lua/index.lua`
 lua require('index')
