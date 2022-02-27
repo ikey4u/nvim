@@ -126,9 +126,6 @@ if filereadable(printf("%s/%s/%s", g:home, 'colors', 'diokai.vim'))
     colorscheme diokai
 endif
 
-"自动切换目录为当前编辑文件所在目录
-autocmd FileType * set autochdir
-
 " 不要存储会话的全局和局部变量值以及折叠(因为 Utilsnippet 无法正常恢复这些选项)
 set ssop-=options
 set ssop-=folds
@@ -136,18 +133,21 @@ set ssop-=folds
 " 根据文件类型自动设置缩进宽度
 augroup cusindent
     autocmd!
-    " html, css 缩进为 2
-    autocmd FileType javascript,vue,html,css,yaml,dart,typescript setlocal ts=2 sw=2 sts=0 et
+    " 以下文件类型缩进为 2
+    autocmd FileType svelte,javascript,vue,html,css,yaml,dart,typescript setlocal ts=2 sw=2 sts=0 et
     " txt 缩进为 0
     autocmd FileType text setlocal nocindent
-    " vim 异步高亮, 在多语言文件比如 vue 中, 会导致语言高亮失效
-    " 在 vue 中我们禁用这个特性
-    autocmd FileType vue syntax sync fromstart
-    " 设置 vue 文件类型为 html, 这样能够良好的自动缩进
-    autocmd BufNewFile,BufRead *.vue set filetype=html
     " 设置 c++ 和 c 的 switch case 缩进
     " 参考自: https://stackoverflow.com/questions/3444696/how-to-disable-vims-indentation-of-switch-case
     autocmd FileType cpp,c set cinoptions=l1
+
+    " vim 异步高亮, 在多语言文件比如 vue 中, 会导致语言高亮失效
+    " 在 vue 中我们禁用这个特性
+    " autocmd FileType vue syntax sync fromstart
+    " 将 svelte 视作 vue 插件实现代码高亮
+    " au BufRead,BufNewFile *.svelte set filetype=vue
+    " 设置 vue 文件类型为 html, 这样能够良好的自动缩进
+    " autocmd BufNewFile,BufRead *.vue set filetype=html
 augroup END
 
 " nvim yank 时复制到系统剪贴板中
@@ -158,9 +158,6 @@ set autoread
 
 " 设置不可见字符显示时的文本
 set listchars=tab:→\ ,nbsp:␣,trail:∙,extends:▶,precedes:◀,eol:¬
-
-" 将 svelte 视作 vue 插件实现代码高亮
-au BufRead,BufNewFile *.svelte set filetype=vue
 
 " 如果要禁止自动在文件末尾添加换行符, 则可以开启如下这几个选项, 如果文件末尾已经有换行符号,
 " 可以使用 :set noeol 去掉, 在文件末尾添加换行符是默认行为, 参考如下链接
@@ -184,3 +181,6 @@ command! Note :call OpenNote()
 
 " 加载 `lua/index.lua`
 lua require('index')
+
+" 自动切换目录为当前编辑文件所在目录 (放到最后, 防止插件修改)
+autocmd FileType * set autochdir

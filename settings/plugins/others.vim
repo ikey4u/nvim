@@ -55,3 +55,10 @@ let g:oscyank_silent = v:true
 " <C-w>m 切换当前窗口最大化或恢复原来布局
 Plug 'dhruvasagar/vim-zoom'
 
+" javascript 高亮与缩进插件, 替换 treesitter 中的 js 插件
+Plug 'pangloss/vim-javascript'
+
+" svelte 高亮与缩进插件, 替换 treesitter 中的 svelte 插件
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'evanleck/vim-svelte', { 'branch': 'main' }

@@ -5,8 +5,8 @@ require('nvim-treesitter.install').compilers = {
 
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
-      "html", "css", "cpp", "bash", "vim", "lua", "javascript", "go", "rust", "cmake", "json",
-      "make", "kotlin", "vue", "svelte", "python", "toml",
+      "html", "css", "cpp", "bash", "vim", "lua", "go", "rust", "cmake", "json",
+      "make", "kotlin", "python", "toml",
   },
   highlight = {
     enable = true,
@@ -20,6 +20,6 @@ require('nvim-treesitter.configs').setup {
     }
   },
   indent = {
-    enable = true
+    enable = true,
   }
 }

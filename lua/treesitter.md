@@ -32,3 +32,7 @@ library), 所以这是个什么东西?
 - `incremental_selection`
 
     增量选择.
+
+## 安装与卸载插件
+
+TreeSitter 提供的命令为 `:TSxxx`, 要卸载插件可以使用 `:TSUninstall`, 安装插件可以使用 `:TSInstall`.
