@@ -10,7 +10,9 @@ require('nvim-treesitter.configs').setup {
   },
   highlight = {
     enable = true,
-    additional_vim_regex_highlighting = false
+    additional_vim_regex_highlighting = false,
+    -- 暂时禁用 treesitter 的 html 高亮, https://github.com/nvim-treesitter/nvim-treesitter/issues/1788
+    disable = { "html" },
   },
   incremental_selection = {
     enable = true,

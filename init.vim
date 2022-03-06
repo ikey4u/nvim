@@ -183,4 +183,5 @@ command! Note :call OpenNote()
 lua require('index')
 
 " 自动切换目录为当前编辑文件所在目录 (放到最后, 防止插件修改)
-autocmd FileType * set autochdir
+" autochdir 有时候并不太好用, 使用如下命令更好一点, 参考: https://vim.fandom.com/wiki/Set_working_directory_to_the_current_file
+autocmd BufEnter * lcd %:p:h
