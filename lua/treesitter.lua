@@ -6,7 +6,7 @@ require('nvim-treesitter.install').compilers = {
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
       "html", "css", "cpp", "bash", "vim", "lua", "go", "rust", "cmake", "json",
-      "make", "kotlin", "python", "toml",
+      "make", "kotlin", "python", "toml", "json5",
   },
   highlight = {
     enable = true,
