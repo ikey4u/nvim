@@ -20,14 +20,6 @@ inoremap jk <esc>
 " \P => 拷贝文件路径到剪切板
 nnoremap <silent> <leader>P :let @+ = expand("%:p")<cr>
 
-" <ESC><ESC> => 终端下快速按下两个 ESC 进入 Normal 模式
-tnoremap <ESC><ESC> <C-\><C-n>
-
-" <leader>t => 水平打开终端
-" <leader>T => 垂直打开终端
-noremap <Leader>t :split term://zsh<CR><Insert>
-noremap <Leader>T :vsplit term://zsh<CR><Insert>
-
 " Cm => normal 模式下清除 ^M 符号
 " normal 模式下输入 Cm 清除行尾 ^M 符号并保证为 unix 文件格式
 " g 表示全局, e 表示如果出错则不显示错误信息, 如果文件没有 ^M,
@@ -39,3 +31,9 @@ noremap <silent> <C-h> :vertical resize +3<CR>
 noremap <silent> <C-l> :vertical resize -3<CR>
 noremap <silent> <C-j> :resize +3<CR>
 noremap <silent> <C-k> :resize -3<CR>
+
+" 临时文件
+function! OpenNote()
+    exec "sp ~/.vimnotes.txt"
+endfunction
+command! Note :call OpenNote()

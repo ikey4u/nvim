@@ -1,1 +1,2 @@
 require('treesitter')
+require('lsp')

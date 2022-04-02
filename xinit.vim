@@ -14,7 +14,6 @@ for setting in settings
 endfor
 
 let plugins = [
-    \ 'coc',
     \ 'leaderf',
     \ 'nerdtree',
     \ 'snippets',
@@ -24,7 +23,8 @@ let plugins = [
     \ 'others',
     \ 'statusline',
     \ 'clang-format',
-    \ 'imk'
+    \ 'imk',
+    \ 'terminal'
 \ ]
 
 call plug#begin(g:home . '/plugged')

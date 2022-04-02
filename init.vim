@@ -58,9 +58,6 @@ set tabstop=4
 " 行行为控制, 一般和 tabstop 配置一致即可. 当该值为 0 时, 关闭该功能.
 set softtabstop=4
 
-" make 文件的缩进要求必须是 tab 而不是空格
-autocmd FileType make setlocal noexpandtab
-
 let $LANG = 'en'                   " 设置消息语言(比如弹出框什么的)
 set langmenu=zh_CN.UTF-8           " 设置菜单语言,解决消息乱码问题
 set timeoutlen=1000 ttimeoutlen=0  " 消除 ESC 按键延迟
@@ -140,14 +137,8 @@ augroup cusindent
     " 设置 c++ 和 c 的 switch case 缩进
     " 参考自: https://stackoverflow.com/questions/3444696/how-to-disable-vims-indentation-of-switch-case
     autocmd FileType cpp,c set cinoptions=l1
-
-    " vim 异步高亮, 在多语言文件比如 vue 中, 会导致语言高亮失效
-    " 在 vue 中我们禁用这个特性
-    " autocmd FileType vue syntax sync fromstart
-    " 将 svelte 视作 vue 插件实现代码高亮
-    " au BufRead,BufNewFile *.svelte set filetype=vue
-    " 设置 vue 文件类型为 html, 这样能够良好的自动缩进
-    " autocmd BufNewFile,BufRead *.vue set filetype=html
+    " 设置 json5 格式
+    autocmd BufNewFile,BufRead *.json5 set ft=json5
 augroup END
 
 " nvim yank 时复制到系统剪贴板中
@@ -159,29 +150,18 @@ set autoread
 " 设置不可见字符显示时的文本
 set listchars=tab:→\ ,nbsp:␣,trail:∙,extends:▶,precedes:◀,eol:¬
 
-" 如果要禁止自动在文件末尾添加换行符, 则可以开启如下这几个选项, 如果文件末尾已经有换行符号,
-" 可以使用 :set noeol 去掉, 在文件末尾添加换行符是默认行为, 参考如下链接
-"
-"    https://stackoverflow.com/questions/729692/why-should-text-files-end-with-a-newline
-"
-" set nofixendofline
-" set noendofline
-" autocmd FileType * set noeol
+" Do not use `autocmd BufEnter lcd %:p:h` which may cause coc buffer messy such as
+" command `:CocList services`
+set autochdir
 
+" make 文件的缩进要求必须是 tab 而不是空格
+autocmd FileType make setlocal noexpandtab
+
+" 加载 vim 插件
 let xinit=printf('%s/%s', g:home, 'xinit.vim')
 if filereadable(xinit)
     exec printf("source %s", xinit)
 endif
 
-" 临时文件
-function! OpenNote()
-    exec "sp ~/.vimnotes.txt"
-endfunction
-command! Note :call OpenNote()
-
-" 加载 `lua/index.lua`
+" 加载 lua 插件
 lua require('index')
-
-" 自动切换目录为当前编辑文件所在目录 (放到最后, 防止插件修改)
-" autochdir 有时候并不太好用, 使用如下命令更好一点, 参考: https://vim.fandom.com/wiki/Set_working_directory_to_the_current_file
-autocmd BufEnter * lcd %:p:h

@@ -31,16 +31,6 @@ leaderf 的主要作用还是用来查找文件, 所以我们需要告诉 Leader
 
     let g:Lf_WorkingDirectoryMode = 'Ac'
 
-本配置的 Leaderf 快捷键为
-
-- <leader>w 搜索光标下的文本
-- :Lf 搜索文件, 不好使的时候使用 fzf 的 <leader>F
-- :Lreg 搜索正则表达式文本
-- :Lword 搜索文本, f 表示 find 文本
-- :Lcs 用于查看不同颜色主题, 按 <C-p> 预览
-- :Lfn 函数
-- :Lmru 最近使用的文件
-
 在搜索结果窗口中的移动快捷键如下
 
 - <C-j> <C-k> 在搜索结果中向下向上移动
@@ -68,7 +58,7 @@ nvim 的 GUI 字体设置为含有 nerd 的字体, 注意 source code pro 的 ne
 print(DOCS)
 EOF
 endfunction
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 " 不再使用 leaderf 的文件搜索功能了, 挺鸡肋的, 有时候会出现文件搜索不到的情况,
 " 而且很莫名其妙找不到原因, 这里禁用 leaderf 默认的 <leader>f 搜索文件快捷键.
 let g:Lf_ShortcutF = ""
@@ -79,6 +69,7 @@ let g:Lf_UseCache = 0
 let g:Lf_Ctags = "exctags"
 let g:Lf_RootMarkers = ['.vimroot', '.git']
 let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_UseVersionControlTool = 0
 " :Lf => 搜索文件
 command! Lf :LeaderfFile
 " :Lfn => 显示所有函数
@@ -90,8 +81,7 @@ command! Lmru :LeaderfMru
 " :Lreg => 搜索正则文本
 " 限制结果行的最大长度为 1000, 然而由于 leaderf 自定义的 rg 命令并非直接的
 " rg, 而是一个 wrapper, 这个 wrapper 只提供了过滤最大长度, 没有提供显示过滤的行的一部分,
-" rg 本身提供了 --max-columns-preview 这个选项, 先将就这用吧
-" noremap <leader>fe :<C-U><C-R>=printf("Leaderf rg -M 1000 -e ")<CR>
+" rg 本身提供了 --max-columns-preview 这个选项, 先这么使用.
 command! -nargs=+ -complete=command Lreg :Leaderf rg -M 1000 -e <q-args><CR>
 " :Lword => 搜索文本
 " noremap <leader>ff :<C-U><C-R>=printf("Leaderf rg -M 1000 ")<CR>

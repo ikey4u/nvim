@@ -62,3 +62,14 @@ Plug 'pangloss/vim-javascript'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'evanleck/vim-svelte', { 'branch': 'main' }
+
+" 文件格式化插件
+Plug 'sbdchd/neoformat'
+
+" markdown 表格
+"
+" 通过 :TableModeEnable 启用表格模式, 按下 | 开始输入表格内容, 按下 || 自动填充行分隔符.
+" 编辑表格完毕后, 可以使用 :TableModeDisable 退出.
+Plug 'dhruvasagar/vim-table-mode'
+
+Plug 'neovim/nvim-lspconfig'
