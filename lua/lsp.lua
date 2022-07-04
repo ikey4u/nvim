@@ -61,19 +61,23 @@ local lsp_flags = {
     将生成的文件放到 .vimroot 同目录的 build 目录下即可.
 
 --]]
-lsp.clangd.setup {
-    on_attach = on_attach,
-    flags = lsp_flags,
-    cmd = {
-        vim.env.LLVM_HOME .. "/bin/clangd",
-        "--background-index",
-        "--compile-commands-dir=build",
-        "--clang-tidy",
-        "--clang-tidy-checks=performance-*,bugprone-*",
-        "--completion-style=detailed",
-        "--all-scopes-completion",
-        "--header-insertion=iwyu",
-        "-j=8",
-    },
-    root_dir = lsp.util.root_pattern('.vimroot'),
-}
+if vim.env.LLVM_HOME ~= nil then
+    lsp.clangd.setup {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        cmd = {
+            vim.env.LLVM_HOME .. "/bin/clangd",
+            "--background-index",
+            "--compile-commands-dir=build",
+            "--clang-tidy",
+            "--clang-tidy-checks=performance-*,bugprone-*",
+            "--completion-style=detailed",
+            "--all-scopes-completion",
+            "--header-insertion=iwyu",
+            "-j=8",
+        },
+        root_dir = lsp.util.root_pattern('.vimroot'),
+    }
+else
+    print("LLVM_HOME is not set, clangd server will not work")
+end
