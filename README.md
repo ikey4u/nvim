@@ -1,6 +1,6 @@
 # Installation Guide
 
-First things first, install neovim editor [here](https://github.com/neovim/neovim/releases/), to
+First things first, install neovim editor [here](https://github.com/neovim/neovim/releases/). To
 make neovim powerful, you need the followings.
 
 - pyenv
@@ -28,17 +28,6 @@ make neovim powerful, you need the followings.
     Now, you can use `xvim` to open file in existed neovim instance. If `:echo v:servername` is not
     `/tmp/nvim`, that may indicates a corrupted `/tmp/nvim`, remove it and try again.
 
-- node
-
-    Install node using
-
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-        nvm install node
-
-    then install neovim nodejs client
-
-        npm install -g neovim
-
 - fonts and tools
 
     To display variable symbols, you need to install nerdfonts
@@ -53,6 +42,8 @@ make neovim powerful, you need the followings.
 
         mkdir -p ${HOME}/.config/
         git clone https://github.com/ikey4u/nvim.git $HOME/.config/nvim
+
+    Open nvim and run `:PlugInstall`.
 
 # Tmux
 
