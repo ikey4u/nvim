@@ -16,7 +16,6 @@ endfor
 let plugins = [
     \ 'leaderf',
     \ 'nerdtree',
-    \ 'snippets',
     \ 'markdown-preview',
     \ 'easymotion',
     \ 'vimtex',

@@ -163,5 +163,13 @@ if filereadable(xinit)
     exec printf("source %s", xinit)
 endif
 
+" 自动补全选项 (
+"     menu: 以浮窗的形式显示待选列表
+"     menuone: 只有一个选项时仍然以浮窗显示
+"     noselect: 浮窗显示后默认不选择
+"     preview: 显示当前选择项的额外信息
+" )
+set completeopt=menu,menuone,preview
+
 " 加载 lua 插件
 lua require('index')
