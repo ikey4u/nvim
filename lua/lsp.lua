@@ -110,3 +110,8 @@ if vim.env.LLVM_HOME ~= nil then
 else
     print("LLVM_HOME is not set, clangd server will not work")
 end
+
+-- rust analzyer (depends on rust-tools plugin), to custmized configuration see
+-- https://github.com/simrat39/rust-tools.nvim#configuration
+require('rust-tools').setup({
+})

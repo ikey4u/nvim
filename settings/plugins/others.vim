@@ -72,7 +72,10 @@ Plug 'sbdchd/neoformat'
 " 编辑表格完毕后, 可以使用 :TableModeDisable 退出.
 Plug 'dhruvasagar/vim-table-mode'
 
+" Language server
 Plug 'neovim/nvim-lspconfig'
+
+" Auto Completion
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -80,3 +83,12 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'SirVer/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+" Rust Analyzer Wrapper
+Plug 'simrat39/rust-tools.nvim'
+
+" Lua Utilities
+Plug 'nvim-lua/plenary.nvim'
+
+" Debugging Adapter
+Plug 'mfussenegger/nvim-dap'
