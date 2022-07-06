@@ -114,4 +114,9 @@ end
 -- rust analzyer (depends on rust-tools plugin), to custmized configuration see
 -- https://github.com/simrat39/rust-tools.nvim#configuration
 require('rust-tools').setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
 })
