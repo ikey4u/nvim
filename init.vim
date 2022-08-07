@@ -141,6 +141,12 @@ augroup cusindent
     autocmd BufNewFile,BufRead *.json5 set ft=json5
 augroup END
 
+" treat js file as javascriptreact to enable jsx feature
+augroup filetype_jsx
+    autocmd!
+    autocmd FileType javascript set filetype=javascriptreact
+augroup END
+
 " nvim yank 时复制到系统剪贴板中
 set clipboard+=unnamedplus
 

@@ -119,3 +119,22 @@ require('rust-tools').setup({
         capabilities = capabilities,
     },
 })
+
+-- install python lsp: pip3 install -U jedi-language-server
+require'lspconfig'.jedi_language_server.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+
+-- 1. install: curl -fsSL https://deno.land/install.sh | sh
+-- 2. add ${HOME}/.deno/bin to your PATH environment
+require'lspconfig'.denols.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})

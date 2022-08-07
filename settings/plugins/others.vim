@@ -92,3 +92,6 @@ Plug 'nvim-lua/plenary.nvim'
 
 " Debugging Adapter
 Plug 'mfussenegger/nvim-dap'
+
+" React
+Plug 'neoclide/vim-jsx-improve'
