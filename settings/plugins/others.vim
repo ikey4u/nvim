@@ -95,3 +95,7 @@ Plug 'mfussenegger/nvim-dap'
 
 " React
 Plug 'neoclide/vim-jsx-improve'
+
+" golang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+let g:go_fmt_autosave = 0
