@@ -104,10 +104,10 @@ augroup extrahighlight
     " 在宽度边界处显示一条彩色边界线
     set colorcolumn=100
     " guibg 设置为全值, 比如要写为 #FFFFFF 而不要写为简写形式 #FFF
-    autocmd BufEnter * highlight OverLength ctermbg=red ctermfg=white guibg=#6666FF
+    " autocmd BufEnter * highlight OverLength ctermbg=red ctermfg=white guibg=#6666FF
     " 超过指定字符个数时设置高亮, 当有 unicode 字符时, 一个 unicode 字符的长度可能占据一个或者多个单元长度,
     " 这会导致在含有 unicode 的行上列索引显示不正确, 但是实际上高亮的行宽显示是正确的
-    autocmd BufEnter * match OverLength /\%100v.\+/
+    " autocmd BufEnter * match OverLength /\%100v.\+/
 augroup END
 
 set nowritebackup  " 编辑时不需要备份文件
