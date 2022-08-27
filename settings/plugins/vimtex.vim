@@ -96,7 +96,9 @@ endfunction
 Plug 'lervag/vimtex'
 
 let g:vimtex_quickfix_enabled=0
-let g:vimtex_view_method = 'skim'
+if has('mac')
+    let g:vimtex_view_method = 'skim'
+endif
 let g:vimtex_compiler_latexmk = {
       \ 'build_dir': 'out',
       \ 'continuous' : 1,
