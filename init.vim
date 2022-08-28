@@ -130,8 +130,8 @@ set ssop-=folds
 " 根据文件类型自动设置缩进宽度
 augroup cusindent
     autocmd!
-    " 以下文件类型缩进为 2
-    autocmd FileType svelte,javascript,vue,html,css,yaml,dart,typescript setlocal ts=2 sw=2 sts=0 et
+    " 以下文件类型缩进为 4
+    autocmd FileType svelte,javascript,vue,html,css,yaml,dart,typescript setlocal ts=4 sw=4 sts=0 et
     " txt 缩进为 0
     autocmd FileType text setlocal nocindent
     " 设置 c++ 和 c 的 switch case 缩进
