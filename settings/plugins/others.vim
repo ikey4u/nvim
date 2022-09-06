@@ -99,3 +99,7 @@ Plug 'neoclide/vim-jsx-improve'
 " golang
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_autosave = 0
+
+" mason related plugins
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
