@@ -138,3 +138,53 @@ require'lspconfig'.denols.setup({
         capabilities = capabilities,
     },
 })
+
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        'bashls',
+        'kotlin-language-server',
+        'vimls',
+        'sumneko_lua',
+        'jdtls',
+    },
+  auto_update = false,
+  run_on_start = true,
+  start_delay = 3000,
+})
+
+require'lspconfig'.bashls.setup{
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+}
+require'lspconfig'.kotlin_language_server.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+require'lspconfig'.vimls.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+require'lspconfig'.sumneko_lua.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+require'lspconfig'.jdtls.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
