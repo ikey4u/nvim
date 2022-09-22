@@ -1,3 +1,30 @@
+" Automatically read indent configuration from .clang-format in working directory,
+" if the indent is not 4, set it as is
+function SetCFamilyIndent()
+    if !exists(g:VimRoot)
+        call FindWorkingDir()
+    endif
+python3 << EOF
+import vim
+import os
+
+workdir = vim.eval("g:VimRoot")
+fmtfile = os.path.join(workdir, ".clang-format")
+if os.path.exists(fmtfile):
+    with open(fmtfile) as _:
+        for line in _:
+            if not line.startswith("IndentWidth:"):
+                continue
+            line = line.replace("IndentWidth:", "").strip()
+            indent = int(line)
+            if indent != 4:
+                continue
+            vim.command(f"setlocal ts={indent} sw={indent} sts=0 et")
+            break
+EOF
+endfunction
+autocmd FileType c,cpp call SetCFamilyIndent()
+
 " :call CNmark2ENmark => 中文标点替换为英文标点
 function! CNmark2ENmark()
         exe "try | %s/：/:/g | catch | endtry"
@@ -151,6 +178,8 @@ endfunction
 " 从当前文件路径向上回溯, 直到找到一个目录包含有工作目录标记文件为止,
 " 找到工作目录后, 其值存放于 g:VimRoot 中.
 function! FindWorkingDir()
+let g:VimRoot = get(g:, 'VimRoot', expand('%:h'))
+
 python3 << EOF
 import vim
 import os
@@ -172,9 +201,12 @@ while not hasfound:
             break
     else:
         curdir = os.path.dirname(curdir)
-vim.command(f"let g:VimRoot = '{rootdir}' ")
+if vim.eval("g:VimRoot") != rootdir:
+    print(f"[+] change root directory to {rootdir}")
+    vim.command(f"let g:VimRoot = '{rootdir}' ")
 EOF
 endfunction
+autocmd BufEnter * :call FindWorkingDir()
 
 " :SetColor => Set color theme
 command! -nargs=? -complete=command SetColor call SetColor(<q-args>)
