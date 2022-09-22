@@ -18,9 +18,8 @@ if os.path.exists(fmtfile):
             line = line.replace("IndentWidth:", "").strip()
             indent = int(line)
             if indent != 4:
-                continue
-            vim.command(f"setlocal ts={indent} sw={indent} sts=0 et")
-            break
+                vim.command(f"setlocal ts={indent} sw={indent} sts=0 et")
+                break
 EOF
 endfunction
 autocmd FileType c,cpp call SetCFamilyIndent()
