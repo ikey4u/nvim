@@ -16,22 +16,23 @@ let g:homes['win'] = expand('$HOME/AppData/Local/nvim')
 if has('unix')
     let g:home = g:homes['linux']
 endif
-
 if has('mac')
     let g:home = g:homes['mac']
 endif
-
-if has('win32')
-    let g:home = g:homes['win']
-endif
-
 if !exists('g:home')
     echo 'Platform is not supported!'
     finish
 endif
 
-" 缓存文件默认路径
-let g:tmpbuf = g:home . '/.tmp'
+" default cache direcotry
+let g:tmpbuf = g:home . '/.cache'
+
+" set neovim python3 path: https://neovim.io/doc/user/provider.html
+let g:python3_host_prog = expand("$HOME/.pyenv/shims/python3")
+if !filereadable(g:python3_host_prog)
+    echo 'pyenv is not installed'
+    finish
+endif
 
 " 基础选项
 filetype on
@@ -75,15 +76,14 @@ let html_use_css = 1               " 设置 TOhtml 使用样式表而不是行�
 let html_number_lines = 0          " 取消 TOhtml 的行号
 
 " 编码设置 {
+    " 注: 使用 utf-8 格式后, 软件与程序源码, 文件路径不能有中文, 否则报错
 
-    " 注:使用utf-8格式后,软件与程序源码,文件路径不能有中文,否则报错
-
-    set encoding=utf-8                                    " 设置gvim内部编码
-    set fileencoding=utf-8                                " 设置当前文件编码,可以更改,如:gbk(同cp936)
-    set fileencodings=ucs-bom,utf-8,gbk,cp936             " 设置支持打开的文件的编码,这一行搞不好就会乱码
+    set encoding=utf-8                                    " 设置 vim 内部编码
+    set fileencoding=utf-8                                " 设置当前文件编码
+    set fileencodings=ucs-bom,utf-8,gbk,cp936             " 设置支持打开的文件的编码
     set tenc=utf-8                                        " 设置终端编码
-    set fileformat=unix                                   " 设置新(当前)文件的 <EOL> 格式,可以更改,
-    set fileformats=unix,dos,mac                          " 给出文件的可选 <EOL> 格式类型
+    set fileformat=unix                                   " 设置文件的 <EOL> 格式
+    set fileformats=unix,dos,mac                          " 设置支持的 <EOL> 类型
 " }
 
 " 折叠
@@ -162,12 +162,12 @@ set autochdir
 
 " make 文件的缩进要求必须是 tab 而不是空格
 autocmd FileType make setlocal noexpandtab
+" set shebang indent for shell file
+autocmd FileType sh setlocal cinoptions=#1
 
-" 加载 vim 插件
-let xinit=printf('%s/%s', g:home, 'xinit.vim')
-if filereadable(xinit)
-    exec printf("source %s", xinit)
-endif
+" 水平垂直线显示
+set cursorline
+set cursorcolumn
 
 " 自动补全选项 (
 "     menu: 以浮窗的形式显示待选列表
@@ -177,5 +177,14 @@ endif
 " )
 set completeopt=menu,menuone,preview
 
-" 加载 lua 插件
-lua require('index')
+" 个性化配置
+let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
+if filereadable(envfile)
+    exec printf('source %s', envfile)
+endif
+
+" extensive configuration (vim plugins, lua plugins, functions, shortcuts)
+let xinit=printf('%s/%s', g:home, 'xinit.vim')
+if filereadable(xinit)
+    exec printf("source %s", xinit)
+endif
