@@ -1,5 +1,3 @@
-local lsp = require('lspconfig')
-
 local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -52,6 +50,78 @@ cmp.setup({
 })
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+require("mason").setup()
+require("mason-lspconfig").setup({
+    -- https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
+    ensure_installed = {
+        'bashls',
+        'kotlin-language-server',
+        'vimls',
+        'sumneko_lua',
+        'jdtls',
+        'gopls',
+    },
+    auto_update = false,
+    run_on_start = true,
+    start_delay = 3000,
+})
+
+local lsp = require('lspconfig')
+-- lsp.bash
+lsp.bashls.setup{
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+}
+
+-- lsp.kotlin
+lsp.kotlin_language_server.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+
+-- lsp.vimscript
+lsp.vimls.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+
+-- lsp.lua
+lsp.sumneko_lua.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+
+-- lsp.java
+lsp.jdtls.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+
+-- lsp.golang
+lsp.gopls.setup({
+    server = {
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+    },
+})
+
+-- lsp.clangd
 --[[
 
 - 项目根目录
@@ -110,6 +180,7 @@ else
     print("LLVM_HOME is not set, clangd server will not work")
 end
 
+-- lsp.rust
 -- rust analzyer (depends on rust-tools plugin), to custmized configuration see
 -- https://github.com/simrat39/rust-tools.nvim#configuration
 require('rust-tools').setup({
@@ -120,8 +191,10 @@ require('rust-tools').setup({
     },
 })
 
+
+-- lsp.python
 -- install python lsp: pip3 install -U jedi-language-server
-require'lspconfig'.jedi_language_server.setup({
+lsp.jedi_language_server.setup({
     server = {
         on_attach = on_attach,
         flags = lsp_flags,
@@ -129,59 +202,10 @@ require'lspconfig'.jedi_language_server.setup({
     },
 })
 
+-- lsp.javascript
 -- 1. install: curl -fsSL https://deno.land/install.sh | sh
 -- 2. add ${HOME}/.deno/bin to your PATH environment
-require'lspconfig'.denols.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
-})
-
-require("mason").setup()
-require("mason-lspconfig").setup({
-    ensure_installed = {
-        'bashls',
-        'kotlin-language-server',
-        'vimls',
-        'sumneko_lua',
-        'jdtls',
-    },
-  auto_update = false,
-  run_on_start = true,
-  start_delay = 3000,
-})
-
-require'lspconfig'.bashls.setup{
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
-}
-require'lspconfig'.kotlin_language_server.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
-})
-require'lspconfig'.vimls.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
-})
-require'lspconfig'.sumneko_lua.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
-})
-require'lspconfig'.jdtls.setup({
+lsp.denols.setup({
     server = {
         on_attach = on_attach,
         flags = lsp_flags,

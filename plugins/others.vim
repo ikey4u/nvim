@@ -72,9 +72,6 @@ Plug 'sbdchd/neoformat'
 " 编辑表格完毕后, 可以使用 :TableModeDisable 退出.
 Plug 'dhruvasagar/vim-table-mode'
 
-" Language server
-Plug 'neovim/nvim-lspconfig'
-
 " Auto Completion
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -102,6 +99,10 @@ Plug 'neoclide/vim-jsx-improve'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_autosave = 0
 
-" mason related plugins
+" neovim builtin language server configuration
+Plug 'neovim/nvim-lspconfig'
+
+" mason package manager
 Plug 'williamboman/mason.nvim'
+" lspconfig plugin for mason
 Plug 'williamboman/mason-lspconfig.nvim'
