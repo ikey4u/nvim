@@ -188,9 +188,41 @@ require('rust-tools').setup({
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
+        -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
+        settings = {
+            ["rust-analyzer"] = {
+                -- Do not warn me some codes are inactive
+                diagnostics = {
+                    enable = true,
+                    disabled = { "inactive-code" },
+                    enableExperimental = true,
+                },
+                -- Sometimes you may write cross-platform codes using `[#cfg(...)]` macro such as
+                --
+                --     #[cfg(target_os = "android")]
+                --     #[allow(non_snake_case)]
+                --     pub mod android {
+                --         // ...
+                --     }
+                --
+                -- rust_analyzer will not analyze the code in your mod `android`, to solve the
+                -- problem you must declare the following checkOnSave option, but it is not enough.
+                -- You must also create a file named config.toml under directory `<project>/.cargo`
+                -- with content liking the followings
+                --
+                --    [build]
+                --    target = "aarch64-linux-android"
+                --
+                -- Now you can continue your happy rust coding!
+                --
+                checkOnSave = {
+                    enable = true,
+                    allTargets = true,
+                },
+            },
+        },
     },
 })
-
 
 -- lsp.python
 -- install python lsp: pip3 install -U jedi-language-server
