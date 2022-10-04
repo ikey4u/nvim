@@ -1,26 +1,63 @@
-local on_attach = function(client, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+-- The default install root directory `install_root_dir ` of mason is determined by
+-- `stdpath("data")/mason` where `stdpath("data")` can be checked manually using command
+-- `:echo stdpath("data")`.
+require("mason").setup()
+-- We use mason-lspconfig to automatically install LSP servers which can then be configured using
+-- neovim lspconfig
+require("mason-lspconfig").setup({
+    -- Server name used in mason is different from what is used in the standard lspconfig, the
+    -- mapping could be found here
+    --
+    --     https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
+    --
+    -- The installed LSP servers could be found under `install_root_dir/mason`.
+    ensure_installed = {
+        'bashls',
+        'kotlin-language-server',
+        'vimls',
+        'sumneko_lua',
+        'jdtls',
+        'gopls',
+    },
+    auto_update = false,
+    run_on_start = true,
+    start_delay = 3000,
+})
 
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
-end
+local lsp_defaults = {
+    flags = {
+        debounce_text_changes = 150,
+    },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = function(client, bufnr)
+        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-local lsp_flags = {
-  debounce_text_changes = 150,
+        local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+        vim.keymap.set('n', '<space>wl',
+            function()
+                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+            end, bufopts
+        )
+        vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+        vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+        vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+    end,
 }
+
+local lsp = require('lspconfig')
+lsp.util.default_config = vim.tbl_deep_extend(
+  'force',
+  lsp.util.default_config,
+  lsp_defaults
+)
 
 local cmp = require'cmp'
 cmp.setup({
@@ -48,77 +85,37 @@ cmp.setup({
       { name = 'buffer' },
     })
 })
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-    -- https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
-    ensure_installed = {
-        'bashls',
-        'kotlin-language-server',
-        'vimls',
-        'sumneko_lua',
-        'jdtls',
-        'gopls',
-    },
-    auto_update = false,
-    run_on_start = true,
-    start_delay = 3000,
-})
-
-local lsp = require('lspconfig')
 -- lsp.bash
-lsp.bashls.setup{
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
-}
+lsp.bashls.setup({
+})
 
 -- lsp.kotlin
 lsp.kotlin_language_server.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
+    settings = {
+        kotlin = {
+            java = {
+                home = "",
+            },
+        },
     },
 })
 
 -- lsp.vimscript
 lsp.vimls.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
 })
 
 -- lsp.lua
 lsp.sumneko_lua.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
+    single_file_support = true,
 })
 
 -- lsp.java
 lsp.jdtls.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
 })
 
 -- lsp.golang
 lsp.gopls.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
 })
 
 -- lsp.clangd
@@ -160,8 +157,6 @@ lsp.gopls.setup({
 --]]
 if vim.env.LLVM_HOME ~= nil then
     lsp.clangd.setup {
-        on_attach = on_attach,
-        flags = lsp_flags,
         cmd = {
             vim.env.LLVM_HOME .. "/bin/clangd",
             "--background-index",
@@ -174,7 +169,6 @@ if vim.env.LLVM_HOME ~= nil then
             "-j=8",
         },
         root_dir = lsp.util.root_pattern('.vimroot'),
-        capabilities = capabilities,
     }
 else
     print("LLVM_HOME is not set, clangd server will not work")
@@ -184,10 +178,8 @@ end
 -- rust analzyer (depends on rust-tools plugin), to custmized configuration see
 -- https://github.com/simrat39/rust-tools.nvim#configuration
 require('rust-tools').setup({
+    -- rust-tools will pass `server` options to lspconfig
     server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
         -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
         settings = {
             ["rust-analyzer"] = {
@@ -227,20 +219,16 @@ require('rust-tools').setup({
 -- lsp.python
 -- install python lsp: pip3 install -U jedi-language-server
 lsp.jedi_language_server.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
 })
 
 -- lsp.javascript
 -- 1. install: curl -fsSL https://deno.land/install.sh | sh
 -- 2. add ${HOME}/.deno/bin to your PATH environment
 lsp.denols.setup({
-    server = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-    },
+})
+
+-- lsp.cmake
+-- install lsp: pip3 install cmake-language-server
+lsp.cmake.setup({
+    root_dir = lsp.util.root_pattern('.vimroot'),
 })
