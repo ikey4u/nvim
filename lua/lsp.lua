@@ -54,36 +54,52 @@ local lsp_defaults = {
 
 local lsp = require('lspconfig')
 lsp.util.default_config = vim.tbl_deep_extend(
-  'force',
-  lsp.util.default_config,
-  lsp_defaults
+    'force',
+    lsp.util.default_config,
+    lsp_defaults
 )
 
 local cmp = require'cmp'
 cmp.setup({
     snippet = {
-      expand = function(args)
-        vim.fn["UltiSnips#Anon"](args.body)
-      end,
+        expand = function(args)
+            vim.fn["UltiSnips#Anon"](args.body)
+        end,
     },
     window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-      ['<Tab>'] = cmp.mapping.select_next_item(),
-      ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-e>'] = cmp.mapping.abort(),
+        -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<Tab>'] = cmp.mapping.select_next_item(),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
     }),
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'ultisnips' },
+        { name = 'nvim_lsp' },
+        { name = 'ultisnips' },
     }, {
-      { name = 'buffer' },
-    })
+        { name = 'buffer' },
+    }),
+    formatting = {
+        format = require('lspkind').cmp_format({
+            -- show only symbol annotations
+            mode = 'symbol',
+            -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            maxwidth = 50,
+            -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+            ellipsis_char = '...',
+            -- The function below will be called before any actual modifications from lspkind
+            -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+            before = function (entry, vim_item)
+                return vim_item
+            end
+        })
+    },
 })
 
 -- lsp.bash
@@ -92,13 +108,6 @@ lsp.bashls.setup({
 
 -- lsp.kotlin
 lsp.kotlin_language_server.setup({
-    settings = {
-        kotlin = {
-            java = {
-                home = "",
-            },
-        },
-    },
 })
 
 -- lsp.vimscript
