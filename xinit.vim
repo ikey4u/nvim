@@ -177,12 +177,12 @@ endfunction
 " 从当前文件路径向上回溯, 直到找到一个目录包含有工作目录标记文件为止,
 " 找到工作目录后, 其值存放于 g:VimRoot 中.
 function! FindWorkingDir()
-let g:VimRoot = get(g:, 'VimRoot', expand('%:h'))
+let g:VimRoot = get(g:, 'VimRoot', expand('%:p:h'))
 
 python3 << EOF
 import vim
 import os
-curdir = vim.eval("expand('%:h')")
+curdir = vim.eval("expand('%:p:h')")
 curdir = os.path.abspath(curdir)
 if not os.path.isdir(curdir):
     curdir = os.path.dirname(curdir)
@@ -205,7 +205,7 @@ if vim.eval("g:VimRoot") != rootdir:
     vim.command(f"let g:VimRoot = '{rootdir}' ")
 EOF
 endfunction
-autocmd BufEnter * :call FindWorkingDir()
+autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
 
 " :SetColor => Set color theme
 command! -nargs=? -complete=command SetColor call SetColor(<q-args>)
