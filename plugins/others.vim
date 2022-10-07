@@ -107,3 +107,6 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 " lspconfig plugin for mason
 Plug 'williamboman/mason-lspconfig.nvim'
+
+Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release' }
+let g:nvim_previewer_browser = "firefox"
