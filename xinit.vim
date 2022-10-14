@@ -248,9 +248,7 @@ noremap <silent> <C-k> :resize -3<CR>
 
 " load vim plugins
 let plugins = [
-    \ 'leaderf',
     \ 'nerdtree',
-    \ 'markdown-preview',
     \ 'easymotion',
     \ 'vimtex',
     \ 'others',
