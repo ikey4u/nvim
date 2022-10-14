@@ -110,3 +110,11 @@ Plug 'williamboman/mason-lspconfig.nvim'
 
 Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release' }
 let g:nvim_previewer_browser = "firefox"
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files{ cwd = vim.g.VimRoot }<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep{ cwd = vim.g.VimRoot }<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
