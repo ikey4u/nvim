@@ -18,6 +18,7 @@ require("mason-lspconfig").setup({
         'sumneko_lua',
         'jdtls',
         'gopls',
+        'marksman',
     },
     auto_update = false,
     run_on_start = true,
@@ -240,4 +241,7 @@ lsp.denols.setup({
 -- install lsp: pip3 install cmake-language-server
 lsp.cmake.setup({
     root_dir = lsp.util.root_pattern('.vimroot'),
+})
+
+lsp.marksman.setup({
 })
