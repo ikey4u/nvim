@@ -172,10 +172,11 @@ endfunction
 
 " 设置工作目录
 "
-" 当前工作目录标记文件为 ['.git', '.vimroot']
+" 当前工作目录标记文件为 ['.git', '.vimroot'], 越靠后的标记文件优先级越高, 如果任何一个标记文件都找
+" 不到, 则将工作目录设置为当前文件所在的目录.
 "
-" 从当前文件路径向上回溯, 直到找到一个目录包含有工作目录标记文件为止,
-" 找到工作目录后, 其值存放于 g:VimRoot 中.
+" 工作目录找到后, 其值将会存放在 g:VimRoot 中.
+"
 function! FindWorkingDir()
 let g:VimRoot = get(g:, 'VimRoot', expand('%:p:h'))
 
@@ -187,19 +188,28 @@ curdir = os.path.abspath(curdir)
 if not os.path.isdir(curdir):
     curdir = os.path.dirname(curdir)
 
-rootdir = curdir
-hasfound = False
-while not hasfound:
-    # reach filesytem root directory
-    if curdir == os.path.dirname(curdir):
+def get_root_dir_by_marker(curdir, marker):
+    while True:
+        # reach filesytem root directory
+        if curdir == os.path.dirname(curdir):
+            return None
+        if os.path.exists(os.path.join(curdir, marker)):
+            return curdir
+        else:
+            curdir = os.path.dirname(curdir)
+
+markers = ['.git', '.vimroot']
+rootdirs = []
+rootdir = None
+for marker in markers:
+    rootdirs.append(get_root_dir_by_marker(curdir, marker))
+for d in rootdirs[-1::]:
+    if d is not None:
+        rootdir = d
         break
-    for filemarker in ['.vimroot', '.git']:
-        if os.path.exists(os.path.join(curdir, filemarker)):
-            rootdir = curdir
-            hasfound = True
-            break
-    else:
-        curdir = os.path.dirname(curdir)
+if rootdir is None:
+    rootdir = curdir
+
 if vim.eval("g:VimRoot") != rootdir:
     print(f"[+] change root directory to {rootdir}")
     vim.command(f"let g:VimRoot = '{rootdir}' ")
