@@ -203,7 +203,7 @@ rootdirs = []
 rootdir = None
 for marker in markers:
     rootdirs.append(get_root_dir_by_marker(curdir, marker))
-for d in rootdirs[-1::]:
+for d in rootdirs[::-1]:
     if d is not None:
         rootdir = d
         break
