@@ -117,4 +117,4 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files{ cwd = vim.
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep{ cwd = vim.g.VimRoot }<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
+nnoremap <leader>w :execute 'Telescope live_grep default_text=' . expand('<cword>')<cr>
