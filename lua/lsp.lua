@@ -108,6 +108,9 @@ lsp.bashls.setup({
 })
 
 -- lsp.kotlin
+--
+-- For android development, you may export the java bundled with Android Studio into PATH,
+-- or else neovim will use the system java which could not work with kotlin.
 lsp.kotlin_language_server.setup({
 })
 
