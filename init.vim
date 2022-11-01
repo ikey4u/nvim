@@ -62,7 +62,6 @@ set softtabstop=4
 let $LANG = 'en'                   " 设置消息语言(比如弹出框什么的)
 set langmenu=zh_CN.UTF-8           " 设置菜单语言,解决消息乱码问题
 set timeoutlen=1000 ttimeoutlen=0  " 消除 ESC 按键延迟
-set number                         " 显示行号
 set virtualedit=all                " 启用虚拟编辑(也就是让光标可以达到没有任何文字的地方)
 set nowrap                         " 设置不自动换行
 set shortmess=atI                  " 去掉欢迎界面
@@ -168,6 +167,10 @@ autocmd FileType sh setlocal cinoptions=#1
 " 水平垂直线显示
 set cursorline
 set cursorcolumn
+
+" realtive line number (useful for quick jump around)
+set number
+set relativenumber
 
 " 自动补全选项 (
 "     menu: 以浮窗的形式显示待选列表
