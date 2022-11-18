@@ -180,6 +180,21 @@ set relativenumber
 " )
 set completeopt=menu,menuone,preview
 
+" 使状态栏显示光标位置
+set ruler
+" 启用状态栏信息
+set laststatus=2
+" 设置命令行的高度为2, 默认为1
+set cmdheight=2
+" 设置状态栏
+set statusline=[%n]
+set statusline+=\ %y
+set statusline+=\ [%{&fileformat},%{&fenc?&enc:&fenc}%{(&bomb?',[BOM]':'')}]
+set statusline+=\ %F
+set statusline+=\ %m%r
+set statusline+=\ %=
+set statusline+=\|R%05l,C%05c,%03p%%\|
+
 " 个性化配置
 let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
 if filereadable(envfile)

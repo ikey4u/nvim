@@ -22,7 +22,6 @@ if os.path.exists(fmtfile):
                 break
 EOF
 endfunction
-autocmd FileType c,cpp call SetCFamilyIndent()
 
 " :call CNmark2ENmark => 中文标点替换为英文标点
 function! CNmark2ENmark()
@@ -215,7 +214,6 @@ if vim.eval("g:VimRoot") != rootdir:
     vim.command(f"let g:VimRoot = '{rootdir}' ")
 EOF
 endfunction
-autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
 
 " :SetColor => Set color theme
 command! -nargs=? -complete=command SetColor call SetColor(<q-args>)
@@ -255,23 +253,81 @@ noremap <silent> <C-h> :vertical resize +3<CR>
 noremap <silent> <C-l> :vertical resize -3<CR>
 noremap <silent> <C-j> :resize +3<CR>
 noremap <silent> <C-k> :resize -3<CR>
+nnoremap Cs :StripWhitespace<CR>
 
 " load vim plugins
 let plugins = [
     \ 'nerdtree',
-    \ 'easymotion',
     \ 'vimtex',
-    \ 'others',
-    \ 'statusline',
-    \ 'clang-format',
-    \ 'imk',
-    \ 'terminal'
 \ ]
 call plug#begin(g:home . '/plugged')
-for plugin in plugins
-    exec printf('source %s/plugins/%s.vim', g:home, plugin)
-endfor
+Plug 'scrooloose/nerdtree'
+exec printf('source %s/%s', g:home, 'nerdtree.conf')
+Plug 'lervag/vimtex'
+exec printf('source %s/%s', g:home, 'vimtex.conf')
+Plug 'jiangmiao/auto-pairs'
+Plug 'scrooloose/nerdcommenter'
+let g:NERDSpaceDelims=1
+Plug 'mattn/emmet-vim'
+Plug 'majutsushi/tagbar'
+Plug 'mhinz/vim-startify'
+let g:startify_files_number = 20
+Plug 'ntpeters/vim-better-whitespace'
+let g:better_whitespace_enabled=1
+Plug 'ryanoasis/vim-devicons'
+Plug 'udalov/kotlin-vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" 在远程主机上拷贝到本地剪切板
+Plug 'ojroques/vim-oscyank'
+" vim 中执行 y 操作时, 自动拷贝到本地剪贴板
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+let g:oscyank_max_length = 1000000
+" 将终端视作 tmux, 该选项十分重要, 如果不设置, 在 tmux 中无法正确复制,
+" 如果不用 tmux 设置此选项页也没有副作用, 因此加上该选项
+let g:oscyank_term = 'tmux'
+let g:oscyank_silent = v:true
+" 文件格式化插件
+Plug 'sbdchd/neoformat'
+" markdown 表格
+"
+" 通过 :TableModeEnable 启用表格模式, 按下 | 开始输入表格内容, 按下 || 自动填充行分隔符.
+" 编辑表格完毕后, 可以使用 :TableModeDisable 退出.
+Plug 'dhruvasagar/vim-table-mode'
+" Auto Completion
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'onsails/lspkind.nvim'
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsSnippetDirectories=[g:home . '/snips']
+" Rust Analyzer Wrapper
+Plug 'simrat39/rust-tools.nvim'
+" Lua Utilities
+Plug 'nvim-lua/plenary.nvim'
+" golang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+let g:go_fmt_autosave = 0
+" neovim builtin language server configuration
+Plug 'neovim/nvim-lspconfig'
+" mason package manager
+Plug 'williamboman/mason.nvim'
+" lspconfig plugin for mason
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release' }
+let g:nvim_previewer_browser = "firefox"
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files{ cwd = vim.g.VimRoot }<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep{ cwd = vim.g.VimRoot }<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>w :execute 'Telescope live_grep default_text=' . expand('<cword>') . ' search_dirs=' . g:VimRoot <cr>
 call plug#end()
 
-" load lua plugins
+autocmd FileType c,cpp call SetCFamilyIndent()
+autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
+
 lua require('index')
