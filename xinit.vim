@@ -316,7 +316,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 " lspconfig plugin for mason
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release' }
+Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
 let g:nvim_previewer_browser = "firefox"
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
