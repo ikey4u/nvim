@@ -1,3 +1,10 @@
+" set neovim python3 path: https://neovim.io/doc/user/provider.html
+let g:python3_host_prog = expand("$HOME/.pyenv/shims/python3")
+if !filereadable(g:python3_host_prog)
+    echo 'pyenv is not installed'
+    finish
+endif
+
 " Automatically read indent configuration from .clang-format in working directory,
 " if the indent is not 4, set it as is
 function SetCFamilyIndent()
