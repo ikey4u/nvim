@@ -19,6 +19,9 @@ endif
 if has('mac')
     let g:home = g:homes['mac']
 endif
+if has('win32') || has('win64')
+    let g:home = g:homes['win']
+endif
 if !exists('g:home')
     echo 'Platform is not supported!'
     finish
@@ -26,13 +29,6 @@ endif
 
 " default cache direcotry
 let g:tmpbuf = g:home . '/.cache'
-
-" set neovim python3 path: https://neovim.io/doc/user/provider.html
-let g:python3_host_prog = expand("$HOME/.pyenv/shims/python3")
-if !filereadable(g:python3_host_prog)
-    echo 'pyenv is not installed'
-    finish
-endif
 
 " 基础选项
 filetype on
