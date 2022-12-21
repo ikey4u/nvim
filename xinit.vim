@@ -1,10 +1,3 @@
-" set neovim python3 path: https://neovim.io/doc/user/provider.html
-let g:python3_host_prog = expand("$HOME/.pyenv/shims/python3")
-if !filereadable(g:python3_host_prog)
-    echo 'pyenv is not installed'
-    finish
-endif
-
 " Automatically read indent configuration from .clang-format in working directory,
 " if the indent is not 4, set it as is
 function SetCFamilyIndent()
@@ -283,7 +276,9 @@ Plug 'ntpeters/vim-better-whitespace'
 let g:better_whitespace_enabled=1
 Plug 'ryanoasis/vim-devicons'
 Plug 'udalov/kotlin-vim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+if g:os != "Windows"
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+endif
 " 在远程主机上拷贝到本地剪切板
 Plug 'ojroques/vim-oscyank'
 " vim 中执行 y 操作时, 自动拷贝到本地剪贴板
