@@ -15,15 +15,22 @@ let g:homes['win'] = expand('$HOME/AppData/Local/nvim')
 
 if has('unix')
     let g:home = g:homes['linux']
+    let g:os = "Linux"
 endif
 if has('mac')
     let g:home = g:homes['mac']
+    let g:os = "Darwin"
 endif
 if has('win32') || has('win64')
     let g:home = g:homes['win']
+    let g:os = "Windows"
+endif
+if !exists('g:os')
+    echomsg 'Platform is not supported!'
+    finish
 endif
 if !exists('g:home')
-    echo 'Platform is not supported!'
+    echomsg 'nvim configuration directory is not exist: ' . g:home
     finish
 endif
 
@@ -198,7 +205,21 @@ if filereadable(envfile)
 endif
 
 " extensive configuration (vim plugins, lua plugins, functions, shortcuts)
-let xinit=printf('%s/%s', g:home, 'xinit.vim')
-if filereadable(xinit)
-    exec printf("source %s", xinit)
+" set neovim python3 path: https://neovim.io/doc/user/provider.html
+if exists('$NVIM_PYTHON_EXE_PATH')
+    let g:python3_host_prog = expand("$NVIM_PYTHON_EXE_PATH")
+else
+    if g:os == 'Linux' || g:os == 'Mac'
+        let g:python3_host_prog = expand("$HOME/.pyenv/shims/python3")
+    else
+        let g:python3_host_prog = expand("py")
+    endif
+endif
+if !executable(g:python3_host_prog)
+    echomsg 'python3 is not installed, the extensive configurations will not be included'
+else
+    let xinit=printf('%s/%s', g:home, 'xinit.vim')
+    if filereadable(xinit)
+        exec printf("source %s", xinit)
+    endif
 endif

@@ -1,30 +1,32 @@
 -- 编译时尝试的编译器顺序, 可以使用 CC 环境变量指定编译器
-require('nvim-treesitter.install').compilers = {
-    vim.fn.getenv('CC'), "clang","zig", "gcc",
-}
-
-require('nvim-treesitter.configs').setup {
-  ensure_installed = {
-      "html", "css", "cpp", "bash", "vim", "lua", "go", "rust", "cmake", "json",
-      "make", "kotlin", "python", "toml", "json5",
-  },
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-    -- 暂时禁用 treesitter 的 html 高亮, https://github.com/nvim-treesitter/nvim-treesitter/issues/1788
-    disable = { "html" },
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = '<CR>',
-      node_incremental = '<CR>',
+if vim.g.os ~= "Windows" then
+    require('nvim-treesitter.install').compilers = {
+        vim.fn.getenv('CC'), "clang","zig", "gcc",
     }
-  },
-  indent = {
-    enable = true,
-  }
-}
+
+    require('nvim-treesitter.configs').setup {
+      ensure_installed = {
+          "html", "css", "cpp", "bash", "vim", "lua", "go", "rust", "cmake", "json",
+          "make", "kotlin", "python", "toml", "json5",
+      },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+        -- 暂时禁用 treesitter 的 html 高亮, https://github.com/nvim-treesitter/nvim-treesitter/issues/1788
+        disable = { "html" },
+      },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<CR>',
+          node_incremental = '<CR>',
+        }
+      },
+      indent = {
+        enable = true,
+      }
+    }
+end
 
 -- The default install root directory `install_root_dir ` of mason is determined by
 -- `stdpath("data")/mason` where `stdpath("data")` can be checked manually using command
@@ -57,7 +59,7 @@ local lsp_defaults = {
     flags = {
         debounce_text_changes = 150,
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = function(client, bufnr)
         vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 

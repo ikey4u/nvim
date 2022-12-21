@@ -5,25 +5,24 @@ make neovim powerful, you need the followings.
 
 - pyenv
 
-    Install python using [pyenv](https://github.com/pyenv/pyenv) and then run
+    Install python using [pyenv](https://github.com/pyenv/pyenv) on Linux/Darwin or installer on Windows and then run
 
         pip3 install pynvim neovim neovim-remote 
 
-    and put the following into your shell configuration (.zshrc, .bashrc or whatever)
+    and put the following into your shell configuration (.zshrc, .bashrc or whatever) if you use
+    Linux/Darwin
 
-        # neovim {
-            # open with servername (neovim-remote)
-            alias xvim="nvim --listen /tmp/nvim "
+        # open with servername (neovim-remote)
+        alias xvim="nvim --listen /tmp/nvim "
 
-            # split open
-            alias xvims="nvr --servername /tmp/nvim -o "
+        # split open
+        alias xvims="nvr --servername /tmp/nvim -o "
 
-            # vertical split open
-            alias xvimvs="nvr --servername /tmp/nvim -O "
+        # vertical split open
+        alias xvimvs="nvr --servername /tmp/nvim -O "
 
-            # tab open
-            alias xvimt="nvr --servername /tmp/nvim --remote-tab "
-        # }
+        # tab open
+        alias xvimt="nvr --servername /tmp/nvim --remote-tab "
 
     Now, you can use `xvim` to open file in existed neovim instance. If `:echo v:servername` is not
     `/tmp/nvim`, that may indicates a corrupted `/tmp/nvim`, remove it and try again.
