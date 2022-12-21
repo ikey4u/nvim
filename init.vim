@@ -209,7 +209,7 @@ endif
 if exists('$NVIM_PYTHON_EXE_PATH')
     let g:python3_host_prog = expand("$NVIM_PYTHON_EXE_PATH")
 else
-    if g:os == 'Linux' || g:os == 'Mac'
+    if g:os == 'Linux' || g:os == 'Darwin'
         let g:python3_host_prog = expand("$HOME/.pyenv/shims/python3")
     else
         let g:python3_host_prog = expand("py")
