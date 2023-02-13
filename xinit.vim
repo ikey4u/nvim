@@ -279,15 +279,27 @@ Plug 'udalov/kotlin-vim'
 if g:os != "Windows"
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 endif
-" 在远程主机上拷贝到本地剪切板
+
+" Yank text to client system clipboard when editing on host using vim
+"
+"     client ---(ssh)---> host
+"
+" If you use vim in tmux, you should install tmux-yank
+"
+"    set -g @plugin 'tmux-plugins/tmux-yank'
+"
+" and tmux-yank requires xsel on linux.
+"
+" If you want to paste from client clipboard into host, using cmd+v on darwin
+" or ctrl+shift+v on linux
 Plug 'ojroques/vim-oscyank'
-" vim 中执行 y 操作时, 自动拷贝到本地剪贴板
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
 let g:oscyank_max_length = 1000000
-" 将终端视作 tmux, 该选项十分重要, 如果不设置, 在 tmux 中无法正确复制,
-" 如果不用 tmux 设置此选项页也没有副作用, 因此加上该选项
+" regard terminal as tmux
 let g:oscyank_term = 'tmux'
+" disable verbose message
 let g:oscyank_silent = v:true
+
 " 文件格式化插件
 Plug 'sbdchd/neoformat'
 " markdown 表格
