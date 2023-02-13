@@ -213,6 +213,8 @@ if vim.eval("g:VimRoot") != rootdir:
     print(f"[+] change root directory to {rootdir}")
     vim.command(f"let g:VimRoot = '{rootdir}' ")
 EOF
+" update leaderf working directory
+let g:Lf_WorkingDirectory=g:VimRoot
 endfunction
 
 " :SetColor => Set color theme
@@ -335,16 +337,51 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
 let g:nvim_previewer_browser = "firefox"
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files{ cwd = vim.g.VimRoot }<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep{ cwd = vim.g.VimRoot }<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>w :execute 'Telescope live_grep default_text=' . expand('<cword>') . ' search_dirs=' . g:VimRoot <cr>
+
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+" disable default shortcut `<leader>f`
+let g:Lf_ShortcutF = ""
+" search files in buffer
+noremap <leader>Fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+" disable cache (or else you cannot find new added files)
+let g:Lf_UseCache = 0
+" see https://github.com/universal-ctags/ctags to intall exctags.
+" note that the default name for exctags is ctags, you must rename it to exctags
+let g:Lf_Ctags = "exctags"
+" LeaderF's working directory will be set in function FindWorkingDir,
+" as a result we do not need root marker and directory mode:
+"
+"     let g:Lf_RootMarkers = ['.vimroot', '.git']
+"     let g:Lf_WorkingDirectoryMode = 'Ac'
+"
+let g:Lf_WildIgnore = {
+        \ 'dir': ['.svn','.git','.hg'],
+        \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
+        \}
+let g:Lf_RecurseSubmodules = 1
+let g:Lf_ShowHidden = 1
+let g:Lf_DefaultExternalTool = "rg"
+" :Lf => Search file
+command! Lf :Leaderf file --no-ignore
+" :Lfn => Show all functions (require exctags)
+command! Lfn :LeaderfFunction
+" :Lcs => Show color scheme
+command! Lcs :LeaderfColorscheme
+" :Lmru => Show recent opened files
+command! Lmru :LeaderfMru
+" :Lreg => Search text using regexp (line size is limited to 1000)
+"
+" Leaderf is merely a wrapper of rg which has no option to show partial content of a line,
+" but we can use rg's option `--max-columns-preview` as a workground.
+command! -nargs=+ -complete=command Lreg :Leaderf rg -M 1000 -e <q-args><CR>
+" :Lword => Search text
+" noremap <leader>ff :<C-U><C-R>=printf("Leaderf rg -M 1000 ")<CR>
+command! -nargs=+ -complete=command Lword :Leaderf rg -M 1000 <q-args><CR>
+" <leader>w => Search text under cursor
+noremap <leader>w :<C-U><C-R>=printf("Leaderf rg -M 1000 -e %s ", expand("<cword>"))<CR><CR>
 call plug#end()
+
 
 autocmd FileType c,cpp call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
-
 lua require('index')
