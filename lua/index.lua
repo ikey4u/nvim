@@ -43,9 +43,9 @@ require("mason-lspconfig").setup({
     -- The installed LSP servers could be found under `install_root_dir/mason`.
     ensure_installed = {
         'bashls',
-        'kotlin-language-server',
+        'kotlin_language_server',
         'vimls',
-        'sumneko_lua',
+        'lua_ls',
         'jdtls',
         'gopls',
         'marksman',
@@ -149,7 +149,7 @@ lsp.vimls.setup({
 })
 
 -- lsp.lua
-lsp.sumneko_lua.setup({
+lsp.lua_ls.setup({
     single_file_support = true,
 })
 
