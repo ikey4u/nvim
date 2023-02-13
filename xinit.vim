@@ -295,8 +295,11 @@ endif
 Plug 'ojroques/vim-oscyank'
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
 let g:oscyank_max_length = 1000000
-" regard terminal as tmux
-let g:oscyank_term = 'tmux'
+" If you use vim in tmux, you must enable the following option in tmux
+"
+"     set -g set-clipboard on
+"
+let g:oscyank_term = 'default'
 " disable verbose message
 let g:oscyank_silent = v:true
 
