@@ -321,7 +321,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'onsails/lspkind.nvim'
 Plug 'SirVer/ultisnips'
-let g:UltiSnipsSnippetDirectories=[g:home . '/snips']
+let g:UltiSnipsSnippetDirectories=[g:home . '/snips', expand('$HOME/\.snips')]
 " Rust Analyzer Wrapper
 Plug 'simrat39/rust-tools.nvim'
 " Lua Utilities
