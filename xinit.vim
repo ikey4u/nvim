@@ -338,7 +338,7 @@ Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
 let g:nvim_previewer_browser = "firefox"
 
-Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'Yggdroot/LeaderF'
 " disable default shortcut `<leader>f`
 let g:Lf_ShortcutF = ""
 " search files in buffer
@@ -355,9 +355,10 @@ let g:Lf_Ctags = "exctags"
 "     let g:Lf_WorkingDirectoryMode = 'Ac'
 "
 let g:Lf_WildIgnore = {
-        \ 'dir': ['.svn','.git','.hg'],
+        \ 'dir': ['.svn','.git','.hg', '.cache'],
         \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
         \}
+let g:Lf_UseVersionControlTool = 0
 let g:Lf_RecurseSubmodules = 1
 let g:Lf_ShowHidden = 1
 let g:Lf_DefaultExternalTool = "rg"
