@@ -379,7 +379,9 @@ command! -nargs=+ -complete=command Lreg :Leaderf rg -M 1000 -e <q-args><CR>
 " noremap <leader>ff :<C-U><C-R>=printf("Leaderf rg -M 1000 ")<CR>
 command! -nargs=+ -complete=command Lword :Leaderf rg -M 1000 <q-args><CR>
 " <leader>w => Search text under cursor
-noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --hidden --ignore-case --no-ignore -M 1000 -e %s ", expand("<cword>"))<CR><CR>
+noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --ignore-case -M 1000 -e %s ", expand("<cword>"))<CR><CR>
+" <leader>fw => Search text under cursor with ignore and hidden files, `f` represents `full`
+noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg --hidden --ignore-case --no-ignore -M 1000 -e %s ", expand("<cword>"))<CR><CR>
 call plug#end()
 
 
