@@ -1,10 +1,8 @@
 " Automatically read indent configuration from .clang-format in working directory,
 " if the indent is not 4, set it as is
 function SetCFamilyIndent()
-    if !exists(g:VimRoot)
-        call FindWorkingDir()
-    endif
-python3 << EOF
+    call FindWorkingDir()
+    python3 << EOF
 import vim
 import os
 
