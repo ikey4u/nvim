@@ -1,3 +1,25 @@
+" Automatically format c/cpp and header files on save
+function ClangFormat()
+    call FindWorkingDir()
+    let cfc = g:VimRoot . "/.clang-format"
+    if !filereadable(cfc)
+        return 0
+    endif
+
+    let clang_format_command = $CLANG_FORMAT_PATH
+    echomsg clang_format_command
+    if !executable(clang_format_command)
+        let clang_format_command = "clang-format"
+    endif
+    if executable(clang_format_command)
+        execute printf("silent !%s --style=file:%s -i %s", expand(clang_format_command), cfc, expand("%:p"))
+        " disable warning message `Press ENTER or type command to continue` generated from above command
+        redraw
+    else
+        echomsg printf(".clang-format is found at %s, but clang-format command is not found!", cfc)
+    endif
+endfunction
+
 " Automatically read indent configuration from .clang-format in working directory,
 " if the indent is not 4, set it as is
 function SetCFamilyIndent()
@@ -382,7 +404,7 @@ noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --ignore-case -M 1000 -e %s ", 
 noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg --hidden --ignore-case --no-ignore -M 1000 -e %s ", expand("<cword>"))<CR><CR>
 call plug#end()
 
-
 autocmd FileType c,cpp call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
+autocmd BufWritePost *.c,*.cpp,*.h :call ClangFormat()
 lua require('index')
