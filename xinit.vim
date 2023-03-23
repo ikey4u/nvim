@@ -315,7 +315,7 @@ endif
 " If you want to paste from client clipboard into host, using cmd+v on darwin
 " or ctrl+shift+v on linux
 Plug 'ojroques/vim-oscyank'
-autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
 let g:oscyank_max_length = 1000000
 " If you use vim in tmux, you must enable the following option in tmux
 "

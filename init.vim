@@ -102,9 +102,9 @@ set noincsearch  " 在输入要搜索的文字时, 取消实时匹配
 set formatoptions+=mM  " formatoptions, 设置自动换行的条件, m 表示允许对 multi_byte 字符换行
 augroup extrahighlight
     " 设置文本行宽度, 使用 gq 格式文本时会用到这个长度
-    set textwidth=100
+    set textwidth=80
     " 在宽度边界处显示一条彩色边界线
-    set colorcolumn=100
+    set colorcolumn=80
     " guibg 设置为全值, 比如要写为 #FFFFFF 而不要写为简写形式 #FFF
     " autocmd BufEnter * highlight OverLength ctermbg=red ctermfg=white guibg=#6666FF
     " 超过指定字符个数时设置高亮, 当有 unicode 字符时, 一个 unicode 字符的长度可能占据一个或者多个单元长度,
