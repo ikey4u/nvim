@@ -49,6 +49,7 @@ require("mason-lspconfig").setup({
         'jdtls',
         'gopls',
         'marksman',
+        'rust_analyzer',
     },
     auto_update = false,
     run_on_start = true,
@@ -99,6 +100,9 @@ cmp.setup({
     },
     window = {
         completion = cmp.config.window.bordered(),
+        -- if your windows is too small, the documentation windows may overlap
+        -- your completion windows, a simple and dirty workaround can be found
+        -- here: https://www.youtube.com/watch?v=ivmraDlBGDg
         documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
