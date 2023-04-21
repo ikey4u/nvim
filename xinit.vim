@@ -382,22 +382,27 @@ let g:Lf_UseVersionControlTool = 0
 let g:Lf_RecurseSubmodules = 1
 let g:Lf_ShowHidden = 1
 let g:Lf_DefaultExternalTool = "rg"
-" :Lf => Search file
-command! Lf :Leaderf file --no-ignore
 " :Lfn => Show all functions (require exctags)
 command! Lfn :LeaderfFunction
 " :Lcs => Show color scheme
 command! Lcs :LeaderfColorscheme
 " :Lmru => Show recent opened files
 command! Lmru :LeaderfMru
-" :Lreg => Search text using regexp (line size is limited to 1000)
+" :Lf => Search file
+command! Lf :Leaderf file
+command! Lff :Leaderf file --case-insensitive
+command! Lfff :Leaderf file --case-insensitive --no-ignore
+" :Lr => Search text using regexp (line size is limited to 1000)
 "
 " Leaderf is merely a wrapper of rg which has no option to show partial content of a line,
 " but we can use rg's option `--max-columns-preview` as a workground.
-command! -nargs=+ -complete=command Lreg :Leaderf rg -M 1000 -e <q-args><CR>
-" :Lword => Search text
-" noremap <leader>ff :<C-U><C-R>=printf("Leaderf rg -M 1000 ")<CR>
-command! -nargs=+ -complete=command Lword :Leaderf rg -M 1000 <q-args><CR>
+command! -nargs=+ -complete=command Lr :Leaderf rg -M 1000 -e <q-args><CR>
+command! -nargs=+ -complete=command Lrr :Leaderf rg --ignore-case -M 1000 -e <q-args><CR>
+command! -nargs=+ -complete=command Lrrr :Leaderf rg --ignore-case --no-ignore -M 1000 -e <q-args><CR>
+" :Lw => Search text
+command! -nargs=+ -complete=command Lw :Leaderf rg -M 1000 <q-args><CR>
+command! -nargs=+ -complete=command Lww :Leaderf rg --ignore-case -M 1000 <q-args><CR>
+command! -nargs=+ -complete=command Lwww :Leaderf rg --ignore-case --no-ignore -M 1000 <q-args><CR>
 " <leader>w => Search text under cursor
 noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --ignore-case -M 1000 -e %s ", expand("<cword>"))<CR><CR>
 " <leader>fw => Search text under cursor with ignore and hidden files, `f` represents `full`
