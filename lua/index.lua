@@ -209,24 +209,27 @@ lsp.gopls.setup({
     将生成的文件放到 .vimroot 同目录的 build 目录下即可.
 
 --]]
+local clangd = nil
 if vim.env.LLVM_HOME ~= nil then
-    lsp.clangd.setup {
-        cmd = {
-            vim.env.LLVM_HOME .. "/bin/clangd",
-            "--background-index",
-            "--compile-commands-dir=build",
-            "--clang-tidy",
-            "--clang-tidy-checks=performance-*,bugprone-*",
-            "--completion-style=detailed",
-            "--all-scopes-completion",
-            "--header-insertion=iwyu",
-            "-j=8",
-        },
-        root_dir = lsp.util.root_pattern('.vimroot'),
-    }
+    clangd = vim.env.LLVM_HOME .. "/bin/clangd"
 else
-    print("LLVM_HOME is not set, clangd server will not work")
+    print("LLVM_HOME is not set, use default clangd server instead")
+    clangd = "clangd"
 end
+lsp.clangd.setup {
+    cmd = {
+        clangd,
+        "--background-index",
+        "--compile-commands-dir=build",
+        "--clang-tidy",
+        "--clang-tidy-checks=performance-*,bugprone-*",
+        "--completion-style=detailed",
+        "--all-scopes-completion",
+        "--header-insertion=iwyu",
+        "-j=8",
+    },
+    root_dir = lsp.util.root_pattern('.vimroot'),
+}
 
 -- lsp.rust
 -- rust analzyer (depends on rust-tools plugin), to custmized configuration see
