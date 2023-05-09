@@ -3,6 +3,12 @@ function ClangFormat()
     call FindWorkingDir()
     let cfc = g:VimRoot . "/.clang-format"
     if !filereadable(cfc)
+        echoerr printf(".clang-format is not found: %s", cfc)
+        return 0
+    endif
+    let cfc_disable_marker = g:VimRoot . "/.clang-format-disabled"
+    if filereadable(cfc_disable_marker)
+        echomsg printf(".clang-format is explicitly disabled using %s", cfc_disable_marker)
         return 0
     endif
 
