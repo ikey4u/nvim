@@ -94,21 +94,35 @@ function! ENmark2CNmark()
         exe "try | %s/ /　/g | catch | endtry"
 endfunction
 
-" 捕获 ex 的输出, 用法 :Tabmsg <cmd>
+function! Display(msg)
+    if empty(a:msg)
+        return
+    endif
+
+    " create a horizontal split virtual unnamed buffer window
+    new
+    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+    " put the message on the first line
+    let msg = substitute(a:msg, '\r', '', 'g')
+    silent put = msg
+endfunction
+
+" 捕获 ex 的输出, 用法 :Redir <cmd>
 " 将会打开一个新的 tab 窗口, 存放输出的消息
 " http://vim.wikia.com/wiki/Capture_ex_command_output
-function! Tabmsg(cmd)
-  redir => message
-  silent execute a:cmd
-  redir END
-  if empty(message)
-    echoerr "no output"
-  else
-    " use "new" instead of "tabnew" below if you prefer split windows instead of tabs
-    tabnew
-    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
-    silent put=message
-  endif
+function! Redir(cmd)
+    redir => message
+    silent execute a:cmd
+    redir END
+    call Display(message)
+endfunction
+
+" Open history echoed messages in unnamed buffer
+function! Message()
+    redir => message
+    silent messages
+    redir END
+    call Display(message)
 endfunction
 
 " :Recent 打开最近打开的文件列表, 然后使用 gf 打开文件
@@ -245,8 +259,10 @@ endfunction
 
 " :SetColor => Set color theme
 command! -nargs=? -complete=command SetColor call SetColor(<q-args>)
-" :Tabmsg <cmd> => Capture output of ex command
-command! -nargs=+ -complete=command Tabmsg call Tabmsg(<q-args>)
+" :Redir <cmd> => Capture output of ex command
+command! -nargs=+ -complete=command Redir call Redir(<q-args>)
+" :Message <cmd> => Echo history echoed message
+command! Message call Message()
 " :Recent => Open recent files
 command! Recent call Recent()
 " :FmtUU => Convert file encoding into UTF8
