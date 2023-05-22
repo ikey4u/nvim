@@ -208,6 +208,9 @@ set statusline+=\|R%05l,C%05c,%03p%%\|
 noremap j gj
 noremap k gk
 
+" disable auto wrap
+set formatoptions-=t
+
 " 个性化配置
 let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
 if filereadable(envfile)
