@@ -434,4 +434,6 @@ call plug#end()
 autocmd FileType c,cpp call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
 autocmd BufWritePost *.c,*.cpp,*.h :call ClangFormat()
+autocmd BufWritePost *.rs :lua vim.lsp.buf.format()
+
 lua require('index')
