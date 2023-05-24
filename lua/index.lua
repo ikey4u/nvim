@@ -267,6 +267,7 @@ require('rust-tools').setup({
                 checkOnSave = {
                     enable = true,
                     allTargets = true,
+                    command = "clippy",
                 },
             },
         },
