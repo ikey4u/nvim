@@ -269,6 +269,13 @@ require('rust-tools').setup({
                     allTargets = true,
                     command = "clippy",
                 },
+                -- make sure you have rust nightly installed:
+                --
+                --     rustup toolchain install nightly
+                --
+                rustfmt = {
+                    extraArgs = { "+nightly", },
+                },
             },
         },
     },
