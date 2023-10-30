@@ -1,4 +1,4 @@
--- 编译时尝试的编译器顺序, 可以使用 CC 环境变量指定编译器
+-- 编译时尝试的编译器顺序, 可以使用 CC 环境变量指定编译器, 也要求安装 treesiter: cargo install tree-sitter-cli
 if vim.g.os ~= "Windows" then
     require('nvim-treesitter.install').compilers = {
         vim.fn.getenv('CC'), "clang","zig", "gcc",
@@ -22,8 +22,9 @@ if vim.g.os ~= "Windows" then
           node_incremental = '<CR>',
         }
       },
+      -- 禁用缩进, treesitter 的缩进支持比较差
       indent = {
-        enable = true,
+        enable = false,
       }
     }
 end
@@ -145,15 +146,16 @@ lsp.bashls.setup({
 --
 -- For android development, you may export the java bundled with Android Studio into PATH,
 -- or else neovim will use the system java which could not work with kotlin.
-lsp.kotlin_language_server.setup({
-    settings = {
-        kotlin = {
-            java = {
-                home = vim.env.ANDROID_JDK_DIR,
-            }
-        }
-    }
-})
+if vim.env.ANDROID_JDK_DIR ~= nil then
+    lsp.kotlin_language_server.setup({
+        cmd_env = {
+            PATH = vim.env.ANDROID_JDK_DIR .. "/bin:" .. vim.env.PATH,
+            JAVA_HOME = vim.env.ANDROID_JDK_DIR,
+        },
+    })
+else
+    print("ANDROID_JDK_DIR is not set, your kotlin_language_server may not work")
+end
 
 -- lsp.vimscript
 lsp.vimls.setup({

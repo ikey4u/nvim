@@ -297,7 +297,7 @@ noremap <silent> <C-h> :vertical resize +3<CR>
 noremap <silent> <C-l> :vertical resize -3<CR>
 noremap <silent> <C-j> :resize +3<CR>
 noremap <silent> <C-k> :resize -3<CR>
-nnoremap Cs :StripWhitespace<CR>
+nnoremap Cs :%s/\s\+$//ge<CR>
 
 " load vim plugins
 let plugins = [
@@ -316,8 +316,6 @@ Plug 'mattn/emmet-vim'
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify'
 let g:startify_files_number = 20
-Plug 'ntpeters/vim-better-whitespace'
-let g:better_whitespace_enabled=1
 Plug 'ryanoasis/vim-devicons'
 Plug 'udalov/kotlin-vim'
 if g:os != "Windows"
@@ -369,16 +367,24 @@ Plug 'simrat39/rust-tools.nvim'
 " Lua Utilities
 Plug 'nvim-lua/plenary.nvim'
 " golang
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-let g:go_fmt_autosave = 0
+if executable("go")
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+    let g:go_fmt_autosave = 0
+else
+    echomsg "go is not installed, vim-go will not work"
+endif
 " neovim builtin language server configuration
 Plug 'neovim/nvim-lspconfig'
 " mason package manager
 Plug 'williamboman/mason.nvim'
 " lspconfig plugin for mason
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
-let g:nvim_previewer_browser = "firefox"
+if executable("cargo")
+    Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
+    let g:nvim_previewer_browser = "firefox"
+else
+    echomsg "cargo is not installed, nvim-previewer will not work"
+endif
 
 Plug 'Yggdroot/LeaderF'
 " disable default shortcut `<leader>f`
@@ -389,7 +395,11 @@ noremap <leader>Fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
 let g:Lf_UseCache = 0
 " see https://github.com/universal-ctags/ctags to intall exctags.
 " note that the default name for exctags is ctags, you must rename it to exctags
-let g:Lf_Ctags = "exctags"
+if executable("exctags")
+    let g:Lf_Ctags = "exctags"
+else
+    echomsg "exctags (ctags) is not installed, Leaderf tags will not work"
+endif
 " LeaderF's working directory will be set in function FindWorkingDir,
 " as a result we do not need root marker and directory mode:
 "
@@ -403,37 +413,41 @@ let g:Lf_WildIgnore = {
 let g:Lf_UseVersionControlTool = 0
 let g:Lf_RecurseSubmodules = 1
 let g:Lf_ShowHidden = 1
-let g:Lf_DefaultExternalTool = "rg"
-" :Lfn => Show all functions (require exctags)
-command! Lfn :LeaderfFunction
-" :Lcs => Show color scheme
-command! Lcs :LeaderfColorscheme
-" :Lmru => Show recent opened files
-command! Lmru :LeaderfMru
-" :Lf => Search file
-command! Lf :Leaderf file
-command! Lff :Leaderf file --case-insensitive
-command! Lfff :Leaderf file --case-insensitive --no-ignore
-" :Lr => Search text using regexp (line size is limited to 1000)
-"
-" Leaderf is merely a wrapper of rg which has no option to show partial content of a line,
-" but we can use rg's option `--max-columns-preview` as a workground.
-command! -nargs=+ -complete=command Lr :Leaderf rg -M 1000 -e <q-args><CR>
-command! -nargs=+ -complete=command Lrr :Leaderf rg --ignore-case -M 1000 -e <q-args><CR>
-command! -nargs=+ -complete=command Lrrr :Leaderf rg --ignore-case --no-ignore -M 1000 -e <q-args><CR>
-" :Lw => Search text
-command! -nargs=+ -complete=command Lw :Leaderf rg -M 1000 <q-args><CR>
-command! -nargs=+ -complete=command Lww :Leaderf rg --ignore-case -M 1000 <q-args><CR>
-command! -nargs=+ -complete=command Lwww :Leaderf rg --ignore-case --no-ignore -M 1000 <q-args><CR>
-" <leader>w => Search text under cursor
-noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --ignore-case -M 1000 -e %s ", expand("<cword>"))<CR><CR>
-" <leader>fw => Search text under cursor with ignore and hidden files, `f` represents `full`
-noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg --hidden --ignore-case --no-ignore -M 1000 -e %s ", expand("<cword>"))<CR><CR>
+if executable("rg")
+    let g:Lf_DefaultExternalTool = "rg"
+    " :Lfn => Show all functions (require exctags)
+    command! Lfn :LeaderfFunction
+    " :Lcs => Show color scheme
+    command! Lcs :LeaderfColorscheme
+    " :Lmru => Show recent opened files
+    command! Lmru :LeaderfMru
+    " :Lf => Search file
+    command! Lf :Leaderf file
+    command! Lff :Leaderf file --case-insensitive
+    command! Lfff :Leaderf file --case-insensitive --no-ignore
+    " :Lr => Search text using regexp (line size is limited to 1000)
+    "
+    " Leaderf is merely a wrapper of rg which has no option to show partial content of a line,
+    " but we can use rg's option `--max-columns-preview` as a workground.
+    command! -nargs=+ -complete=command Lr :Leaderf rg -M 1000 -e <q-args><CR>
+    command! -nargs=+ -complete=command Lrr :Leaderf rg --ignore-case -M 1000 -e <q-args><CR>
+    command! -nargs=+ -complete=command Lrrr :Leaderf rg --ignore-case --no-ignore -M 1000 -e <q-args><CR>
+    " :Lw => Search text
+    command! -nargs=+ -complete=command Lw :Leaderf rg -M 1000 <q-args><CR>
+    command! -nargs=+ -complete=command Lww :Leaderf rg --ignore-case -M 1000 <q-args><CR>
+    command! -nargs=+ -complete=command Lwww :Leaderf rg --ignore-case --no-ignore -M 1000 <q-args><CR>
+    " <leader>w => Search text under cursor
+    noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --ignore-case -M 1000 -e %s ", expand("<cword>"))<CR><CR>
+    " <leader>fw => Search text under cursor with ignore and hidden files, `f` represents `full`
+    noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg --hidden --ignore-case --no-ignore -M 1000 -e %s ", expand("<cword>"))<CR><CR>
+else
+    echomsg "rg is not installed, Leaderf search will not work"
+endif
 call plug#end()
 
 autocmd FileType c,cpp call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
-autocmd BufWritePost *.c,*.cpp,*.h :call ClangFormat()
+autocmd BufWritePost *.c,*.cpp,*.h,*.cc :call ClangFormat()
 autocmd BufWritePost *.rs :lua vim.lsp.buf.format()
 
 lua require('index')
