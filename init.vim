@@ -99,19 +99,6 @@ set ignorecase   " 搜索模式里忽略大小写
 set smartcase    " 如果搜索模式包含大写字符, 不使用 ignorecase 选项,
 set noincsearch  " 在输入要搜索的文字时, 取消实时匹配
 
-set formatoptions+=mM  " formatoptions, 设置自动换行的条件, m 表示允许对 multi_byte 字符换行
-augroup extrahighlight
-    " 设置文本行宽度, 使用 gq 格式文本时会用到这个长度
-    set textwidth=80
-    " 在宽度边界处显示一条彩色边界线
-    set colorcolumn=80
-    " guibg 设置为全值, 比如要写为 #FFFFFF 而不要写为简写形式 #FFF
-    " autocmd BufEnter * highlight OverLength ctermbg=red ctermfg=white guibg=#6666FF
-    " 超过指定字符个数时设置高亮, 当有 unicode 字符时, 一个 unicode 字符的长度可能占据一个或者多个单元长度,
-    " 这会导致在含有 unicode 的行上列索引显示不正确, 但是实际上高亮的行宽显示是正确的
-    " autocmd BufEnter * match OverLength /\%100v.\+/
-augroup END
-
 set nowritebackup  " 编辑时不需要备份文件
 set nobackup       " 设置无备份文件
 set noswapfile     " 设置无临时文件
@@ -125,6 +112,17 @@ if filereadable(printf("%s/%s/%s", g:home, 'colors', 'diokai.vim'))
     colorscheme diokai
 endif
 
+set formatoptions+=mM  " formatoptions, 设置自动换行的条件, m 表示允许对 multi_byte 字符换行
+augroup extrahighlight
+    " 设置文本行宽度, 使用 gq 格式文本时会用到这个长度
+    set textwidth=80
+    " 在宽度边界处显示一条彩色边界线
+    set colorcolumn=80
+    " set transparent colorcolumn, note that this line must appear after
+    " colorscheme command
+    highlight colorcolumn ctermbg=238
+augroup END
+
 " 不要存储会话的全局和局部变量值以及折叠(因为 Utilsnippet 无法正常恢复这些选项)
 set ssop-=options
 set ssop-=folds
@@ -132,8 +130,8 @@ set ssop-=folds
 " 根据文件类型自动设置缩进宽度
 augroup cusindent
     autocmd!
-    " 以下文件类型缩进为 4
-    autocmd FileType svelte,javascript,vue,html,css,yaml,dart,typescript setlocal ts=2 sw=2 sts=0 et
+    " 以下文件类型缩进为 2
+    autocmd FileType javascriptreact,svelte,javascript,vue,html,css,yaml,dart,typescript setlocal ts=2 sw=2 sts=0 et
     " txt 缩进为 0
     autocmd FileType text setlocal nocindent
     " 设置 c++ 和 c 的 switch case 缩进
@@ -211,6 +209,13 @@ noremap k gk
 " disable auto wrap
 set formatoptions-=t
 
+" highlight trailing whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+au ColorScheme * highlight ExtraWhitespace guibg=red
+au BufEnter * match ExtraWhitespace /\s\+$/
+au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhiteSpace /\s\+$/
+
 " 个性化配置
 let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
 if filereadable(envfile)
@@ -224,6 +229,9 @@ if exists('$NVIM_PYTHON_EXE_PATH')
 else
     if g:os == 'Linux' || g:os == 'Darwin'
         let g:python3_host_prog = expand("$HOME/.pyenv/shims/python3")
+        if !filereadable(g:python3_host_prog)
+            let g:python3_host_prog = "python3"
+        endif
     else
         let g:python3_host_prog = expand("py")
     endif
