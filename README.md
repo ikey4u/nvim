@@ -7,10 +7,14 @@ make neovim powerful, you need the followings.
 
     Install python using [pyenv](https://github.com/pyenv/pyenv) on Linux/Darwin or installer on Windows and then run
 
-        pip3 install pynvim neovim neovim-remote 
+        python3 -m pip install --no-cache-dir --upgrade --force-reinstall pynvim neovim neovim-remote
 
-    and put the following into your shell configuration (.zshrc, .bashrc or whatever) if you use
-    Linux/Darwin
+    If you are on Windows and the `python3` command is not found when you does
+    have python3 installed, you can replace `python3` with `py -3` and retry the
+    command.
+
+    Also put the following into your shell configuration (.zshrc, .bashrc or
+    whatever) if you use Linux/Darwin
 
         # open with servername (neovim-remote)
         alias xvim="nvim --listen /tmp/nvim "
@@ -47,7 +51,7 @@ make neovim powerful, you need the followings.
 # Tmux
 
 If you use tmux, you should add the following config (tested with tmux 3.1c) into your client's
-`~/.tmux.conf` 
+`~/.tmux.conf`
 
     # 256 color
     set -sa terminal-overrides ',xterm-256color:RGB'
