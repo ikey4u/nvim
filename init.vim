@@ -233,11 +233,11 @@ else
             let g:python3_host_prog = "python3"
         endif
     else
-        let g:python3_host_prog = expand("py")
+        let g:python3_host_prog=system('py -3 -c "import sys; print(sys.executable, end=\"\")"')
     endif
 endif
 if !executable(g:python3_host_prog)
-    echomsg 'python3 is not installed, the extensive configurations will not be included'
+    echomsg 'python3 is not found (provided path:' . g:python3_host_prog . '), the extensive configurations will not be included'
 else
     let xinit=printf('%s/%s', g:home, 'xinit.vim')
     if filereadable(xinit)
