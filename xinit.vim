@@ -448,6 +448,6 @@ call plug#end()
 autocmd FileType c,cpp call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
 autocmd BufWritePost *.c,*.cpp,*.h,*.cc :call ClangFormat()
-autocmd BufWritePost *.rs :lua vim.lsp.buf.format()
+autocmd BufWritePost *.css,*.html,*.rs,*.jsx,*.js,*.tsx,*.ts :lua vim.lsp.buf.format()
 
 lua require('index')
