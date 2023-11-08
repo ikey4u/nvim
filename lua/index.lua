@@ -43,6 +43,9 @@ require("mason-lspconfig").setup({
     --
     -- The installed LSP servers could be found under `install_root_dir/mason`.
     ensure_installed = {
+        'tsserver',
+        'cssls',
+        'html',
         'bashls',
         'kotlin_language_server',
         'vimls',
@@ -301,4 +304,13 @@ lsp.cmake.setup({
 })
 
 lsp.marksman.setup({
+})
+
+lsp.tsserver.setup({
+})
+
+lsp.cssls.setup({
+})
+
+lsp.html.setup({
 })
