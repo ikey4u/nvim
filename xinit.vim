@@ -422,9 +422,9 @@ if executable("rg")
     " :Lmru => Show recent opened files
     command! Lmru :LeaderfMru
     " :Lf => Search file
-    command! Lf :Leaderf file
-    command! Lff :Leaderf file --case-insensitive
-    command! Lfff :Leaderf file --case-insensitive --no-ignore
+    command! Lf :Leaderf file --no-auto-preview
+    command! Lff :Leaderf file --no-auto-preview --case-insensitive
+    command! Lfff :Leaderf file --no-auto-preview --case-insensitive --no-ignor
     " :Lr => Search text using regexp (line size is limited to 1000)
     "
     " Leaderf is merely a wrapper of rg which has no option to show partial content of a line,
