@@ -240,6 +240,12 @@ lsp.clangd.setup {
 -- rust analzyer (depends on rust-tools plugin), to custmized configuration see
 -- https://github.com/simrat39/rust-tools.nvim#configuration
 require('rust-tools').setup({
+    tools = {
+        inlay_hints = {
+            auto = true,
+            only_current_line = true,
+        },
+    },
     -- rust-tools will pass `server` options to lspconfig
     server = {
         -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
