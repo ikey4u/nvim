@@ -386,7 +386,7 @@ else
     echomsg "cargo is not installed, nvim-previewer will not work"
 endif
 
-Plug 'Yggdroot/LeaderF'
+Plug 'Yggdroot/LeaderF', { 'tag': 'v1.24' }
 " disable default shortcut `<leader>f`
 let g:Lf_ShortcutF = ""
 " search files in buffer
