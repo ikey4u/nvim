@@ -381,7 +381,6 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 if executable("cargo")
     Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
-    let g:nvim_previewer_browser = "firefox"
 else
     echomsg "cargo is not installed, nvim-previewer will not work"
 endif

@@ -7,7 +7,7 @@ if vim.g.os ~= "Windows" then
     require('nvim-treesitter.configs').setup {
       ensure_installed = {
           "html", "css", "cpp", "bash", "vim", "lua", "go", "rust", "cmake", "json",
-          "make", "kotlin", "python", "toml", "json5",
+          "make", "kotlin", "python", "toml", "json5", "c",
       },
       highlight = {
         enable = true,
