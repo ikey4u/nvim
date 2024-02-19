@@ -112,7 +112,8 @@ if filereadable(printf("%s/%s/%s", g:home, 'colors', 'diokai.vim'))
     colorscheme diokai
 endif
 
-set formatoptions+=mM  " formatoptions, 设置自动换行的条件, m 表示允许对 multi_byte 字符换行
+" `m` allows break at multibyte character
+set formatoptions+=m
 augroup extrahighlight
     " 设置文本行宽度, 使用 gq 格式文本时会用到这个长度
     set textwidth=80
