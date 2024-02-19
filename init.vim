@@ -113,7 +113,41 @@ if filereadable(printf("%s/%s/%s", g:home, 'colors', 'diokai.vim'))
 endif
 
 " `m` allows break at multibyte character
-set formatoptions+=m
+"
+" `B` is tricky, see examples below.
+"
+"  Case 1:
+"
+"      中国,
+"      你好
+"
+"  Format using `gq` will give `中国, 你好`, notice that space after `,`.
+"
+"  Case 2:
+"
+"      中国
+"      你好
+"
+"  Format using `gq` will give `中国你好`, notice that no space between the
+"  joint lines.
+"
+"  Case 3:
+"
+"      Hello,
+"      World
+"
+"  Format using `gq` will give `Hello, World`.
+"
+"  Case 4:
+"
+"      Hello
+"      World
+"
+"  Format using `gq` will give `Hello World`.
+"
+set formatoptions+=mB
+" `t` disables autowrap
+set formatoptions-=t
 augroup extrahighlight
     " 设置文本行宽度, 使用 gq 格式文本时会用到这个长度
     set textwidth=80
@@ -206,9 +240,6 @@ set statusline+=\|R%05l,C%05c,%03p%%\|
 "
 noremap j gj
 noremap k gk
-
-" disable auto wrap
-set formatoptions-=t
 
 " highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
