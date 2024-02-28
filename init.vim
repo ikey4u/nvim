@@ -26,11 +26,11 @@ if has('win32') || has('win64')
     let g:os = "Windows"
 endif
 if !exists('g:os')
-    echomsg 'Platform is not supported!'
+    echomsg '[x] platform is not supported!'
     finish
 endif
 if !exists('g:home')
-    echomsg 'nvim configuration directory is not exist: ' . g:home
+    echomsg '[x] nvim configuration directory is not exist: ' . g:home
     finish
 endif
 
@@ -254,8 +254,7 @@ if filereadable(envfile)
     exec printf('source %s', envfile)
 endif
 
-" extensive configuration (vim plugins, lua plugins, functions, shortcuts)
-" set neovim python3 path: https://neovim.io/doc/user/provider.html
+" Load extensive configurations (vim and lua plugins, functions, shortcuts, ...)
 if exists('$NVIM_PYTHON_EXE_PATH')
     let g:python3_host_prog = expand("$NVIM_PYTHON_EXE_PATH")
 else
@@ -265,14 +264,66 @@ else
             let g:python3_host_prog = "python3"
         endif
     else
-        let g:python3_host_prog=system('py -3 -c "import sys; print(sys.executable, end=\"\")"')
+        let g:python3_host_prog = system('py -3 -c "import sys; print(sys.executable, end=\"\")"')
     endif
 endif
 if !executable(g:python3_host_prog)
-    echomsg 'python3 is not found (provided path:' . g:python3_host_prog . '), the extensive configurations will not be included'
+    echomsg '[!] python3 is not found (provided path:' . g:python3_host_prog . '), the extensive configurations are disabled'
+    finish
+endif
+" TODO: The following piece of code significantly slows down the nvim startup speed,
+" replace all python3 things maybe a good alternative
+" for pyplug in ['pynvim', 'neovim', 'neovim-remote']
+"     let _ = system(printf('%s -m pip show %s', g:python3_host_prog, pyplug))
+"     if v:shell_error
+"         echomsg printf('[x] required python plugin %s is not installed', pyplug)
+"         finish
+"     endif
+" endfor
+if empty($LLVM_HOME)
+    echomsg '[!] clangd, clang-format: LLVM_HOME environment variable is required, set it to the root path of LLVM (14.0 or newer) installation directory'
 else
-    let xinit=printf('%s/%s', g:home, 'xinit.vim')
-    if filereadable(xinit)
-        exec printf("source %s", xinit)
+    if g:os == 'Windows'
+        let clang=printf('%s\bin\clang.exe', $LLVM_HOME)
+    else
+        let clang=printf('%s/bin/clang', $LLVM_HOME)
+    endif
+    if !executable(clang)
+        echomsg printf("[x] you have set LLVM_HOME to `%s`, but clang %s is not a executable", clang)
+        finish
+    endif
+    if g:os == 'Windows'
+        let clang_major_str = system(printf('%s -dM -E -x c NUL | findstr /i /c:clang_major', clang))
+    else
+        let clang_major_str = system(printf('%s -dM -E -x c /dev/null | grep clang_major', clang))
+    endif
+    let clang_major = str2nr(split(clang_major_str, ' ')[2])
+    if clang_major < 14
+        echomsg printf("[x] require LLVM version >= 14, but LLVM %d found", clang_major)
+        finish
     endif
 endif
+if !executable("cargo")
+    echomsg "[!] rust is not installed, nvim-previewer will not work"
+endif
+if !executable("go")
+    echomsg "[!] go is not installed, vim-go will not work"
+endif
+if executable("exctags")
+    echomsg "[!] exctags (ctags) is not installed, Leaderf tags will not work"
+endif
+if !executable("rg")
+    echomsg "[!] rg is not installed, Leaderf search will not work"
+endif
+if !executable("npm")
+    echomsg "[!] npm is not installed, web related lsp such as css, html will not work"
+endif
+if empty($ANDROID_JDK_DIR)
+    echomsg "[!] ANDROID_JDK_DIR is not set, kotlin lsp may not work"
+endif
+let xinit=printf('%s/%s', g:home, 'xinit.vim')
+if !filereadable(xinit)
+    echomsg printf('[!] %s is not found, extensive configurations are disabled', xinit)
+    finish
+endif
+exec printf("source %s", xinit)
