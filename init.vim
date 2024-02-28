@@ -295,7 +295,7 @@ else
     if g:os == 'Windows'
         let clang_major_str = system(printf('%s -dM -E -x c NUL | findstr /i /c:clang_major', clang))
     else
-        let clang_major_str = system(printf('%s -dM -E -x c /dev/null | grep clang_major', clang))
+        let clang_major_str = system(printf('%s -dM -E -x c /dev/null 2>/dev/null | grep clang_major', clang))
     endif
     let clang_major = str2nr(split(clang_major_str, ' ')[2])
     if clang_major < 14
