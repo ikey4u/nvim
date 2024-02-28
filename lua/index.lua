@@ -48,10 +48,7 @@ require("mason-lspconfig").setup({
         'html',
         'bashls',
         'kotlin_language_server',
-        'vimls',
-        'lua_ls',
         'jdtls',
-        'gopls',
         'marksman',
         'rust_analyzer',
     },
@@ -156,8 +153,6 @@ if vim.env.ANDROID_JDK_DIR ~= nil then
             JAVA_HOME = vim.env.ANDROID_JDK_DIR,
         },
     })
-else
-    print("ANDROID_JDK_DIR is not set, your kotlin_language_server may not work")
 end
 
 -- lsp.vimscript
@@ -217,24 +212,21 @@ lsp.gopls.setup({
 local clangd = nil
 if vim.env.LLVM_HOME ~= nil then
     clangd = vim.env.LLVM_HOME .. "/bin/clangd"
-else
-    print("LLVM_HOME is not set, use default clangd server instead")
-    clangd = "clangd"
+    lsp.clangd.setup {
+        cmd = {
+            clangd,
+            "--background-index",
+            "--compile-commands-dir=build",
+            "--clang-tidy",
+            "--clang-tidy-checks=performance-*,bugprone-*",
+            "--completion-style=detailed",
+            "--all-scopes-completion",
+            "--header-insertion=iwyu",
+            "-j=8",
+        },
+        root_dir = lsp.util.root_pattern('.vimroot'),
+    }
 end
-lsp.clangd.setup {
-    cmd = {
-        clangd,
-        "--background-index",
-        "--compile-commands-dir=build",
-        "--clang-tidy",
-        "--clang-tidy-checks=performance-*,bugprone-*",
-        "--completion-style=detailed",
-        "--all-scopes-completion",
-        "--header-insertion=iwyu",
-        "-j=8",
-    },
-    root_dir = lsp.util.root_pattern('.vimroot'),
-}
 
 -- lsp.rust
 -- rust analzyer (depends on rust-tools plugin), to custmized configuration see

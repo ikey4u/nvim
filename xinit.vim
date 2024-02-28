@@ -11,19 +11,10 @@ function ClangFormat()
         echomsg printf(".clang-format is explicitly disabled using %s", cfc_disable_marker)
         return 0
     endif
-
-    let clang_format_command = $CLANG_FORMAT_PATH
-    echomsg clang_format_command
-    if !executable(clang_format_command)
-        let clang_format_command = "clang-format"
-    endif
-    if executable(clang_format_command)
-        execute printf("silent !%s --style=file:%s -i %s", expand(clang_format_command), cfc, expand("%:p"))
-        " disable warning message `Press ENTER or type command to continue` generated from above command
-        redraw
-    else
-        echomsg printf(".clang-format is found at %s, but clang-format command is not found!", cfc)
-    endif
+    let clang_format_command = $LLVM_HOME . "/bin/clang-format"
+    execute printf("silent !%s --style=file:%s -i %s", expand(clang_format_command), cfc, expand("%:p"))
+    " disable warning message `Press ENTER or type command to continue` generated from above command
+    redraw
 endfunction
 
 " Automatically read indent configuration from .clang-format in working directory,
@@ -257,6 +248,140 @@ EOF
 let g:Lf_WorkingDirectory=g:VimRoot
 endfunction
 
+call plug#begin(g:home . '/plugged')
+    Plug 'scrooloose/nerdtree'
+    exec printf('source %s/%s', g:home, 'nerdtree.conf')
+    Plug 'lervag/vimtex'
+    exec printf('source %s/%s', g:home, 'vimtex.conf')
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'scrooloose/nerdcommenter'
+    let g:NERDSpaceDelims=1
+    Plug 'mattn/emmet-vim'
+    Plug 'majutsushi/tagbar'
+    Plug 'mhinz/vim-startify'
+    let g:startify_files_number = 20
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'udalov/kotlin-vim'
+    if g:os != "Windows"
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    endif
+
+    " Yank text to client system clipboard when editing on host using vim
+    "
+    "     client ---(ssh)---> host
+    "
+    " If you use vim in tmux, you should install tmux-yank
+    "
+    "    set -g @plugin 'tmux-plugins/tmux-yank'
+    "
+    " and tmux-yank requires xsel on linux.
+    "
+    " If you want to paste from client clipboard into host, using cmd+v on darwin
+    " or ctrl+shift+v on linux
+    Plug 'ojroques/vim-oscyank'
+    autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
+    let g:oscyank_max_length = 1000000
+    " If you use vim in tmux, you must enable the following option in tmux
+    "
+    "     set -g set-clipboard on
+    "
+    let g:oscyank_term = 'default'
+    " disable verbose message
+    let g:oscyank_silent = v:true
+
+    " 文件格式化插件
+    Plug 'sbdchd/neoformat'
+    " markdown 表格
+    "
+    " 通过 :TableModeEnable 启用表格模式, 按下 | 开始输入表格内容, 按下 || 自动填充行分隔符.
+    " 编辑表格完毕后, 可以使用 :TableModeDisable 退出.
+    Plug 'dhruvasagar/vim-table-mode'
+    " Auto Completion
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+    Plug 'onsails/lspkind.nvim'
+    Plug 'SirVer/ultisnips'
+    let g:UltiSnipsSnippetDirectories=[g:home . '/snips', expand('$HOME/\.snips')]
+    " Rust Analyzer Wrapper
+    Plug 'simrat39/rust-tools.nvim'
+    " Lua Utilities
+    Plug 'nvim-lua/plenary.nvim'
+    " golang
+    if executable("go")
+        Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+        let g:go_fmt_autosave = 0
+    endif
+    " neovim builtin language server configuration
+    Plug 'neovim/nvim-lspconfig'
+    " mason package manager
+    Plug 'williamboman/mason.nvim'
+    " lspconfig plugin for mason
+    Plug 'williamboman/mason-lspconfig.nvim'
+    if executable("cargo")
+        Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
+    endif
+
+    Plug 'Yggdroot/LeaderF', { 'tag': 'v1.24' }
+    " disable default shortcut `<leader>f`
+    let g:Lf_ShortcutF = ""
+    " search files in buffer
+    noremap <leader>Fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+    " disable cache (or else you cannot find new added files)
+    let g:Lf_UseCache = 0
+    " see https://github.com/universal-ctags/ctags to intall exctags.
+    " note that the default name for exctags is ctags, you must rename it to exctags
+    if executable("exctags")
+        let g:Lf_Ctags = "exctags"
+    endif
+    " LeaderF's working directory will be set in function FindWorkingDir,
+    " as a result we do not need root marker and directory mode:
+    "
+    "     let g:Lf_RootMarkers = ['.vimroot', '.git']
+    "     let g:Lf_WorkingDirectoryMode = 'Ac'
+    "
+    let g:Lf_WildIgnore = {
+            \ 'dir': ['.svn','.git','.hg', '.cache'],
+            \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
+            \}
+    let g:Lf_UseVersionControlTool = 0
+    let g:Lf_RecurseSubmodules = 1
+    let g:Lf_ShowHidden = 1
+    if executable("rg")
+        let g:Lf_DefaultExternalTool = "rg"
+        " :Lfn => Show all functions (require exctags)
+        command! Lfn :LeaderfFunction
+        " :Lcs => Show color scheme
+        command! Lcs :LeaderfColorscheme
+        " :Lmru => Show recent opened files
+        command! Lmru :LeaderfMru
+        " :Lf => Search file
+        command! Lf :Leaderf file --no-auto-preview
+        command! Lff :Leaderf file --no-auto-preview --case-insensitive
+        command! Lfff :Leaderf file --no-auto-preview --case-insensitive --no-ignor
+        " :Lr => Search text using regexp (line size is limited to 1000)
+        "
+        " Leaderf is merely a wrapper of rg which has no option to show partial content of a line,
+        " but we can use rg's option `--max-columns-preview` as a workground.
+        command! -nargs=+ -complete=command Lr :Leaderf rg -M 1000 -e <q-args><CR>
+        command! -nargs=+ -complete=command Lrr :Leaderf rg --ignore-case -M 1000 -e <q-args><CR>
+        command! -nargs=+ -complete=command Lrrr :Leaderf rg --ignore-case --no-ignore -M 1000 -e <q-args><CR>
+        " :Lw => Search text
+        command! -nargs=+ -complete=command Lw :Leaderf rg -M 1000 <q-args><CR>
+        command! -nargs=+ -complete=command Lww :Leaderf rg --ignore-case -M 1000 <q-args><CR>
+        command! -nargs=+ -complete=command Lwww :Leaderf rg --ignore-case --no-ignore -M 1000 <q-args><CR>
+        " <leader>w => Search text under cursor
+        noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --ignore-case -M 1000 -e %s ", expand("<cword>"))<CR><CR>
+        " <leader>fw => Search text under cursor with ignore and hidden files, `f` represents `full`
+        noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg --hidden --ignore-case --no-ignore -M 1000 -e %s ", expand("<cword>"))<CR><CR>
+    endif
+call plug#end()
+
+lua require('index')
+
 " :SetColor => Set color theme
 command! -nargs=? -complete=command SetColor call SetColor(<q-args>)
 " :Redir <cmd> => Capture output of ex command
@@ -299,154 +424,8 @@ noremap <silent> <C-j> :resize +3<CR>
 noremap <silent> <C-k> :resize -3<CR>
 nnoremap Cs :%s/\s\+$//ge<CR>
 
-" load vim plugins
-let plugins = [
-    \ 'nerdtree',
-    \ 'vimtex',
-\ ]
-call plug#begin(g:home . '/plugged')
-Plug 'scrooloose/nerdtree'
-exec printf('source %s/%s', g:home, 'nerdtree.conf')
-Plug 'lervag/vimtex'
-exec printf('source %s/%s', g:home, 'vimtex.conf')
-Plug 'jiangmiao/auto-pairs'
-Plug 'scrooloose/nerdcommenter'
-let g:NERDSpaceDelims=1
-Plug 'mattn/emmet-vim'
-Plug 'majutsushi/tagbar'
-Plug 'mhinz/vim-startify'
-let g:startify_files_number = 20
-Plug 'ryanoasis/vim-devicons'
-Plug 'udalov/kotlin-vim'
-if g:os != "Windows"
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-endif
-
-" Yank text to client system clipboard when editing on host using vim
-"
-"     client ---(ssh)---> host
-"
-" If you use vim in tmux, you should install tmux-yank
-"
-"    set -g @plugin 'tmux-plugins/tmux-yank'
-"
-" and tmux-yank requires xsel on linux.
-"
-" If you want to paste from client clipboard into host, using cmd+v on darwin
-" or ctrl+shift+v on linux
-Plug 'ojroques/vim-oscyank'
-autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
-let g:oscyank_max_length = 1000000
-" If you use vim in tmux, you must enable the following option in tmux
-"
-"     set -g set-clipboard on
-"
-let g:oscyank_term = 'default'
-" disable verbose message
-let g:oscyank_silent = v:true
-
-" 文件格式化插件
-Plug 'sbdchd/neoformat'
-" markdown 表格
-"
-" 通过 :TableModeEnable 启用表格模式, 按下 | 开始输入表格内容, 按下 || 自动填充行分隔符.
-" 编辑表格完毕后, 可以使用 :TableModeDisable 退出.
-Plug 'dhruvasagar/vim-table-mode'
-" Auto Completion
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-Plug 'onsails/lspkind.nvim'
-Plug 'SirVer/ultisnips'
-let g:UltiSnipsSnippetDirectories=[g:home . '/snips', expand('$HOME/\.snips')]
-" Rust Analyzer Wrapper
-Plug 'simrat39/rust-tools.nvim'
-" Lua Utilities
-Plug 'nvim-lua/plenary.nvim'
-" golang
-if executable("go")
-    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-    let g:go_fmt_autosave = 0
-else
-    echomsg "go is not installed, vim-go will not work"
-endif
-" neovim builtin language server configuration
-Plug 'neovim/nvim-lspconfig'
-" mason package manager
-Plug 'williamboman/mason.nvim'
-" lspconfig plugin for mason
-Plug 'williamboman/mason-lspconfig.nvim'
-if executable("cargo")
-    Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
-else
-    echomsg "cargo is not installed, nvim-previewer will not work"
-endif
-
-Plug 'Yggdroot/LeaderF', { 'tag': 'v1.24' }
-" disable default shortcut `<leader>f`
-let g:Lf_ShortcutF = ""
-" search files in buffer
-noremap <leader>Fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
-" disable cache (or else you cannot find new added files)
-let g:Lf_UseCache = 0
-" see https://github.com/universal-ctags/ctags to intall exctags.
-" note that the default name for exctags is ctags, you must rename it to exctags
-if executable("exctags")
-    let g:Lf_Ctags = "exctags"
-else
-    echomsg "exctags (ctags) is not installed, Leaderf tags will not work"
-endif
-" LeaderF's working directory will be set in function FindWorkingDir,
-" as a result we do not need root marker and directory mode:
-"
-"     let g:Lf_RootMarkers = ['.vimroot', '.git']
-"     let g:Lf_WorkingDirectoryMode = 'Ac'
-"
-let g:Lf_WildIgnore = {
-        \ 'dir': ['.svn','.git','.hg', '.cache'],
-        \ 'file': ['*.sw?','~$*','*.bak','*.exe','*.o','*.so','*.py[co]']
-        \}
-let g:Lf_UseVersionControlTool = 0
-let g:Lf_RecurseSubmodules = 1
-let g:Lf_ShowHidden = 1
-if executable("rg")
-    let g:Lf_DefaultExternalTool = "rg"
-    " :Lfn => Show all functions (require exctags)
-    command! Lfn :LeaderfFunction
-    " :Lcs => Show color scheme
-    command! Lcs :LeaderfColorscheme
-    " :Lmru => Show recent opened files
-    command! Lmru :LeaderfMru
-    " :Lf => Search file
-    command! Lf :Leaderf file --no-auto-preview
-    command! Lff :Leaderf file --no-auto-preview --case-insensitive
-    command! Lfff :Leaderf file --no-auto-preview --case-insensitive --no-ignor
-    " :Lr => Search text using regexp (line size is limited to 1000)
-    "
-    " Leaderf is merely a wrapper of rg which has no option to show partial content of a line,
-    " but we can use rg's option `--max-columns-preview` as a workground.
-    command! -nargs=+ -complete=command Lr :Leaderf rg -M 1000 -e <q-args><CR>
-    command! -nargs=+ -complete=command Lrr :Leaderf rg --ignore-case -M 1000 -e <q-args><CR>
-    command! -nargs=+ -complete=command Lrrr :Leaderf rg --ignore-case --no-ignore -M 1000 -e <q-args><CR>
-    " :Lw => Search text
-    command! -nargs=+ -complete=command Lw :Leaderf rg -M 1000 <q-args><CR>
-    command! -nargs=+ -complete=command Lww :Leaderf rg --ignore-case -M 1000 <q-args><CR>
-    command! -nargs=+ -complete=command Lwww :Leaderf rg --ignore-case --no-ignore -M 1000 <q-args><CR>
-    " <leader>w => Search text under cursor
-    noremap <leader>w :<C-U><C-R>=printf("Leaderf rg --ignore-case -M 1000 -e %s ", expand("<cword>"))<CR><CR>
-    " <leader>fw => Search text under cursor with ignore and hidden files, `f` represents `full`
-    noremap <leader>fw :<C-U><C-R>=printf("Leaderf rg --hidden --ignore-case --no-ignore -M 1000 -e %s ", expand("<cword>"))<CR><CR>
-else
-    echomsg "rg is not installed, Leaderf search will not work"
-endif
-call plug#end()
-
 autocmd FileType c,cpp call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
 autocmd BufWritePost *.c,*.cpp,*.cc,*.cxx,*.h,*.hpp :call ClangFormat()
 autocmd BufWritePost *.css,*.html,*.rs,*.jsx,*.js,*.tsx,*.ts :lua vim.lsp.buf.format()
 
-lua require('index')
