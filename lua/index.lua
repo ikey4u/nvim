@@ -1,5 +1,5 @@
--- 编译时尝试的编译器顺序, 可以使用 CC 环境变量指定编译器, 也要求安装 treesiter: cargo install tree-sitter-cli
 if vim.g.os ~= "Windows" then
+    -- 编译时尝试的编译器顺序, 可以使用 CC 环境变量指定编译器, 也要求安装 treesiter: cargo install tree-sitter-cli
     require('nvim-treesitter.install').compilers = {
         vim.fn.getenv('CC'), "clang","zig", "gcc",
     }
@@ -85,6 +85,31 @@ local lsp_defaults = {
     end,
 }
 
+-- A classic nvim lsp server configuration looks like
+--
+--     require('${BUILTIN_LSP_NAME}').setup({
+--
+--     })
+--
+--  - How do you get `${BUILTIN_LSP_NAME}`?
+--
+--      Use `:h lspconfig-all`.
+--
+--  - What does the `setup()` accept?
+--
+--      Use `:h lspconfig-setup`. For example, `start_client` function has a
+--      parameter `{cmd} list[string]`, it means that `setup()` accepts a
+--      parameter `cmd` which is a list of string. As a result, you can
+--      configure your lsp such as
+--
+--          require('${BUILTIN_LSP_NAME}').setup({
+--              cmd = { '/path/to/your_lsp_binary' }
+--          })
+--
+--      `setup` calls the underlying `vim.lsp.start_client` function with some
+--      parameters overrided. For other parameters not listed in
+--      `:h lspconfig-setup`, see `:h vim.slp.start_client` for details.
+--
 local lsp = require('lspconfig')
 lsp.util.default_config = vim.tbl_deep_extend(
     'force',
@@ -229,8 +254,15 @@ if vim.env.LLVM_HOME ~= nil then
 end
 
 -- lsp.rust
--- rust analzyer (depends on rust-tools plugin), to custmized configuration see
--- https://github.com/simrat39/rust-tools.nvim#configuration
+--
+-- Rust analzyer plugin (depends on rust-tools plugin), to custmized
+-- configuration see https://github.com/simrat39/rust-tools.nvim#configuration
+--
+-- Note that you can use the following command to install rust-analyzer into
+-- `${HOME}/.cargo/bin/`:
+--
+--     rustup component add rust-analyzer
+--
 require('rust-tools').setup({
     tools = {
         inlay_hints = {
@@ -238,8 +270,9 @@ require('rust-tools').setup({
             only_current_line = true,
         },
     },
-    -- rust-tools will pass `server` options to lspconfig
+    -- rust-tools will pass `server` options to lspconfig's `setup` function
     server = {
+        cmd = { vim.env.HOME .. "/.cargo/bin/rust-analyzer" },
         -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
         settings = {
             ["rust-analyzer"] = {
