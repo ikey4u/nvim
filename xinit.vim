@@ -427,5 +427,5 @@ nnoremap Cs :%s/\s\+$//ge<CR>
 autocmd FileType c,cpp call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
 autocmd BufWritePost *.c,*.cpp,*.cc,*.cxx,*.h,*.hpp :call ClangFormat()
-autocmd BufWritePost *.svelte, *.css,*.html,*.rs,*.jsx,*.js,*.tsx,*.ts :lua vim.lsp.buf.format()
+autocmd BufWritePost *.svelte,*.css,*.html,*.rs,*.jsx,*.js,*.tsx,*.ts :lua vim.lsp.buf.format()
 
