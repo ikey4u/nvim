@@ -6,8 +6,8 @@ if vim.g.os ~= "Windows" then
 
     require('nvim-treesitter.configs').setup {
       ensure_installed = {
-          "html", "css", "cpp", "bash", "vim", "lua", "go", "rust", "cmake", "json",
-          "make", "kotlin", "python", "toml", "json5", "c",
+        "html", "css", "cpp", "bash", "vim", "lua", "go", "rust", "cmake",
+        "json", "make", "kotlin", "python", "toml", "json5", "c", "svelte",
       },
       highlight = {
         enable = true,
@@ -51,6 +51,7 @@ require("mason-lspconfig").setup({
         'jdtls',
         'marksman',
         'rust_analyzer',
+        'svelte',
     },
     auto_update = false,
     run_on_start = true,
@@ -108,7 +109,7 @@ local lsp_defaults = {
 --
 --      `setup` calls the underlying `vim.lsp.start_client` function with some
 --      parameters overrided. For other parameters not listed in
---      `:h lspconfig-setup`, see `:h vim.slp.start_client` for details.
+--      `:h lspconfig-setup`, see `:h vim.lsp.start_client` for details.
 --
 local lsp = require('lspconfig')
 lsp.util.default_config = vim.tbl_deep_extend(
@@ -345,4 +346,20 @@ lsp.cssls.setup({
 })
 
 lsp.html.setup({
+})
+
+-- https://github.com/sveltejs/language-tools/tree/master/packages/language-server
+lsp.svelte.setup({
+    settings = {
+      svelte = {
+          plugin = {
+              typescript = {
+                enable = true,
+                diagnostics = {
+                    enable = false,
+                }
+              }
+          }
+      },
+    },
 })
