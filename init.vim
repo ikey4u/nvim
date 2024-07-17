@@ -238,6 +238,10 @@ au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
+" Map `gf` and `<C-w>gf` to open file in read only mode. Use `:e` to enable edit
+nnoremap gf gf<CR>:view<CR>
+nnoremap <C-w>f <C-w>f<CR>:view<CR>
+
 " 个性化配置
 let envfile = printf('%s/%s', expand('$HOME'), 'Sync/normal/conf/env.vim')
 if filereadable(envfile)
