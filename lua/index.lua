@@ -67,22 +67,24 @@ local lsp_defaults = {
         vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
         local bufopts = { noremap=true, silent=true, buffer=bufnr }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        vim.keymap.set('n', 'gd', '<cmd>split |lua vim.lsp.buf.definition()<CR>', bufopts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-        vim.keymap.set('n', '<space>wl',
+        vim.keymap.set('n', '<space>gD', vim.lsp.buf.declaration, bufopts)
+        vim.keymap.set('n', '<space>gi', vim.lsp.buf.implementation, bufopts)
+        vim.keymap.set('n', '<space>gy', '<cmd>split |lua vim.lsp.buf.definition()<CR>', bufopts)
+        vim.keymap.set('n', '<space>gx', '<cmd>vsplit |lua vim.lsp.buf.definition()<CR>', bufopts)
+        vim.keymap.set('n', '<space>gd', vim.lsp.buf.definition, bufopts)
+        vim.keymap.set('n', '<space>gh', vim.lsp.buf.hover, bufopts)
+        vim.keymap.set('n', '<space>gt', vim.lsp.buf.type_definition, bufopts)
+        vim.keymap.set('n', '<space>gn', vim.lsp.buf.rename, bufopts)
+        vim.keymap.set('n', '<space>gc', vim.lsp.buf.code_action, bufopts)
+        vim.keymap.set('n', '<space>gr', vim.lsp.buf.references, bufopts)
+        vim.keymap.set('n', '<space>gf', vim.lsp.buf.formatting, bufopts)
+        vim.keymap.set('n', '<space>gwa', vim.lsp.buf.add_workspace_folder, bufopts)
+        vim.keymap.set('n', '<space>gwr', vim.lsp.buf.remove_workspace_folder, bufopts)
+        vim.keymap.set('n', '<space>gwl',
             function()
                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end, bufopts
         )
-        vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-        vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
     end,
 }
 
