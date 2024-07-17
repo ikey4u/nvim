@@ -231,16 +231,6 @@ set statusline+=\ %m%r
 set statusline+=\ %=
 set statusline+=\|R%05l,C%05c,%03p%%\|
 
-" Map `j` and `k` to visual mode which is useful when you want to move up or down around very long
-" wrapped line
-"
-" If you want to make it work only with some filetypes, you can set it like the following
-"
-"     au FileType html,tex noremap <buffer> j gj
-"
-noremap j gj
-noremap k gk
-
 " highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 au ColorScheme * highlight ExtraWhitespace guibg=red
