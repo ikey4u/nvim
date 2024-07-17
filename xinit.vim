@@ -1,6 +1,11 @@
 " Automatically format c/cpp and header files on save
 function ClangFormat()
     call FindWorkingDir()
+    if g:DisableFormat
+        echomsg printf("format is disabled")
+        return 0
+    endif
+
     let cfc = g:VimRoot . "/.clang-format"
     if !filereadable(cfc)
         echomsg printf(".clang-format is not found: %s", cfc)
@@ -15,6 +20,14 @@ function ClangFormat()
     execute printf("silent !%s --style=file:%s -i %s", expand(clang_format_command), cfc, expand("%:p"))
     " disable warning message `Press ENTER or type command to continue` generated from above command
     redraw
+endfunction
+
+function GeneralFormat()
+    if g:DisableFormat
+        echomsg printf("format is disabled")
+        return 0
+    endif
+    lua vim.lsp.buf.format()
 endfunction
 
 " Automatically read indent configuration from .clang-format in working directory,
@@ -208,8 +221,9 @@ endfunction
 " 工作目录找到后, 其值将会存放在 g:VimRoot 中.
 "
 function! FindWorkingDir()
-let g:VimRoot = get(g:, 'VimRoot', expand('%:p:h'))
+let g:DisableFormat = get(g:, 'DisableFormat', 0)
 
+let g:VimRoot = get(g:, 'VimRoot', expand('%:p:h'))
 python3 << EOF
 import vim
 import os
@@ -246,6 +260,15 @@ if vim.eval("g:VimRoot") != rootdir:
 EOF
 " update leaderf working directory
 let g:Lf_WorkingDirectory=g:VimRoot
+endfunction
+
+" Toggle format status
+function! ToggleFormat()
+    if g:DisableFormat
+        let g:DisableFormat = 0
+    else
+        let g:DisableFormat = 1
+    endif
 endfunction
 
 call plug#begin(g:home . '/plugged')
@@ -396,6 +419,7 @@ command! FmtUU call FormatUnixAndUTF8()
 command! FmtJSON call FormatJSON()
 " :Note => Open notes
 command! Note exec "sp ~/.vimnotes.txt"
+command! ToggleFormat call ToggleFormat()
 " <leader>ev => Open configuration file
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " <leader>sv => Refresh configuration file
@@ -424,8 +448,8 @@ noremap <silent> <C-j> :resize +3<CR>
 noremap <silent> <C-k> :resize -3<CR>
 nnoremap Cs :%s/\s\+$//ge<CR>
 
-autocmd FileType c,cpp call SetCFamilyIndent()
+autocmd FileType c,cpp :call SetCFamilyIndent()
 autocmd BufEnter,BufWinEnter * :call FindWorkingDir()
 autocmd BufWritePost *.c,*.cpp,*.cc,*.cxx,*.h,*.hpp :call ClangFormat()
-autocmd BufWritePost *.svelte,*.css,*.html,*.rs,*.jsx,*.js,*.tsx,*.ts :lua vim.lsp.buf.format()
+autocmd BufWritePost *.svelte,*.css,*.html,*.rs,*.jsx,*.js,*.tsx,*.ts :call GeneralFormat()
 
