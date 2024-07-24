@@ -266,8 +266,10 @@ endfunction
 function! ToggleFormat()
     if g:DisableFormat
         let g:DisableFormat = 0
+        echomsg "Auto format disabled"
     else
         let g:DisableFormat = 1
+        echomsg "Auto format enabled"
     endif
 endfunction
 
