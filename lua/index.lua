@@ -275,8 +275,16 @@ require('rust-tools').setup({
     },
     -- rust-tools will pass `server` options to lspconfig's `setup` function
     server = {
-        -- Use rust-analyzer provided by mason plugin
-        -- cmd = { vim.env.HOME .. "/.cargo/bin/rust-analyzer" },
+        -- If we use rust-analyzer provided by mason plugin, sometimes you will
+        -- have errors like this https://github.com/rust-lang/rust-analyzer/issues/16688
+        --
+        --     proc-macro server's api version (3) is newer than rust-analyzer's (2)
+        --
+        -- As a result, we use rust-analyzer provided by the following command:
+        --
+        --     rustup component add rust-analyzer
+        --
+        cmd = { vim.env.HOME .. "/.cargo/bin/rust-analyzer" },
         -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
         settings = {
             ["rust-analyzer"] = {
