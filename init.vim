@@ -287,14 +287,19 @@ else
         finish
     endif
     if g:os == 'Windows'
-        let clang_major_str = system(printf('%s -dM -E -x c NUL | findstr /i /c:clang_major', clang))
+        let clang_version_cmd = printf('%s -dM -E -x c NUL | findstr /i /c:clang_major', clang)
     else
-        let clang_major_str = system(printf('%s -dM -E -x c /dev/null 2>/dev/null | grep clang_major', clang))
+        let clang_version_cmd = printf('%s -dM -E -x c /dev/null 2>/dev/null | grep clang_major', clang)
     endif
-    let clang_major = str2nr(split(clang_major_str, ' ')[2])
-    if clang_major < 14
-        echomsg printf("[x] require LLVM version >= 14, but LLVM %d found", clang_major)
-        finish
+    let clang_major_str = system(clang_version_cmd)
+    if v:shell_error == 0
+        let clang_major = str2nr(split(clang_major_str, ' ')[2])
+        if clang_major < 14
+            echomsg printf("[x] require LLVM version >= 14, but LLVM %d found", clang_major)
+            finish
+        endif
+    else
+        echomsg printf("[x] failed to determine clang version using command %s", clang_version_cmd)
     endif
 endif
 if !executable("cargo")
