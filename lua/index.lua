@@ -252,7 +252,7 @@ if vim.env.LLVM_HOME ~= nil then
             "--header-insertion=iwyu",
             "-j=8",
         },
-        root_dir = lsp.util.root_pattern('.vimroot'),
+        root_dir = lsp.util.root_pattern('.vimroot', '.git'),
     }
 end
 
