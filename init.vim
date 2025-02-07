@@ -8,22 +8,21 @@
 "       扩展配置位于 xinit.vim 中, 会自动检测该文件是否存在, 如果存在则自动载入,
 "       因此如果要使用扩展配置, 则需要自行配置 xinit.vim 中的依赖.
 
-let g:homes = {}
-let g:homes['mac'] = expand('$HOME/\.config/nvim')
-let g:homes['linux'] = expand('$HOME/\.config/nvim')
-let g:homes['win'] = expand('$HOME/AppData/Local/nvim')
-
+let g:home = expand('<script>:h')
 if has('unix')
-    let g:home = g:homes['linux']
     let g:os = "Linux"
 endif
 if has('mac')
-    let g:home = g:homes['mac']
     let g:os = "Darwin"
 endif
 if has('win32') || has('win64')
-    let g:home = g:homes['win']
     let g:os = "Windows"
+    " make `system` command works right, see https://vi.stackexchange.com/questions/33290/using-the-execute-shell-command-on-windows-and-msys2
+    if $SHELL =~ 'msys2'
+        let &shellcmdflag = '-c'
+        set shellxquote=(
+        set shellslash
+    endif
 endif
 if !exists('g:os')
     echomsg '[x] platform is not supported!'
