@@ -67,6 +67,7 @@ local lsp_defaults = {
         vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
         local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        vim.keymap.set("n", "<space>ge", vim.diagnostic.open_float, bufopts)
         vim.keymap.set('n', '<space>gD', vim.lsp.buf.declaration, bufopts)
         vim.keymap.set('n', '<space>gi', vim.lsp.buf.implementation, bufopts)
         vim.keymap.set('n', '<space>gy', '<cmd>split |lua vim.lsp.buf.definition()<CR>', bufopts)
