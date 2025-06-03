@@ -338,6 +338,7 @@ lsp.jedi_language_server.setup({
 -- 1. install: curl -fsSL https://deno.land/install.sh | sh
 -- 2. add ${HOME}/.deno/bin to your PATH environment
 lsp.denols.setup({
+  root_dir = lsp.util.root_pattern("_nvim_enable_denols", "deno.json", "deno.jsonc"),
 })
 
 -- lsp.cmake
@@ -350,6 +351,7 @@ lsp.marksman.setup({
 })
 
 lsp.tsserver.setup({
+  root_dir = lsp.util.root_pattern("_nvim_enable_tsserver"),
 })
 
 lsp.cssls.setup({
