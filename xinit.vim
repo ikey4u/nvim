@@ -346,9 +346,9 @@ call plug#begin(g:home . '/plugged')
     Plug 'williamboman/mason.nvim'
     " lspconfig plugin for mason
     Plug 'williamboman/mason-lspconfig.nvim'
-    if executable("cargo")
-        Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
-    endif
+    " if executable("cargo")
+    "     Plug 'ikey4u/nvim-previewer', { 'do': 'cargo build --release', 'branch': 'master' }
+    " endif
 
     Plug 'Yggdroot/LeaderF', { 'tag': 'v1.24' }
     " disable default shortcut `<leader>f`
