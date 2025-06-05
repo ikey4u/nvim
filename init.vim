@@ -82,7 +82,8 @@ let html_number_lines = 0          " 取消 TOhtml 的行号
     set encoding=utf-8                                    " 设置 vim 内部编码
     set fileencoding=utf-8                                " 设置当前文件编码
     set fileencodings=ucs-bom,utf-8,gbk,cp936             " 设置支持打开的文件的编码
-    set tenc=utf-8                                        " 设置终端编码
+    " this option is removed (Vim 7.4.852 also removed this for Windows)
+    " set tenc=utf-8                                        " 设置终端编码
     set fileformat=unix                                   " 设置文件的 <EOL> 格式
     set fileformats=unix,dos,mac                          " 设置支持的 <EOL> 类型
 " }
