@@ -29,6 +29,14 @@ if vim.g.os ~= "Windows" then
     }
 end
 
+-- Make neovim floating windows bordered, available since nvim 0.11.0.
+--
+-- Once more, how to go into the floating window? Press twice the shortcut.
+-- Take hover as an example, you press shift+k to open hover window, then
+-- press again shift+k to go into the opened floating window, to exit the
+-- floating window, press `:q`.
+vim.o.winborder = 'rounded'
+
 -- The default install root directory `install_root_dir ` of mason is determined by
 -- `stdpath("data")/mason` where `stdpath("data")` can be checked manually using command
 -- `:echo stdpath("data")`.
@@ -372,3 +380,4 @@ vim.g.rustaceanvim = {
         },
     },
 }
+
