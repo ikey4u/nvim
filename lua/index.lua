@@ -43,7 +43,7 @@ require("mason-lspconfig").setup({
     --
     -- The installed LSP servers could be found under `install_root_dir/mason`.
     ensure_installed = {
-        'tsserver',
+        'ts_ls',
         'cssls',
         'html',
         'bashls',
@@ -278,7 +278,7 @@ lsp.cmake.setup({
 lsp.marksman.setup({
 })
 
-lsp.tsserver.setup({
+lsp.ts_ls.setup({
   root_dir = lsp.util.root_pattern("_nvim_enable_tsserver"),
 })
 
