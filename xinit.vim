@@ -332,7 +332,7 @@ call plug#begin(g:home . '/plugged')
     Plug 'SirVer/ultisnips'
     let g:UltiSnipsSnippetDirectories=[g:home . '/snips', expand('$HOME/\.snips')]
     " Rust Analyzer Wrapper
-    Plug 'simrat39/rust-tools.nvim'
+    Plug 'mrcjkb/rustaceanvim'
     " Lua Utilities
     Plug 'nvim-lua/plenary.nvim'
     " golang

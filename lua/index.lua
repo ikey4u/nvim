@@ -50,7 +50,6 @@ require("mason-lspconfig").setup({
         'kotlin_language_server',
         'jdtls',
         'marksman',
-        'rust_analyzer',
         'svelte',
     },
     auto_update = false,
@@ -78,7 +77,7 @@ local lsp_defaults = {
         vim.keymap.set('n', '<space>gn', vim.lsp.buf.rename, bufopts)
         vim.keymap.set('n', '<space>gc', vim.lsp.buf.code_action, bufopts)
         vim.keymap.set('n', '<space>gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', '<space>gf', vim.lsp.buf.formatting, bufopts)
+        vim.keymap.set('n', '<space>gf', vim.lsp.buf.format, bufopts)
         vim.keymap.set('n', '<space>gwa', vim.lsp.buf.add_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>gwr', vim.lsp.buf.remove_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>gwl',
@@ -257,78 +256,6 @@ if vim.env.LLVM_HOME ~= nil then
     }
 end
 
--- lsp.rust
---
--- Rust analzyer plugin (depends on rust-tools plugin), to custmized
--- configuration see https://github.com/simrat39/rust-tools.nvim#configuration
---
--- Note that you can use the following command to install rust-analyzer into
--- `${HOME}/.cargo/bin/`:
---
---     rustup component add rust-analyzer
---
-require('rust-tools').setup({
-    tools = {
-        inlay_hints = {
-            auto = true,
-            only_current_line = true,
-        },
-    },
-    -- rust-tools will pass `server` options to lspconfig's `setup` function
-    server = {
-        -- If we use rust-analyzer provided by mason plugin, sometimes you will
-        -- have errors like this https://github.com/rust-lang/rust-analyzer/issues/16688
-        --
-        --     proc-macro server's api version (3) is newer than rust-analyzer's (2)
-        --
-        -- As a result, we use rust-analyzer provided by the following command:
-        --
-        --     rustup component add rust-analyzer
-        --
-        cmd = { vim.env.HOME .. "/.cargo/bin/rust-analyzer" },
-        -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
-        settings = {
-            ["rust-analyzer"] = {
-                -- Do not warn me some codes are inactive
-                diagnostics = {
-                    enable = true,
-                    disabled = { "inactive-code" },
-                    enableExperimental = true,
-                },
-                -- Sometimes you may write cross-platform codes using `[#cfg(...)]` macro such as
-                --
-                --     #[cfg(target_os = "android")]
-                --     #[allow(non_snake_case)]
-                --     pub mod android {
-                --         // ...
-                --     }
-                --
-                -- rust_analyzer will not analyze the code in your mod `android`, to solve the
-                -- problem you must declare the following checkOnSave option, but it is not enough.
-                -- You must also create a file named config.toml under directory `<project>/.cargo`
-                -- with content liking the followings
-                --
-                --    [build]
-                --    target = "aarch64-linux-android"
-                --
-                -- Now you can continue your happy rust coding!
-                --
-                checkOnSave = {
-                    enable = true,
-                    allTargets = true,
-                    command = "clippy",
-                },
-                -- make sure you have rust nightly installed:
-                --
-                --     rustup toolchain install nightly
-                --
-                rustfmt = {
-                    extraArgs = { "+nightly", },
-                },
-            },
-        },
-    },
-})
 
 -- lsp.python
 -- install python lsp: pip3 install -U jedi-language-server
@@ -376,3 +303,72 @@ lsp.svelte.setup({
       },
     },
 })
+
+vim.g.rustaceanvim = {
+    tools = {
+        inlay_hints = {
+            auto = true,
+            only_current_line = true,
+        },
+    },
+    -- rust-tools will pass `server` options to lspconfig's `setup` function
+    server = {
+        -- Do not use rust-analyzer provided by mason plugin, reason:
+        --
+        -- 1. it will conflict with rustaceanvim
+        --
+        -- 2. sometimes you will have errors like this https://github.com/rust-lang/rust-analyzer/issues/16688
+        --
+        --     proc-macro server's api version (3) is newer than rust-analyzer's (2)
+        --
+        -- As a result, we use rust-analyzer provided by the following command:
+        --
+        --     rustup component add rust-analyzer
+        --
+        cmd = { vim.env.HOME .. "/.cargo/bin/rust-analyzer" },
+        flags = lsp_defaults.flags,
+        capabilities = lsp_defaults.capabilities,
+        on_attach = lsp_defaults.on_attach,
+        -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
+        settings = {
+            ["rust-analyzer"] = {
+                -- Do not warn me some codes are inactive
+                diagnostics = {
+                    enable = true,
+                    disabled = { "inactive-code" },
+                    enableExperimental = true,
+                },
+                -- Sometimes you may write cross-platform codes using `[#cfg(...)]` macro such as
+                --
+                --     #[cfg(target_os = "android")]
+                --     #[allow(non_snake_case)]
+                --     pub mod android {
+                --         // ...
+                --     }
+                --
+                -- rust_analyzer will not analyze the code in your mod `android`, to solve the
+                -- problem you must declare the following checkOnSave option, but it is not enough.
+                -- You must also create a file named config.toml under directory `<project>/.cargo`
+                -- with content liking the followings
+                --
+                --    [build]
+                --    target = "aarch64-linux-android"
+                --
+                -- Now you can continue your happy rust coding!
+                --
+                checkOnSave = {
+                    enable = true,
+                    allTargets = true,
+                    command = "clippy",
+                },
+                -- make sure you have rust nightly installed:
+                --
+                --     rustup toolchain install nightly
+                --
+                rustfmt = {
+                    extraArgs = { "+nightly", },
+                },
+            },
+        },
+    },
+}
