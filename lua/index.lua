@@ -41,29 +41,6 @@ vim.o.winborder = 'rounded'
 -- `stdpath("data")/mason` where `stdpath("data")` can be checked manually using command
 -- `:echo stdpath("data")`.
 require("mason").setup()
--- We use mason-lspconfig to automatically install LSP servers which can then be configured using
--- neovim lspconfig
-require("mason-lspconfig").setup({
-    -- Server name used in mason is different from what is used in the standard lspconfig, the
-    -- mapping could be found here
-    --
-    --     https://github.com/williamboman/mason-lspconfig.nvim/blob/main/doc/server-mapping.md
-    --
-    -- The installed LSP servers could be found under `install_root_dir/mason`.
-    ensure_installed = {
-        'ts_ls',
-        'cssls',
-        'html',
-        'bashls',
-        'kotlin_language_server',
-        'jdtls',
-        'marksman',
-        'svelte',
-    },
-    auto_update = false,
-    run_on_start = true,
-    start_delay = 3000,
-})
 
 local lsp_defaults = {
     flags = {
@@ -268,13 +245,6 @@ end
 -- lsp.python
 -- install python lsp: pip3 install -U jedi-language-server
 lsp.jedi_language_server.setup({
-})
-
--- lsp.javascript
--- 1. install: curl -fsSL https://deno.land/install.sh | sh
--- 2. add ${HOME}/.deno/bin to your PATH environment
-lsp.denols.setup({
-  root_dir = lsp.util.root_pattern("_nvim_enable_denols", "deno.json", "deno.jsonc"),
 })
 
 -- lsp.cmake
