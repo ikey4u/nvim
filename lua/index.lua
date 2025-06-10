@@ -257,7 +257,7 @@ lsp.marksman.setup({
 })
 
 lsp.ts_ls.setup({
-  root_dir = lsp.util.root_pattern("_nvim_enable_tsserver"),
+  root_dir = lsp.util.root_pattern("package.json"),
 })
 
 lsp.cssls.setup({
