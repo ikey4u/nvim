@@ -57,7 +57,11 @@ local lsp_defaults = {
         vim.keymap.set('n', '<space>gy', '<cmd>split |lua vim.lsp.buf.definition()<CR>', bufopts)
         vim.keymap.set('n', '<space>gx', '<cmd>vsplit |lua vim.lsp.buf.definition()<CR>', bufopts)
         vim.keymap.set('n', '<space>gd', vim.lsp.buf.definition, bufopts)
-        vim.keymap.set('n', '<space>gh', vim.lsp.buf.hover, bufopts)
+        -- The neovim has a default `K` shortcut which is mapped to `vim.lsp.buf.hover`,
+        -- it will work mostly the time, but sometimes such as in typescript the
+        -- hover will not show interface properties, in which case you can use `<space>gh`
+        -- to mimic hover
+        vim.keymap.set('n', '<space>gh', ':Lspsaga peek_definition<CR>', bufopts)
         vim.keymap.set('n', '<space>gt', vim.lsp.buf.type_definition, bufopts)
         vim.keymap.set('n', '<space>gn', vim.lsp.buf.rename, bufopts)
         vim.keymap.set('n', '<space>gc', vim.lsp.buf.code_action, bufopts)
@@ -350,4 +354,7 @@ vim.g.rustaceanvim = {
         },
     },
 }
+
+require("lspsaga").setup({
+})
 
