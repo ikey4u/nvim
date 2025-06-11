@@ -370,5 +370,8 @@ vim.g.rustaceanvim = {
 }
 
 require("lspsaga").setup({
+    lightbulb = {
+      enable = false,
+    },
 })
 
