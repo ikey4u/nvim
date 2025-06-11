@@ -179,6 +179,20 @@ lsp.vimls.setup({
 -- lsp.lua
 lsp.lua_ls.setup({
     single_file_support = true,
+    settings = {
+      Lua = {
+        runtime = {
+          version = 'LuaJIT',
+          path = vim.split(package.path, ';')
+        },
+        diagnostics = {
+          globals = {'vim'}
+        },
+        workspace = {
+          library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true}
+        }
+      }
+    }
 })
 
 -- lsp.java
