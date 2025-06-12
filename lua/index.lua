@@ -29,6 +29,9 @@ if vim.g.os ~= "Windows" then
     }
 end
 
+-- Always show diagnostic column
+vim.opt.signcolumn = "yes"
+
 -- Make neovim floating windows bordered, available since nvim 0.11.0.
 --
 -- Once more, how to go into the floating window? Press twice the shortcut.
@@ -369,9 +372,8 @@ vim.g.rustaceanvim = {
     },
 }
 
+-- LightBulb is enabled in default configuration of lspsaga, to avoid screen
+-- shaking, you should set `vim.o.signcolumn = "yes"`
 require("lspsaga").setup({
-    lightbulb = {
-      enable = false,
-    },
 })
 
