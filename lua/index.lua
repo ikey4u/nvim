@@ -277,14 +277,30 @@ lsp.cmake.setup({
 lsp.marksman.setup({
 })
 
-lsp.ts_ls.setup({
-  root_dir = lsp.util.root_pattern("package.json"),
-})
-
 lsp.cssls.setup({
 })
 
 lsp.html.setup({
+})
+
+-- npm install -g @vue/language-server
+-- npm install -g @vtsls/language-server
+-- :MasonInstall vue-language-server
+lsp.ts_ls.setup({
+    root_dir = lsp.util.root_pattern("package.json"),
+    filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+    init_options = {
+      plugins = {
+        {
+          name = '@vue/typescript-plugin',
+          location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+          languages = { 'vue' },
+        },
+      },
+      typescript = {
+        tsdk = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/typescript/lib',
+      },
+    },
 })
 
 -- https://github.com/sveltejs/language-tools/tree/master/packages/language-server
