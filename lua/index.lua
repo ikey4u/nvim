@@ -69,7 +69,7 @@ local lsp_defaults = {
         vim.keymap.set('n', '<space>gn', vim.lsp.buf.rename, bufopts)
         vim.keymap.set('n', '<space>gc', vim.lsp.buf.code_action, bufopts)
         vim.keymap.set('n', '<space>gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', '<space>gf', vim.lsp.buf.format, bufopts)
+        vim.keymap.set('n', '<space>FF', vim.lsp.buf.format, bufopts)
         vim.keymap.set('n', '<space>gwa', vim.lsp.buf.add_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>gwr', vim.lsp.buf.remove_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>gwl',
