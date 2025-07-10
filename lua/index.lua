@@ -262,7 +262,6 @@ if vim.env.LLVM_HOME ~= nil then
     }
 end
 
-
 -- lsp.python
 -- install python lsp: pip3 install -U jedi-language-server
 lsp.jedi_language_server.setup({
@@ -277,9 +276,11 @@ lsp.cmake.setup({
 lsp.marksman.setup({
 })
 
+-- :MasonInstall css-lsp
 lsp.cssls.setup({
 })
 
+-- :MasonInstall html-lsp
 lsp.html.setup({
 })
 
