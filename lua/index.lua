@@ -243,24 +243,24 @@ lsp.gopls.setup({
     将生成的文件放到 .vimroot 同目录的 build 目录下即可.
 
 --]]
-local clangd = nil
+local clangd = "/usr/bin/clangd"
 if vim.env.LLVM_HOME ~= nil then
     clangd = vim.env.LLVM_HOME .. "/bin/clangd"
-    lsp.clangd.setup {
-        cmd = {
-            clangd,
-            "--background-index",
-            "--compile-commands-dir=build",
-            "--clang-tidy",
-            "--clang-tidy-checks=performance-*,bugprone-*",
-            "--completion-style=detailed",
-            "--all-scopes-completion",
-            "--header-insertion=iwyu",
-            "-j=8",
-        },
-        root_dir = lsp.util.root_pattern('.vimroot', '.git'),
-    }
 end
+lsp.clangd.setup {
+    cmd = {
+        clangd,
+        "--background-index",
+        "--compile-commands-dir=build",
+        "--clang-tidy",
+        "--clang-tidy-checks=performance-*,bugprone-*",
+        "--completion-style=detailed",
+        "--all-scopes-completion",
+        "--header-insertion=iwyu",
+        "-j=8",
+    },
+    root_dir = lsp.util.root_pattern('.vimroot', '.git'),
+}
 
 -- lsp.python
 -- install python lsp: pip3 install -U jedi-language-server
