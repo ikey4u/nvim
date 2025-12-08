@@ -289,6 +289,11 @@ call plug#begin(g:home . '/plugged')
     Plug 'udalov/kotlin-vim'
     if g:os != "Windows"
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        " treesitter will always enable conceallevel which will make markdown
+        " code block boundary concealed.
+        "
+        " See https://github.com/nvim-treesitter/nvim-treesitter/issues/3723
+        set conceallevel=0
     endif
 
     " Yank text to client system clipboard when editing on host using vim
