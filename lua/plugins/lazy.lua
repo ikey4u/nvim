@@ -45,8 +45,61 @@ require("lazy").setup({
             end,
         },
         {
-            "ryanoasis/vim-devicons",
-            event = "VimEnter",
+            "nvim-tree/nvim-web-devicons",
+            opts = {},
+        },
+        {
+            "nvim-tree/nvim-tree.lua",
+            after = "nvim-web-devicons",
+            dependencies = {
+                "nvim-tree/nvim-web-devicons",
+            },
+            config = function()
+                vim.g.loaded_netrw = 1
+                vim.g.loaded_netrwPlugin = 1
+                vim.opt.termguicolors = true
+                vim.opt.wildignore:append({
+                    "*.pyc", "*.o", "*.obj", "*.svn", "*.swp", "*.class",
+                    "*.hg", "*.DS_Store", "*.min.*", "*__pycache__*", "*.db", "*.xcodeproj"
+                })
+                vim.keymap.set(
+                    "n",
+                    "<leader>r",
+                    function()
+                        vim.cmd("NvimTreeToggle")
+                    end,
+                    { noremap = true, silent = true }
+                )
+
+                local function on_attach(bufnr)
+                    local api = require("nvim-tree.api")
+                    api.config.mappings.default_on_attach(bufnr)
+
+                    local function opts(desc)
+                        return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+                    end
+                    vim.keymap.set('n', 'u', api.tree.change_root_to_parent, opts('Up'))
+                    vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+                    vim.keymap.set('n', 'i', api.node.open.horizontal, opts('Open split'))
+                    vim.keymap.set('n', 's', api.node.open.vertical, opts('Open vsplit'))
+                    vim.keymap.set('n', 'C', api.tree.change_root_to_node, opts('Change root'))
+                end
+                require("nvim-tree").setup({
+                    on_attach = on_attach,
+                    sort = {
+                        sorter = "case_sensitive",
+                    },
+                    view = {
+                        width = 30,
+                    },
+                    git = {
+                        enable = false,
+                    },
+                    filters = {
+                        dotfiles = true,
+                    },
+                })
+            end,
         },
         {
             "jiangmiao/auto-pairs",
