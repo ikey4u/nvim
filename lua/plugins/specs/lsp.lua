@@ -1,3 +1,34 @@
+-- Update lsp binary using lsp `name` and update it to the lsp's lspconfig `opts`
+-- if found.
+--
+-- Assume the lsp `name` is `lua_ls`, then this function will try to search
+-- lsp binary from environment `LUA_LS_EXE`, and then `lua_ls`command, the first
+-- wins.
+--
+local function lsp_config_with_cmd(opts, name)
+    local cmd
+
+    local env_exe = vim.env[name:upper():gsub("%.", "_") .. "_EXE"]
+    if env_exe and env_exe ~= "" then
+        local p = vim.fn.exepath(env_exe)
+        if p and p ~= "" then
+            cmd = p
+        end
+    end
+    if cmd then
+        opts.cmd = { cmd }
+        return opts
+    end
+
+    cmd = vim.fn.exepath(name)
+    if cmd and cmd ~= "" then
+        opts.cmd = { cmd }
+        return opts
+    end
+
+    return opts
+end
+
 local function default_lsp_config()
     return {
         flags = { debounce_text_changes = 150 },
@@ -28,7 +59,7 @@ local function default_lsp_config()
 end
 
 local function lua_ls_config()
-    return {
+    return lsp_config_with_cmd({
         single_file_support = true,
         settings = {
             Lua = {
@@ -47,7 +78,7 @@ local function lua_ls_config()
                 },
             },
         },
-    }
+    }, "lua_ls")
 end
 
 local function ts_ls_config()

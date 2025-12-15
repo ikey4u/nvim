@@ -14,4 +14,4 @@ end
 require("config.options")
 require("config.keymaps")
 require("config.commands")
-require("config.lazy")
+require("plugins.lazy")
