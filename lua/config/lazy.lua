@@ -32,7 +32,7 @@ require("lazy").setup({
 		},
 		{
 			"mattn/emmet-vim",
-			ft = { "html", "css", "javascript", "typescript", "vue", "svelte" }, -- 可选按文件类型懒加载
+			ft = { "html", "css", "javascript", "typescript", "vue", "svelte" },
 		},
 		{
 			"majutsushi/tagbar",
