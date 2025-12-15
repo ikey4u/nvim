@@ -32,8 +32,8 @@ end
 local function default_lsp_config()
     return {
         flags = { debounce_text_changes = 150 },
-        capabilities = vim.lsp.protocol.make_client_capabilities(),
-        on_attach = function(client, bufnr)
+        capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+        on_attach = function(_client, bufnr)
             vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
             local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
@@ -51,9 +51,14 @@ local function default_lsp_config()
             vim.keymap.set("n", "<space>FF", vim.lsp.buf.format, bufopts)
             vim.keymap.set("n", "<space>gwa", vim.lsp.buf.add_workspace_folder, bufopts)
             vim.keymap.set("n", "<space>gwr", vim.lsp.buf.remove_workspace_folder, bufopts)
-            vim.keymap.set("n", "<space>gwl", function()
-                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            end, bufopts)
+            vim.keymap.set(
+                "n",
+                "<space>gwl",
+                function()
+                    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+                end,
+                bufopts
+            )
         end,
     }
 end
@@ -89,7 +94,6 @@ local function ts_ls_config()
         name = "@vue/typescript-plugin",
         location = vue_language_server_path,
         languages = { "vue" },
-        configNamespace = "typescript",
     }
 
     return {
@@ -136,16 +140,19 @@ return {
             "mason-org/mason-lspconfig.nvim",
         },
         config = function()
-            vim.lsp.config("*", default_lsp_config())
             local mlsp = require("mason-lspconfig")
             local installed_servers = mlsp.get_installed_servers()
             for _, server_name in ipairs(installed_servers) do
+                local c = default_lsp_config()
                 if server_name == "lua_ls" then
-                    vim.lsp.config(server_name, lua_ls_config())
+                    c = vim.tbl_deep_extend("force", c, lua_ls_config())
                 end
                 if server_name == "ts_ls" then
-                    vim.lsp.config(server_name, ts_ls_config())
+                    -- TODO: this will cause the documentation of typescript
+                    -- disappear :(, disabled for now
+                    -- c = vim.tbl_deep_extend("force", c, ts_ls_config())
                 end
+                vim.lsp.config(server_name, c)
             end
         end,
     },
@@ -159,6 +166,12 @@ return {
                 paths = { vim.fn.stdpath("config") .. "/snippets" }
             })
         end
+    },
+    {
+        "hrsh7th/cmp-nvim-lsp",
+        config = function()
+            require("cmp_nvim_lsp").setup({})
+        end,
     },
     {
         "hrsh7th/nvim-cmp",
@@ -185,50 +198,28 @@ return {
                     -- here: https://www.youtube.com/watch?v=ivmraDlBGDg
                     documentation = cmp.config.window.bordered(),
                 },
-                mapping = {
-                    ['<CR>'] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            if luasnip.expandable() then
-                                luasnip.expand()
-                            else
-                                cmp.confirm({
-                                    select = true,
-                                })
-                            end
-                        else
-                            fallback()
-                        end
-                    end),
-
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif luasnip.locally_jumpable(1) then
-                            luasnip.jump(1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif luasnip.locally_jumpable(-1) then
-                            luasnip.jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                },
+                mapping = cmp.mapping.preset.insert({
+                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-e>'] = cmp.mapping.abort(),
+                    -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                    ['<Tab>'] = cmp.mapping.select_next_item(),
+                    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+                }),
                 sources = cmp.config.sources({
                     { name = "luasnip" },
+                    { name = 'nvim_lsp' },
                 }, {
                     { name = "buffer" },
                 }),
+                -- Show the completion in format like `<cmp> <icon> <kind>`
+                -- such as `console <icon> Variable`
                 formatting = {
+                    fields = { "abbr", "menu", "kind" },
                     format = require("lspkind").cmp_format({
-                        -- show only symbol annotations
-                        mode = "symbol",
+                        -- show symbol and text annotations
+                        mode = "symbol_text",
                         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
                         maxwidth = 50,
                         -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
