@@ -10,9 +10,8 @@ map("n", "<space>k", "<cmd>tabprevious<CR>", opts)
 map("i", "jk", "<Esc>", { noremap = true })
 
 map("n", "<leader>P", function()
-    vim.fn.setreg("+", vim.fn.expand("%:p"))
+	vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, opts)
-
 
 map("n", "<C-h>", "<cmd>vertical resize +3<CR>", opts)
 map("n", "<C-l>", "<cmd>vertical resize -3<CR>", opts)
