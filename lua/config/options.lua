@@ -55,17 +55,12 @@ vim.opt.swapfile = false
 vim.opt.undofile = false
 
 if vim.fn.filereadable(vim.g.home .. "/colors/diokai.vim") == 1 then
-	vim.cmd("colorscheme diokai")
+    vim.cmd("colorscheme diokai")
 end
 
 vim.opt.formatoptions:append("mB")
 vim.opt.formatoptions:remove("t")
 
-vim.api.nvim_create_augroup("extrahighlight", {})
-vim.api.nvim_create_autocmd("ColorScheme", {
-	group = "extrahighlight",
-	command = "highlight colorcolumn ctermbg=238",
-})
 vim.opt.colorcolumn = "80"
 vim.opt.textwidth = 80
 vim.opt.autochdir = true
@@ -73,14 +68,4 @@ vim.opt.number = true
 
 vim.opt.clipboard:append("unnamedplus")
 
-vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePre", {
-	group = "LspFormatOnSave",
-	pattern = "*",
-	callback = function()
-		vim.lsp.buf.format({
-			async = false,
-			timeout_ms = 1000,
-		})
-	end,
-})
+vim.o.autoread = true
