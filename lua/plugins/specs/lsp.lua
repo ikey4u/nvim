@@ -112,6 +112,7 @@ return {
 				"vue_ls",
 				"ts_ls",
 				"tinymist",
+				"ty",
 			},
 			automatic_installation = true,
 			automatic_enable = {

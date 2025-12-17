@@ -38,6 +38,12 @@ function M.check_python()
 			else
 				python = vim.fn.exepath("python3")
 			end
+			local o = vim.system({
+				python,
+				"-c",
+				"import os, sys; print(os.path.realpath(sys.executable))",
+			}, { text = true }):wait()
+			python = vim.trim(o.stdout)
 		else
 			python = vim.fn.system([[py -3 -c "import sys; print(sys.executable, end='')"]])
 		end
