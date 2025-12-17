@@ -108,6 +108,17 @@ require("lazy").setup({
 					},
 					filters = {
 						dotfiles = true,
+						custom = {
+							"^.git$",
+							"node_modules",
+							"target",
+							"dist",
+							".build",
+							".cache",
+						},
+					},
+					filesystem_watchers = {
+						enable = false,
 					},
 				})
 			end,
