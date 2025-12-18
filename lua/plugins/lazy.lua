@@ -73,7 +73,7 @@ require("lazy").setup({
 					"*.xcodeproj",
 				})
 				vim.keymap.set("n", "<leader>r", function()
-					vim.cmd("NvimTreeToggle")
+					vim.cmd("NvimTreeFindFile!")
 				end, { noremap = true, silent = true })
 
 				local function on_attach(bufnr)
