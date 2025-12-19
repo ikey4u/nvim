@@ -113,6 +113,7 @@ return {
                 "ts_ls",
                 "tinymist",
                 "ty",
+                "html",
             },
             automatic_installation = true,
             automatic_enable = {
