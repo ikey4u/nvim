@@ -55,7 +55,7 @@ vim.opt.swapfile = false
 vim.opt.undofile = false
 
 if vim.fn.filereadable(vim.g.home .. "/colors/diokai.vim") == 1 then
-	vim.cmd("colorscheme diokai")
+    vim.cmd("colorscheme diokai")
 end
 
 vim.opt.formatoptions:append("mB")
