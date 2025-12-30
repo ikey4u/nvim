@@ -184,11 +184,52 @@ return {
             "onsails/lspkind-nvim",
             "L3MON4D3/LuaSnip",
             "saadparwaiz1/cmp_luasnip",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-cmdline",
+            -- Use `:` to trigger emoji autocomplete in insert mode
+            "hrsh7th/cmp-emoji",
         },
         config = function()
             local cmp = require("cmp")
             local luasnip = require("luasnip")
+
+            -- Show the completion in format like `<cmp> <icon> <kind>`
+            -- such as `console <icon> Variable`
+            local formatting = {
+                fields = { "abbr", "menu", "kind" },
+                format = require("lspkind").cmp_format({
+                    -- show symbol and text annotations
+                    mode = "symbol_text",
+                    -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                    maxwidth = 50,
+                    -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                    ellipsis_char = "...",
+                    -- The function below will be called before any actual modifications from lspkind
+                    -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+                    before = function(entry, vim_item)
+                        vim_item.menu = ({
+                            nvim_lsp = "[NVIM_LSP]",
+                            luasnip = "[LUA_SNIP]",
+                            buffer = "[BUFFER]",
+                            path = "[PATH]",
+                            nvim_lua = "[NVIM_LUA]",
+                            cmdline = "[CMDLINE]",
+                            emoji = "[EMOJI]",
+                        })[entry.source.name] or string.format("[%s]", entry.source.name)
+                        return vim_item
+                    end,
+                }),
+            }
             cmp.setup({
+                completion = {
+                    autocomplete = {
+                        cmp.TriggerEvent.TextChanged,
+                        cmp.TriggerEvent.InsertEnter,
+                    },
+                    keyword_length = 1,
+                },
                 snippet = {
                     expand = function(args)
                         luasnip.lsp_expand(args.body)
@@ -213,27 +254,22 @@ return {
                 sources = cmp.config.sources({
                     { name = "luasnip" },
                     { name = "nvim_lsp" },
-                }, {
+                    { name = "nvim_lua" },
+                    { name = "path" },
                     { name = "buffer" },
+                    { name = "emoji" },
                 }),
-                -- Show the completion in format like `<cmp> <icon> <kind>`
-                -- such as `console <icon> Variable`
-                formatting = {
-                    fields = { "abbr", "menu", "kind" },
-                    format = require("lspkind").cmp_format({
-                        -- show symbol and text annotations
-                        mode = "symbol_text",
-                        -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                        maxwidth = 50,
-                        -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-                        ellipsis_char = "...",
-                        -- The function below will be called before any actual modifications from lspkind
-                        -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-                        before = function(entry, vim_item)
-                            return vim_item
-                        end,
-                    }),
+                formatting = formatting,
+                experimental = {
+                    ghost_text = true,
                 },
+            })
+            cmp.setup.cmdline(":", {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = "cmdline" },
+                }),
+                formatting = formatting,
             })
         end,
     },
