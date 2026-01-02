@@ -1,5 +1,24 @@
 local M = {}
 
+-- Get mason installed LSP binary path
+function M.get_mason_binary_path(lsp_name)
+    local registry = require("mason-registry")
+    local mason_lspconfig = require("mason-lspconfig")
+
+    local mapping = mason_lspconfig.get_mappings().lspconfig_to_package
+    local pkg_name = mapping[lsp_name] or lsp_name
+    if not registry.is_installed(pkg_name) then
+        return nil
+    end
+
+    local bin_path = vim.fn.stdpath("data") .. "/mason/bin/" .. pkg_name
+    if vim.fn.executable(bin_path) == 1 then
+        return bin_path
+    end
+
+    return nil
+end
+
 -- Get LSP binary using lsp's name
 --
 -- Assume the lsp's name is `lua_ls`, then this function will try to search
@@ -20,6 +39,12 @@ function M.get_cmd_from_env(name)
     end
 
     cmd = vim.fn.exepath(name)
+    if cmd and cmd ~= "" then
+        return cmd
+    end
+
+    local mason_bin_path = M.get_mason_binary_path(name)
+    cmd = vim.fn.exepath(mason_bin_path)
     if cmd and cmd ~= "" then
         return cmd
     end

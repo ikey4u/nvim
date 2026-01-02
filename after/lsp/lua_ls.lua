@@ -1,5 +1,5 @@
 return {
-    cmd = require("std.lsp").get_cmd_from_env("lua_ls"),
+    cmd = { require("std.lsp").get_cmd_from_env("lua_ls") },
     single_file_support = true,
     settings = {
         Lua = {
