@@ -1,119 +1,22 @@
--- Update lsp binary using lsp `name` and update it to the lsp's lspconfig `opts`
--- if found.
---
--- Assume the lsp `name` is `lua_ls`, then this function will try to search
--- lsp binary from environment `LUA_LS_EXE`, and then `lua_ls`command, the first
--- wins.
---
-local function lsp_config_with_cmd(opts, name)
-    local cmd
-
-    local env_exe = vim.env[name:upper():gsub("%.", "_") .. "_EXE"]
-    if env_exe and env_exe ~= "" then
-        local p = vim.fn.exepath(env_exe)
-        if p and p ~= "" then
-            cmd = p
-        end
-    end
-    if cmd then
-        opts.cmd = { cmd }
-        return opts
-    end
-
-    cmd = vim.fn.exepath(name)
-    if cmd and cmd ~= "" then
-        opts.cmd = { cmd }
-        return opts
-    end
-
-    return opts
-end
-
-local function default_lsp_config()
-    return {
-        flags = { debounce_text_changes = 150 },
-        capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        on_attach = function(_client, bufnr)
-            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-            local bufopts = { noremap = true, silent = true, buffer = bufnr }
-
-            vim.keymap.set("n", "<space>ge", vim.diagnostic.open_float, bufopts)
-            vim.keymap.set("n", "<space>gD", vim.lsp.buf.declaration, bufopts)
-            vim.keymap.set("n", "<space>gi", vim.lsp.buf.implementation, bufopts)
-            vim.keymap.set("n", "<space>gy", "<cmd>split |lua vim.lsp.buf.definition()<CR>", bufopts)
-            vim.keymap.set("n", "<space>gx", "<cmd>vsplit |lua vim.lsp.buf.definition()<CR>", bufopts)
-            vim.keymap.set("n", "<space>gd", vim.lsp.buf.definition, bufopts)
-            vim.keymap.set("n", "<space>gh", ":Lspsaga peek_definition<CR>", bufopts)
-            vim.keymap.set("n", "<space>gt", vim.lsp.buf.type_definition, bufopts)
-            vim.keymap.set("n", "<space>gn", vim.lsp.buf.rename, bufopts)
-            vim.keymap.set("n", "<space>gc", vim.lsp.buf.code_action, bufopts)
-            vim.keymap.set("n", "<space>gr", vim.lsp.buf.references, bufopts)
-            vim.keymap.set("n", "<space>FF", vim.lsp.buf.format, bufopts)
-            vim.keymap.set("n", "<space>gwa", vim.lsp.buf.add_workspace_folder, bufopts)
-            vim.keymap.set("n", "<space>gwr", vim.lsp.buf.remove_workspace_folder, bufopts)
-            vim.keymap.set("n", "<space>gwl", function()
-                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            end, bufopts)
-        end,
-    }
-end
-
-local function lua_ls_config()
-    return lsp_config_with_cmd({
-        single_file_support = true,
-        settings = {
-            Lua = {
-                runtime = {
-                    version = "LuaJIT",
-                    path = vim.split(package.path, ";"),
-                },
-                diagnostics = {
-                    globals = { "vim" },
-                },
-                workspace = {
-                    library = {
-                        [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                        [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-                    },
-                },
-            },
-        },
-    }, "lua_ls")
-end
-
-local function ts_ls_config()
-    local vue_language_server_path = vim.fn.stdpath("data")
-        .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
-    local tsserver_filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
-    local vue_plugin = {
-        name = "@vue/typescript-plugin",
-        location = vue_language_server_path,
-        languages = { "vue" },
-    }
-
-    return {
-        init_options = {
-            plugins = {
-                vue_plugin,
-            },
-        },
-        filetypes = tsserver_filetypes,
-    }
-end
-
 return {
-    { "mason-org/mason.nvim", opts = {} },
     {
         "mason-org/mason-lspconfig.nvim",
         opts = {
+            -- The name is from nvim-lspconfig https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+            --
+            -- Note that the name is different from what `:MasonInstall`
+            -- requires which is from https://mason-registry.dev/registry/list
             ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
-                "vue_ls",
+                -- For typescript and javascript
                 "ts_ls",
                 "tinymist",
                 "ty",
                 "html",
+                -- For Vue
+                "vue_ls",
+                "vtsls",
             },
             automatic_installation = true,
             automatic_enable = {
@@ -126,38 +29,31 @@ return {
             },
         },
         dependencies = {
-            { "mason-org/mason.nvim", opts = {} },
+            {
+                "mason-org/mason.nvim",
+                opts = {},
+            },
+            {
+                "neovim/nvim-lspconfig",
+                event = { "BufReadPre", "BufNewFile" },
+                config = function()
+                    -- From nvim 0.11+, `require("lspconfig")` is deprecated in favor of
+                    -- `vim.lsp.config(name, cfg)` where
+                    --
+                    --   - name: The LSP name, a special value `*` can be used to refer all LSPs
+                    --   - cfg: See `vim.lsp.Config`
+                    --
+                    -- To add your additional customized LSP configuration, add it as
+                    -- `after/lsp/{name}.lua` (not `after/lsp/{name}.lua` since it may does not work).
+                    vim.lsp.config("*", require("std.lsp").get_default())
+                end,
+            }
         },
     },
+    -- Provides `:Lspsage` related commands
     {
         "nvimdev/lspsaga.nvim",
-        config = function()
-            require("lspsaga").setup({})
-        end,
-    },
-    {
-        "neovim/nvim-lspconfig",
-        event = { "BufReadPre", "BufNewFile" },
-        dependencies = {
-            "nvimdev/lspsaga.nvim",
-            "mason-org/mason-lspconfig.nvim",
-        },
-        config = function()
-            local mlsp = require("mason-lspconfig")
-            local installed_servers = mlsp.get_installed_servers()
-            for _, server_name in ipairs(installed_servers) do
-                local c = default_lsp_config()
-                if server_name == "lua_ls" then
-                    c = vim.tbl_deep_extend("force", c, lua_ls_config())
-                end
-                if server_name == "ts_ls" then
-                    -- TODO: this will cause the documentation of typescript
-                    -- disappear :(, disabled for now
-                    -- c = vim.tbl_deep_extend("force", c, ts_ls_config())
-                end
-                vim.lsp.config(server_name, c)
-            end
-        end,
+        opts = {}
     },
     {
         "L3MON4D3/LuaSnip",
@@ -278,7 +174,7 @@ return {
         version = "^6",
         lazy = false,
         config = function()
-            local lsp_defaults = default_lsp_config()
+            local lsp_defaults = require("std.lsp").get_default()
             vim.g.rustaceanvim = {
                 tools = {
                     inlay_hints = {
