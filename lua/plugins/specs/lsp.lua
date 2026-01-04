@@ -45,7 +45,7 @@ return {
                     --
                     -- To add your additional customized LSP configuration, add it as
                     -- `after/lsp/{name}.lua` (not `after/lsp/{name}.lua` since it may does not work).
-                    vim.lsp.config("*", require("std.lsp").get_default())
+                    vim.lsp.config("*", require("std.lsp").get_config())
                 end,
             }
         },
@@ -174,7 +174,7 @@ return {
         version = "^6",
         lazy = false,
         config = function()
-            local lsp_defaults = require("std.lsp").get_default()
+            local lsp_defaults = require("std.lsp").get_config()
             vim.g.rustaceanvim = {
                 tools = {
                     inlay_hints = {

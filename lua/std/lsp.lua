@@ -52,8 +52,8 @@ function M.get_cmd_from_env(name)
     return cmd
 end
 
-function M.get_default()
-    return {
+function M.get_config(opts)
+    local builtin = {
         flags = { debounce_text_changes = 150 },
         capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
         on_attach = function(_client, bufnr)
@@ -79,6 +79,10 @@ function M.get_default()
             end, bufopts)
         end,
     }
+    if opts ~= nil then
+        builtin = vim.tbl_deep_extend('force', builtin, opts)
+    end
+    return builtin
 end
 
 return M

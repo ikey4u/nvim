@@ -1,4 +1,4 @@
-return {
+return require('std.lsp').get_config({
     filetypes = { "typescript", "javascript" },
     settings = {
         typescript = {
@@ -17,4 +17,4 @@ return {
             },
         },
     },
-}
+})

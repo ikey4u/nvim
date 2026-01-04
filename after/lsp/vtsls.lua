@@ -11,7 +11,7 @@ local vue_plugin = {
     enableForWorkspaceTypeScriptVersions = true,
 }
 
-return {
+return require('std.lsp').get_config({
     settings = {
         vtsls = {
             tsserver = {
@@ -22,4 +22,4 @@ return {
         },
     },
     filetypes = { 'vue' },
-}
+})
