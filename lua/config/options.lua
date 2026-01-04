@@ -70,4 +70,13 @@ vim.opt.clipboard:append("unnamedplus")
 
 vim.o.autoread = true
 
-vim.lsp.set_log_level("off")
+-- %F:           The fullpath of the current buffer
+-- %l/%v:        The cursor's line and column number
+-- %=:           right aligned the followed content
+-- fileencoding: utf-8, gbk, ...
+-- fileformat:   unix (\n), dos (\r\n), mac (\r)
+-- %y:           filetype
+vim.o.statusline = "%F: %l/%v %= %{&fileencoding}/%{&fileformat} %y"
+
+-- Turn off logging
+vim.lsp.set_log_level("OFF")
