@@ -69,3 +69,5 @@ vim.opt.number = true
 vim.opt.clipboard:append("unnamedplus")
 
 vim.o.autoread = true
+
+vim.lsp.set_log_level("off")
