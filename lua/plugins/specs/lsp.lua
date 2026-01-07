@@ -7,17 +7,21 @@ return {
             -- Note that the name is different from what `:MasonInstall`
             -- requires which is from https://mason-registry.dev/registry/list
             ensure_installed = {
-                "ruff",
-                "lua_ls",
-                "rust_analyzer",
+                -- For JSON
+                "jsonls",
                 -- For typescript and javascript
                 "ts_ls",
                 "tinymist",
+                -- For python
                 "ty",
-                "html",
+                "ruff",
                 -- For Vue
                 "vue_ls",
                 "vtsls",
+                -- Others
+                "html",
+                "lua_ls",
+                "rust_analyzer",
             },
             automatic_installation = true,
             automatic_enable = {
