@@ -7,6 +7,7 @@ return {
             -- Note that the name is different from what `:MasonInstall`
             -- requires which is from https://mason-registry.dev/registry/list
             ensure_installed = {
+                "ruff",
                 "lua_ls",
                 "rust_analyzer",
                 -- For typescript and javascript
@@ -47,13 +48,13 @@ return {
                     -- `after/lsp/{name}.lua` (not `after/lsp/{name}.lua` since it may does not work).
                     vim.lsp.config("*", require("std.lsp").get_config())
                 end,
-            }
+            },
         },
     },
     -- Provides `:Lspsage` related commands
     {
         "nvimdev/lspsaga.nvim",
-        opts = {}
+        opts = {},
     },
     {
         "L3MON4D3/LuaSnip",
