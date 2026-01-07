@@ -5,7 +5,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out,                            "WarningMsg" },
+            { out, "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -58,20 +58,6 @@ require("lazy").setup({
                 vim.g.loaded_netrw = 1
                 vim.g.loaded_netrwPlugin = 1
                 vim.opt.termguicolors = true
-                vim.opt.wildignore:append({
-                    "*.pyc",
-                    "*.o",
-                    "*.obj",
-                    "*.svn",
-                    "*.swp",
-                    "*.class",
-                    "*.hg",
-                    "*.DS_Store",
-                    "*.min.*",
-                    "*__pycache__*",
-                    "*.db",
-                    "*.xcodeproj",
-                })
                 vim.keymap.set("n", "<leader>r", function()
                     vim.cmd("NvimTreeFindFile!")
                 end, { noremap = true, silent = true })
@@ -115,6 +101,20 @@ require("lazy").setup({
                             "dist",
                             ".build",
                             ".cache",
+                            "*.egg-info",
+                            "*.lock",
+                            "*.pyc",
+                            "*.o",
+                            "*.obj",
+                            "*.svn",
+                            "*.swp",
+                            "*.class",
+                            "*.hg",
+                            "*.DS_Store",
+                            "*.min.*",
+                            "*__pycache__*",
+                            "*.db",
+                            "*.xcodeproj",
                         },
                     },
                     filesystem_watchers = {
