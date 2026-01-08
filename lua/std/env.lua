@@ -58,4 +58,26 @@ function M.check_python()
     return python
 end
 
+local is_mac = vim.fn.has("mac") == 1
+local is_win = vim.fn.has("win32") == 1
+function M.get_sys_cache_dir()
+    if is_win then
+        return vim.loop.getenv("LocalAppData")
+    elseif is_mac then
+        return M.home_dir() .. "/Library/Caches"
+    else
+        return vim.loop.getenv("XDG_CACHE_HOME") or (M.home_dir() .. "/.cache")
+    end
+end
+
+function M.get_sys_config_dir()
+    if is_win then
+        return vim.loop.getenv("AppData")
+    elseif is_mac then
+        return M.home_dir() .. "/Library/Application Support"
+    else
+        return vim.loop.getenv("XDG_CONFIG_HOME") or (M.home_dir() .. "/.config")
+    end
+end
+
 return M
