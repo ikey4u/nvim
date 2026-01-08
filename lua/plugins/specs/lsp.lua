@@ -88,7 +88,6 @@ return {
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-cmdline",
             -- Use `:` to trigger emoji autocomplete in insert mode
             "hrsh7th/cmp-emoji",
         },
@@ -116,7 +115,6 @@ return {
                             buffer = "[BUFFER]",
                             path = "[PATH]",
                             nvim_lua = "[NVIM_LUA]",
-                            cmdline = "[CMDLINE]",
                             emoji = "[EMOJI]",
                         })[entry.source.name] or string.format("[%s]", entry.source.name)
                         return vim_item
@@ -164,13 +162,6 @@ return {
                 experimental = {
                     ghost_text = true,
                 },
-            })
-            cmp.setup.cmdline(":", {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = cmp.config.sources({
-                    { name = "cmdline" },
-                }),
-                formatting = formatting,
             })
         end,
     },

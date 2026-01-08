@@ -80,7 +80,7 @@ function M.get_config(opts)
         end,
     }
     if opts ~= nil then
-        builtin = vim.tbl_deep_extend('force', builtin, opts)
+        builtin = vim.tbl_deep_extend("force", builtin, opts)
     end
     return builtin
 end
