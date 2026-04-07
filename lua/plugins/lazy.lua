@@ -118,7 +118,7 @@ require("lazy").setup({
                         },
                     },
                     filesystem_watchers = {
-                        enable = false,
+                        enable = true,
                     },
                 })
             end,
