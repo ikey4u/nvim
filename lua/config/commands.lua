@@ -11,11 +11,16 @@ api.nvim_create_autocmd("ColorScheme", {
     command = "highlight colorcolumn ctermbg=238",
 })
 
+vim.g.format_on_save = true
+
 local formatOnSaveGroup = api.nvim_create_augroup("LspFormatOnSave", { clear = true })
 api.nvim_create_autocmd("BufWritePre", {
     group = formatOnSaveGroup,
     pattern = "*",
     callback = function()
+        if not vim.g.format_on_save then
+            return
+        end
         vim.lsp.buf.format({
             async = false,
             timeout_ms = 1000,
@@ -23,6 +28,11 @@ api.nvim_create_autocmd("BufWritePre", {
         vim.cmd("retab")
     end,
 })
+
+api.nvim_create_user_command("FormatToggle", function()
+    vim.g.format_on_save = not vim.g.format_on_save
+    vim.notify("Format on save: " .. (vim.g.format_on_save and "enabled" or "disabled"))
+end, {})
 
 local ftgroup = api.nvim_create_augroup("Indent", { clear = true })
 api.nvim_create_autocmd("FileType", {
