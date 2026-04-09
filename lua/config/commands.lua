@@ -47,6 +47,7 @@ api.nvim_create_autocmd("FileType", {
         "yaml",
         "dart",
         "typescript",
+        "json",
     },
     callback = function()
         vim.opt_local.tabstop = 2
