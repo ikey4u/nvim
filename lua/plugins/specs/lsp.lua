@@ -170,59 +170,58 @@ return {
         version = "^6",
         lazy = false,
         config = function()
-            local lsp_defaults = require("std.lsp").get_config()
+            local rust_analyzer_config = require("std.lsp").get_config({
+                -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
+                settings = {
+                    ["rust-analyzer"] = {
+                        -- Do not warn me some codes are inactive
+                        diagnostics = {
+                            enable = true,
+                            disabled = { "inactive-code" },
+                            experimental = {
+                                enable = false,
+                            },
+                        },
+                        -- Sometimes you may write cross-platform codes using `[#cfg(...)]` macro such as
+                        --
+                        --     #[cfg(target_os = "android")]
+                        --     #[allow(non_snake_case)]
+                        --     pub mod android {
+                        --         // ...
+                        --     }
+                        --
+                        -- rust_analyzer will not analyze the code in your mod `android`, to solve the
+                        -- problem you must declare the following check option, but it is not enough.
+                        -- You must also create a file named config.toml under directory `<project>/.cargo`
+                        -- with content liking the followings
+                        --
+                        --    [build]
+                        --    target = "aarch64-linux-android"
+                        --
+                        -- Now you can continue your happy rust coding!
+                        --
+                        checkOnSave = true,
+                        check = {
+                            allTargets = true,
+                            command = "clippy",
+                        },
+                        -- make sure you have rust nightly installed:
+                        --
+                        --     rustup toolchain install nightly
+                        --
+                        rustfmt = {
+                            extraArgs = { "+nightly" },
+                        },
+                    },
+                },
+            })
+
+            vim.lsp.config("rust-analyzer", rust_analyzer_config)
             vim.g.rustaceanvim = {
                 tools = {
                     inlay_hints = {
                         auto = true,
                         only_current_line = true,
-                    },
-                },
-                -- rust-tools will pass `server` options to lspconfig's `setup` function
-                server = {
-                    flags = lsp_defaults.flags,
-                    capabilities = lsp_defaults.capabilities,
-                    on_attach = lsp_defaults.on_attach,
-                    -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
-                    settings = {
-                        ["rust-analyzer"] = {
-                            -- Do not warn me some codes are inactive
-                            diagnostics = {
-                                enable = true,
-                                disabled = { "inactive-code" },
-                                enableExperimental = true,
-                            },
-                            -- Sometimes you may write cross-platform codes using `[#cfg(...)]` macro such as
-                            --
-                            --     #[cfg(target_os = "android")]
-                            --     #[allow(non_snake_case)]
-                            --     pub mod android {
-                            --         // ...
-                            --     }
-                            --
-                            -- rust_analyzer will not analyze the code in your mod `android`, to solve the
-                            -- problem you must declare the following checkOnSave option, but it is not enough.
-                            -- You must also create a file named config.toml under directory `<project>/.cargo`
-                            -- with content liking the followings
-                            --
-                            --    [build]
-                            --    target = "aarch64-linux-android"
-                            --
-                            -- Now you can continue your happy rust coding!
-                            --
-                            checkOnSave = {
-                                enable = true,
-                                allTargets = true,
-                                command = "clippy",
-                            },
-                            -- make sure you have rust nightly installed:
-                            --
-                            --     rustup toolchain install nightly
-                            --
-                            rustfmt = {
-                                extraArgs = { "+nightly" },
-                            },
-                        },
                     },
                 },
             }
