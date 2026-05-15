@@ -11,7 +11,7 @@ api.nvim_create_autocmd("ColorScheme", {
     command = "highlight colorcolumn ctermbg=238",
 })
 
-vim.g.format_on_save = true
+vim.g.format_on_save = false
 
 local formatOnSaveGroup = api.nvim_create_augroup("LspFormatOnSave", { clear = true })
 api.nvim_create_autocmd("BufWritePre", {
@@ -28,6 +28,16 @@ api.nvim_create_autocmd("BufWritePre", {
         vim.cmd("retab")
     end,
 })
+
+api.nvim_create_user_command("FormatEnable", function()
+    vim.g.format_on_save = true
+    vim.notify("Format on save: enabled")
+end, {})
+
+api.nvim_create_user_command("FormatDisable", function()
+    vim.g.format_on_save = false
+    vim.notify("Format on save: disabled")
+end, {})
 
 api.nvim_create_user_command("FormatToggle", function()
     vim.g.format_on_save = not vim.g.format_on_save
