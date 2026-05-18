@@ -88,9 +88,28 @@ require("lazy").setup({
                     },
                     view = {
                         width = 30,
+                        signcolumn = "yes",
+                        preserve_window_proportions = true,
+                    },
+                    renderer = {
+                        highlight_git = "all",
+                        icons = {
+                            git_placement = "signcolumn",
+                            glyphs = {
+                                git = {
+                                    unstaged = "M",
+                                    staged = "S",
+                                    unmerged = "U",
+                                    renamed = "R",
+                                    untracked = "A",
+                                    deleted = "D",
+                                    ignored = "I",
+                                },
+                            },
+                        },
                     },
                     git = {
-                        enable = false,
+                        enable = true,
                     },
                     filters = {
                         dotfiles = true,
@@ -120,8 +139,28 @@ require("lazy").setup({
                     filesystem_watchers = {
                         enable = true,
                     },
+                    actions = {
+                        open_file = {
+                            resize_window = false,
+                        },
+                    },
                 })
             end,
+        },
+        {
+            "lewis6991/gitsigns.nvim",
+            event = { "BufReadPre", "BufNewFile" },
+            opts = {
+                signs = {
+                    add = { text = "+" },
+                    change = { text = "~" },
+                    delete = { text = "_" },
+                    topdelete = { text = "‾" },
+                    changedelete = { text = "≃" },
+                    untracked = { text = "?" },
+                },
+                signcolumn = true,
+            },
         },
         {
             "jiangmiao/auto-pairs",
