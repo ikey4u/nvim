@@ -5,12 +5,12 @@ api.nvim_create_user_command("Note", function()
     vim.cmd("sp ~/.vimnotes.txt")
 end, {})
 
-local gitTree = {
+local git_tree = {
     active = false,
     previous = nil,
 }
 
-local function gitTreeCwd()
+local function git_tree_cwd()
     local name = api.nvim_buf_get_name(0)
     if name ~= "" then
         local dir = vim.fn.fnamemodify(name, ":p:h")
@@ -21,9 +21,9 @@ local function gitTreeCwd()
     return vim.fn.getcwd()
 end
 
-local function gitTreeRoot()
+local function git_tree_root()
     local result = vim.system({ "git", "rev-parse", "--show-toplevel" }, {
-        cwd = gitTreeCwd(),
+        cwd = git_tree_cwd(),
         text = true,
     }):wait()
     if result.code ~= 0 then
@@ -33,7 +33,7 @@ local function gitTreeRoot()
     return vim.trim(result.stdout or "")
 end
 
-local function gitTreeHasChanges(root)
+local function git_tree_has_changes(root)
     local result = vim.system({ "git", "status", "--porcelain=v1", "-z", "--untracked-files=all" }, {
         cwd = root,
         text = true,
@@ -45,7 +45,7 @@ local function gitTreeHasChanges(root)
     return result.stdout ~= ""
 end
 
-local function gitTreeCore()
+local function git_tree_core()
     local ok, core = pcall(require, "nvim-tree.core")
     if ok then
         return core
@@ -53,8 +53,8 @@ local function gitTreeCore()
     return nil
 end
 
-local function gitTreeSetFilter(name, enabled)
-    local core = gitTreeCore()
+local function git_tree_set_filter(name, enabled)
+    local core = git_tree_core()
     if not core then
         return
     end
@@ -63,94 +63,135 @@ local function gitTreeSetFilter(name, enabled)
         return
     end
 
-    local treeApi = require("nvim-tree.api")
+    local tree_api = require("nvim-tree.api")
     local toggles = {
-        git_clean = treeApi.tree.toggle_git_clean_filter,
-        dotfiles = treeApi.tree.toggle_hidden_filter,
+        git_clean = tree_api.tree.toggle_git_clean_filter,
+        dotfiles = tree_api.tree.toggle_hidden_filter,
     }
     if toggles[name] then
         toggles[name]()
     end
 end
 
-local function gitTreeSaveState()
-    local core = gitTreeCore()
+local function git_tree_save_state()
+    local core = git_tree_core()
     local explorer = core and core.get_explorer()
     local filters = explorer and explorer.filters and explorer.filters.state or {}
-    gitTree.previous = {
+    git_tree.previous = {
         root = core and core.get_cwd() or nil,
         git_clean = filters.git_clean,
         dotfiles = filters.dotfiles,
     }
 end
 
-local function gitTreeDisable(treeApi)
-    if gitTree.previous and gitTree.previous.root then
-        treeApi.tree.open({ path = gitTree.previous.root, focus = true })
-        treeApi.tree.change_root(gitTree.previous.root)
+local function git_tree_disable(tree_api)
+    if git_tree.previous and git_tree.previous.root then
+        tree_api.tree.open({ path = git_tree.previous.root, focus = true })
+        tree_api.tree.change_root(git_tree.previous.root)
     else
-        treeApi.tree.open({ focus = true })
+        tree_api.tree.open({ focus = true })
     end
 
-    local gitClean = false
+    local git_clean = false
     local dotfiles = true
-    if gitTree.previous then
-        if gitTree.previous.git_clean ~= nil then
-            gitClean = gitTree.previous.git_clean
+    if git_tree.previous then
+        if git_tree.previous.git_clean ~= nil then
+            git_clean = git_tree.previous.git_clean
         end
-        if gitTree.previous.dotfiles ~= nil then
-            dotfiles = gitTree.previous.dotfiles
+        if git_tree.previous.dotfiles ~= nil then
+            dotfiles = git_tree.previous.dotfiles
         end
     end
 
-    gitTreeSetFilter("git_clean", gitClean)
-    gitTreeSetFilter("dotfiles", dotfiles)
-    treeApi.tree.reload()
-    gitTree.active = false
-    gitTree.previous = nil
+    git_tree_set_filter("git_clean", git_clean)
+    git_tree_set_filter("dotfiles", dotfiles)
+    tree_api.tree.reload()
+    git_tree.active = false
+    git_tree.previous = nil
 end
 
-local function gitTreeShow()
-    local ok, treeApi = pcall(require, "nvim-tree.api")
+local function git_tree_apply(tree_api, root)
+    tree_api.tree.open({ path = root, focus = true })
+    tree_api.tree.change_root(root)
+    git_tree_set_filter("git_clean", true)
+    git_tree_set_filter("dotfiles", false)
+    tree_api.git.reload()
+    tree_api.tree.reload()
+    tree_api.tree.expand_all()
+end
+
+local function git_tree_refresh()
+    local ok, tree_api = pcall(require, "nvim-tree.api")
     if not ok then
         vim.notify("GitTree: nvim-tree is not available", vim.log.levels.ERROR)
         return
     end
 
-    if gitTree.active then
-        gitTreeDisable(treeApi)
+    if not git_tree.active then
+        tree_api.git.reload()
+        tree_api.tree.reload()
         return
     end
 
-    local root = gitTreeRoot()
+    local root = git_tree_root()
     if not root then
         return
     end
 
-    local hasChanges = gitTreeHasChanges(root)
-    if hasChanges == nil then
+    local has_changes = git_tree_has_changes(root)
+    if has_changes == nil then
         return
     end
 
-    if not hasChanges then
-        treeApi.tree.close()
+    if not has_changes then
+        tree_api.tree.close()
+        git_tree.active = false
+        git_tree.previous = nil
         vim.notify("GitTree: no changed files")
         return
     end
 
-    gitTreeSaveState()
-    treeApi.tree.open({ path = root, focus = true })
-    treeApi.tree.change_root(root)
-    gitTreeSetFilter("git_clean", true)
-    gitTreeSetFilter("dotfiles", false)
-    treeApi.tree.reload()
-    treeApi.tree.expand_all()
-    gitTree.active = true
+    git_tree_apply(tree_api, root)
 end
 
-api.nvim_create_user_command("GitTree", gitTreeShow, {})
+_G.git_tree_refresh = git_tree_refresh
 
-local function gitHelpShow()
+local function git_tree_show()
+    local ok, tree_api = pcall(require, "nvim-tree.api")
+    if not ok then
+        vim.notify("GitTree: nvim-tree is not available", vim.log.levels.ERROR)
+        return
+    end
+
+    if git_tree.active then
+        git_tree_disable(tree_api)
+        return
+    end
+
+    local root = git_tree_root()
+    if not root then
+        return
+    end
+
+    local has_changes = git_tree_has_changes(root)
+    if has_changes == nil then
+        return
+    end
+
+    if not has_changes then
+        tree_api.tree.close()
+        vim.notify("GitTree: no changed files")
+        return
+    end
+
+    git_tree_save_state()
+    git_tree_apply(tree_api, root)
+    git_tree.active = true
+end
+
+api.nvim_create_user_command("GitTree", git_tree_show, {})
+
+local function git_help_show()
     local lines = {
         "Git commands",
         "",
@@ -208,19 +249,19 @@ local function gitHelpShow()
     end, { buffer = buf, noremap = true, silent = true })
 end
 
-api.nvim_create_user_command("GitHelp", gitHelpShow, {})
+api.nvim_create_user_command("GitHelp", git_help_show, {})
 
-local colorSchemeGroup = api.nvim_create_augroup("extrahighlight", { clear = true })
+local color_scheme_group = api.nvim_create_augroup("extrahighlight", { clear = true })
 api.nvim_create_autocmd("ColorScheme", {
-    group = colorSchemeGroup,
+    group = color_scheme_group,
     command = "highlight colorcolumn ctermbg=238",
 })
 
 vim.g.format_on_save = false
 
-local formatOnSaveGroup = api.nvim_create_augroup("LspFormatOnSave", { clear = true })
+local format_on_save_group = api.nvim_create_augroup("LspFormatOnSave", { clear = true })
 api.nvim_create_autocmd("BufWritePre", {
-    group = formatOnSaveGroup,
+    group = format_on_save_group,
     pattern = "*",
     callback = function()
         if not vim.g.format_on_save then

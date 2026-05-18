@@ -77,6 +77,14 @@ require("lazy").setup({
                     end
                     vim.keymap.set("n", "u", api.tree.change_root_to_parent, opts("Up"))
                     vim.keymap.set("n", "?", api.tree.toggle_help, opts("Help"))
+                    vim.keymap.set("n", "R", function()
+                        if _G.git_tree_refresh then
+                            _G.git_tree_refresh()
+                        else
+                            api.git.reload()
+                            api.tree.reload()
+                        end
+                    end, opts("Refresh"))
                     vim.keymap.set("n", "i", api.node.open.horizontal, opts("Open split"))
                     vim.keymap.set("n", "s", api.node.open.vertical, opts("Open vsplit"))
                     vim.keymap.set("n", "C", api.tree.change_root_to_node, opts("Change root"))
