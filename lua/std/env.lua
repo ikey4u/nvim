@@ -1,5 +1,3 @@
-local path = require("std.path")
-
 local M = {}
 
 function M.script_dir()
@@ -23,39 +21,6 @@ function M.system()
     end
 
     return sys
-end
-
-function M.check_python()
-    local python
-
-    if vim.env.NVIM_PYTHON_EXE_PATH then
-        python = vim.fn.expand("$NVIM_PYTHON_EXE_PATH")
-    else
-        if M.system() == "Linux" or M.system() == "Darwin" then
-            local pyenv_python = vim.fn.expand("$HOME/.pyenv/shims/python3")
-            if vim.fn.filereadable(pyenv_python) == 1 then
-                python = pyenv_python
-            else
-                python = vim.fn.exepath("python3")
-            end
-            local o = vim.system({
-                python,
-                "-c",
-                "import os, sys; print(os.path.realpath(sys.executable))",
-            }, { text = true }):wait()
-            python = vim.trim(o.stdout)
-        else
-            python = vim.fn.system([[py -3 -c "import sys; print(sys.executable, end='')"]])
-        end
-    end
-
-    python = path.absolute(python)
-
-    if not python or vim.fn.executable(python) ~= 1 then
-        return nil
-    end
-
-    return python
 end
 
 local is_mac = vim.fn.has("mac") == 1
