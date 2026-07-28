@@ -10,12 +10,18 @@ return {
             winopts = { preview = { hidden = true } },
         }
 
+        local function project_root()
+            local buffer_name = vim.api.nvim_buf_get_name(0)
+            local start = buffer_name ~= "" and vim.fs.dirname(buffer_name) or vim.uv.cwd()
+            return vim.fs.root(start, { ".vimroot" }) or vim.fs.root(start, { ".git" }) or start
+        end
+
         local function files(opts)
-            fzf.files(vim.tbl_deep_extend("force", {}, no_preview, opts or {}))
+            fzf.files(vim.tbl_deep_extend("force", {}, no_preview, { cwd = project_root() }, opts or {}))
         end
 
         local function grep(query, opts)
-            opts = opts or {}
+            opts = vim.tbl_deep_extend("force", { cwd = project_root() }, opts or {})
             if query == "" then
                 fzf.live_grep(opts)
                 return
