@@ -79,4 +79,4 @@ vim.o.autoread = true
 vim.o.statusline = "%F: %l/%v %= %{&fileencoding}/%{&fileformat} %y"
 
 -- Turn off logging
-vim.lsp.set_log_level("OFF")
+vim.lsp.log.set_level("OFF")
