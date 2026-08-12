@@ -174,7 +174,13 @@ return {
                 -- see https://github.com/rust-lang/rust-analyzer/blob/master/docs/user/generated_config.adoc
                 settings = {
                     ["rust-analyzer"] = {
-                        -- Do not warn me some codes are inactive
+                        -- Analyze all Cargo features. Without this, files behind
+                        -- `#[cfg(feature = "...")]` (e.g. tenga's `cloud` feature)
+                        -- "do not belong to any crate" and goto-def returns empty
+                        -- ("No locations found").
+                        cargo = {
+                            features = "all",
+                        },
                         diagnostics = {
                             enable = true,
                             disabled = { "inactive-code" },

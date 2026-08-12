@@ -78,5 +78,7 @@ vim.o.autoread = true
 -- %y:           filetype
 vim.o.statusline = "%F: %l/%v %= %{&fileencoding}/%{&fileformat} %y"
 
--- Turn off logging
-vim.lsp.log.set_level("OFF")
+-- LSP logging on by default; truncate the log on each Neovim start so it
+-- only contains the current session.
+vim.fn.writefile({}, vim.lsp.log.get_filename())
+vim.lsp.log.set_level(vim.log.levels.DEBUG)
